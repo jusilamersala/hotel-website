@@ -1,0 +1,18 @@
+.text-gold {
+  color: #c5a059;
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+h1 {
+  letter-spacing: 2px;
+}

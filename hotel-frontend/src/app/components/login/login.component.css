@@ -1,0 +1,95 @@
+/* --- MAIN CONTAINER --- */
+.contact-container {
+  max-width: 500px;
+  margin: 80px auto;
+  padding: 40px;
+  background-color: #ffffff;
+  border-top: 5px solid #c5a059; /* Gold accent */
+  border-radius: 4px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif;
+}
+
+/* --- TITLE --- */
+.contact-container h2 {
+  text-align: center;
+  color: #1a1a1a;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+}
+
+/* --- INPUT FIELDS --- */
+input {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 20px;
+  border: 1px solid #e0e0e0;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+input:focus {
+  border-color: #c5a059;
+  background-color: #fff;
+  box-shadow: 0 0 8px rgba(197, 160, 89, 0.2);
+}
+
+/* --- BUTTONS --- */
+button {
+  width: 100%;
+  padding: 14px;
+  background-color: #c5a059;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #b38f4d;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(197, 160, 89, 0.3);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* --- LINKS BELOW FORM --- */
+.contact-container p {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.contact-container a {
+  color: #c5a059;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.contact-container a:hover {
+  text-decoration: underline;
+}
+
+/* --- ANGULAR FORM VALIDATION --- */
+input.ng-invalid.ng-touched {
+  border-left: 4px solid #dc3545;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 576px) {
+  .contact-container {
+    margin: 40px 20px;
+    padding: 25px;
+  }
+
+  .contact-container h2 {
+    font-size: 1.5rem;
+  }
+}

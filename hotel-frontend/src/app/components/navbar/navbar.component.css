@@ -1,0 +1,76 @@
+/* NAVBAR STYLING */
+.main-nav {
+  background: rgba(26, 26, 26, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+  width: 100% !important;
+  max-width: 100vw;
+  left: 0;
+  right: 0;
+  z-index: 1050;
+}
+
+.nav-link {
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  color: #ffffff !important;
+}
+
+/* Korrigjimi i hover (Nga SCSS në CSS) */
+.nav-link:hover, 
+.nav-link.active {
+  color: #c5a059 !important;
+}
+
+.ls-2 { 
+  letter-spacing: 2px; 
+  font-size: 0.7rem; 
+}
+/* Stilimi i kutisë së Dropdown */
+.dropdown-menu {
+  background-color: #1a1a1a !important; /* Ngjyrë e errët uniforme */
+  border-top: 3px solid #c5a059 !important; /* Vija Gold sipër */
+  border-radius: 0 0 8px 8px;
+  padding: 10px 0;
+  min-width: 200px;
+}
+
+.dropdown-item {
+  color: #e0e0e0;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  transition: 0.3s;
+}
+
+.dropdown-item:hover {
+  background-color: #c5a059 !important;
+  color: white !important;
+  padding-left: 25px; /* Efekt zhvendosjeje */
+}
+
+/* Rregullimi i shigjetës së dropdown */
+.dropdown-toggle::after {
+  color: #c5a059;
+  vertical-align: middle;
+}
+
+/* Aktive link */
+.nav-link.active {
+  color: #c5a059 !important;
+  font-weight: 600;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 991px) {
+  .navbar-collapse {
+    background: #1a1a1a;
+    padding: 1rem;
+    border-top: 1px solid #c5a059;
+  }
+  
+  .nav-link {
+    padding: 12px 0 !important;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+}

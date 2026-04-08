@@ -1,0 +1,98 @@
+.rooms-header {
+  height: 40vh;
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+              url('https://images.unsplash.com/photo-1455587734955-081b22074882?auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+}
+
+.room-card {
+  transition: all 0.3s ease;
+  border-radius: 15px;
+}
+
+.room-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+}
+
+.room-card img {
+  height: 230px;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.room-card:hover img {
+  transform: scale(1.1);
+}
+
+.price-tag {
+  position: absolute;
+  bottom: 20px;
+  right: 0;
+  background-color: #c5a059;
+  color: white;
+  padding: 8px 20px;
+  font-weight: bold;
+  border-radius: 20px 0 0 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.room-features span {
+  font-size: 0.85rem;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.text-gold { color: #c5a059 !important; }
+.btn-gold { background-color: #c5a059; color: white; border: none; }
+.btn-gold:hover { background-color: #b38f4d; color: white; }
+.rooms-header {
+  height: 40vh; /* Në celular lartësia duhet të jetë fiks */
+  padding: 60px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .rooms-header {
+    height: 30vh;
+    padding-top: 80px; /* Hapësirë që të mos futet nën navbar */
+  }
+}
+/* Rregullimi për celular (max-width: 768px) */
+@media (max-width: 768px) {
+  .rooms-header, .hero-section {
+    min-height: 50vh !important; /* I japim më shumë lartësi që teksti të marrë frymë */
+    padding-top: 100px !important; /* E shtyjmë tekstin poshtë Navbar-it */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .display-4, .display-1 {
+    font-size: 1.8rem !important; /* Zvogëlojmë titullin që të mos dalë jashtë */
+    line-height: 1.2;
+    margin-bottom: 15px;
+  }
+
+  .lead {
+    font-size: 0.9rem !important;
+    padding: 0 15px; /* I japim pak hapësirë anash tekstit */
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-title { font-size: 20px; }
+}
+
+@media (max-width: 400px) {
+  .hero-title { font-size: 18px; }
+}
+@media (max-width: 250px) {
+  .hero-title { font-size: 14px; }
+}

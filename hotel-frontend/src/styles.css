@@ -1,0 +1,51 @@
+/* You can add global styles to this file, and also import other style files */
+/* Importo Font-in Poppins nga Google */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+  --hotel-gold: #c5a059;
+  --hotel-dark: #1a1a1a;
+}
+
+body {
+  font-family: 'Poppins', sans-serif !important;
+  background-color: #f8f9fa;
+  margin: 0;
+  color: var(--hotel-dark);
+}
+
+/* Stilizim i përgjithshëm për butonat gold */
+.btn-gold {
+  background-color: var(--hotel-gold) !important;
+  color: white !important;
+  border: none !important;
+  transition: 0.3s all ease;
+}
+
+.btn-gold:hover {
+  background-color: #b38f4d !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3);
+}
+
+.text-gold {
+  color: var(--hotel-gold) !important;
+}
+
+/* Rregullimi i tekstit në celular */
+@media (max-width: 768px) {
+  h1, .display-1 {
+    font-size: 2.2rem !important;
+  }
+  h2, .display-4 {
+    font-size: 1.8rem !important;
+  }
+  .lead {
+    font-size: 1rem !important;
+  }
+  
+  /* Navbar adjustments */
+  .navbar-brand {
+    font-size: 1rem !important;
+  }
+}

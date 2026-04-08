@@ -1,0 +1,174 @@
+/* --- KONTEJNERI KRYESOR --- */
+#about {
+  padding: 100px 0;
+  background-color: #f8f9fa;
+  overflow: hidden; /* Siguron që animacionet mos krijojnë scroll horizontal */
+}
+
+/* --- KOMPOZIMI I IMAZHEVE (MODERN) --- */
+.about-img-wrapper {
+  position: relative;
+  padding-right: 50px;
+  padding-bottom: 50px;
+}
+
+/* Imazhi Kryesor */
+.main-img {
+  width: 100%;
+  border-radius: 12px;
+  border: 10px solid #ffffff;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  transition: transform 0.5s ease;
+}
+
+/* Imazhi i vogël mbivendosës (Overlay) */
+.overlay-img {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 260px;
+  border-radius: 12px;
+  border: 8px solid #ffffff;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+  transition: all 0.5s ease;
+}
+
+.about-img-wrapper:hover .main-img {
+  transform: translateY(-5px);
+}
+
+.about-img-wrapper:hover .overlay-img {
+  transform: translate(-10px, -10px);
+}
+
+/* --- BADGE I EKSPERIENCËS (I rrotulluar) --- */
+.experience-badge {
+  position: absolute;
+  top: 30px;
+  left: -20px;
+  background-color: #c5a059;
+  color: white;
+  padding: 20px;
+  min-width: 140px;
+  text-align: center;
+  z-index: 3;
+  box-shadow: 0 10px 20px rgba(197, 160, 89, 0.4);
+  transform: rotate(-5deg); /* Efekt modern "sticker" */
+  transition: 0.3s;
+}
+
+.experience-badge:hover {
+  transform: rotate(0deg) scale(1.05);
+}
+
+.experience-badge h2 {
+  font-size: 2.8rem;
+  margin: 0;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* --- IKONAT DHE STATISTIKAT --- */
+.icon-box {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background-color: rgba(197, 160, 89, 0.1); /* Gold e tejdukshme */
+  font-size: 1.4rem;
+  color: #c5a059;
+  transition: 0.3s;
+}
+
+.bg-gold-light {
+  background-color: rgba(197, 160, 89, 0.1) !important;
+}
+
+/* Vija ndarëse e statistikave */
+.border-start, .border-end {
+  border-color: rgba(197, 160, 89, 0.2) !important;
+}
+
+/* --- TIPOGRAFIA --- */
+.text-gold { color: #c5a059 !important; }
+
+.ls-3 { letter-spacing: 3px; }
+
+.ls-1 { letter-spacing: 1px; }
+
+h2.display-5 {
+  color: #1a1a1a;
+  line-height: 1.2;
+}
+
+/* --- BUTONAT --- */
+.btn-gold {
+  background-color: #c5a059;
+  color: white;
+  border: none;
+  transition: 0.3s;
+}
+
+.btn-gold:hover {
+  background-color: #b38f4d;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(197, 160, 89, 0.3);
+}
+
+.btn-outline-gold {
+  color: #c5a059;
+  border: 2px solid #c5a059;
+  background: transparent;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn-outline-gold:hover {
+  background-color: #c5a059;
+  color: white;
+}
+
+/* --- RESPONSIVE (MOBILE & TABLET) --- */
+@media (max-width: 991px) {
+  #about { padding: 60px 0; }
+  
+  .about-img-wrapper {
+    padding-right: 0;
+    padding-bottom: 0;
+    margin-bottom: 60px;
+    text-align: center;
+  }
+
+  .overlay-img {
+    display: none; /* Heqim imazhin e dytë në mobile për pastërti */
+  }
+
+  .experience-badge {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+    margin: -40px auto 20px auto;
+    display: inline-block;
+  }
+}
+
+@media (max-width: 576px) {
+  h2.display-5 { font-size: 2.2rem; }
+  
+  .btn-gold, .btn-outline-gold {
+    width: 100%; /* Butonat shtrihen plotësisht në telefon */
+    margin-bottom: 10px;
+  }
+  
+  /* Statistikat në rreshta të ndryshëm nëse ekrani është tepër i vogël */
+  .col-4 {
+    width: 100%;
+    border: none !important;
+    margin-bottom: 15px;
+  }
+}
