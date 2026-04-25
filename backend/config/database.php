@@ -4,11 +4,11 @@ header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 header('Content-Type: application/json');
 
-$host = "mysql-207cb4ed-hotel-website.e.aivencloud.com";
-$user = "avnadmin";
-$pass = "AVNS_ZBdwjbdtX1VL6vAJ7hb"; 
+$host = "localhost";
+$user = "root";
+$pass = ""; 
 $db   = "grand_horizon";
-$port = 17108; 
+$port = 3306; 
 
 $conn = new mysqli($host, $user, $pass, $db, $port);
 

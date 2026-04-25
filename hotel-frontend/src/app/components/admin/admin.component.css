@@ -1,0 +1,21 @@
+/* Admin Dashboard Styles */
+.tab-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.nav-tabs .nav-link {
+  color: var(--hotel-dark);
+}
+
+.nav-tabs .nav-link.active {
+  background-color: var(--hotel-gold);
+  color: white;
+}
+
+.table th {
+  background-color: var(--hotel-gold);
+  color: white;
+}
