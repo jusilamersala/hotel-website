@@ -1,0 +1,3 @@
+#Testojme api per nje id specifike ne tabelen contact
+DELETE http://localhost:8000/api/contact/deleteContact.php?id=7
+Accept: application/json
