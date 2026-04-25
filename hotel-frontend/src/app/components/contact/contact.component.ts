@@ -15,7 +15,7 @@ export class ContactComponent {
 
   onSubmit(data: any) {
     // Sigurohu që kjo URL hapet në browser-in tënd
-    const url = 'http://localhost:8000/backend/api/contact/createContact.php'
+    const url = 'http://localhost:8000/models/contact.php'
 
     this.http.post(url, data).subscribe({
       next: (res: any) => {
