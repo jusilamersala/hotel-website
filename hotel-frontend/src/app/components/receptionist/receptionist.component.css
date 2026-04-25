@@ -1,0 +1,8 @@
+/* Receptionist Dashboard Styles */
+.card {
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.card-header {
+  background-color: var(--hotel-gold) !important;
+}
