@@ -15,16 +15,17 @@ export class ContactComponent {
 
   onSubmit(data: any) {
     // Sigurohu që kjo URL hapet në browser-in tënd
-    const url = 'http://localhost:8000/backend/api/contact/createContact.php'
+    const url = 'http://localhost:8000/api/contact/createContact.php'
 
     this.http.post(url, data).subscribe({
       next: (res: any) => {
         // res.message vjen nga JSON-i që shkruajtëm në PHP
-        alert("Sukses: " + (res.message || "U dërgua!"));
+        alert((res.message || "U dërgua!"));
       },
       error: (err) => {
         console.error("Gabim!", err);
-        alert("Ndodhi një gabim gjatë dërgimit. Shiko Console (F12).");
+        const errorMessage = err.error?.message || "Ndodhi një gabim në server.";
+        alert(errorMessage);
       }
     });
   }

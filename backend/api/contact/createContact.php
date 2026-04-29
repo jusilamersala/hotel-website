@@ -21,28 +21,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // 1. Kontrolli për emrin
     if (empty($full_name)) {
+        http_response_code(400);
         echo json_encode(["status" => "error", "message" => "Name is required"]);
         exit; // DUHET exit pas çdo echo që të mos vazhdojë kodin
     }
 
     if (!preg_match("/^[a-zA-Z-' ]*$/", $full_name)) { // Ndrequr preg_match (duhet patterni i pari)
+        http_response_code(400);    
         echo json_encode(["status" => "error", "message" => "Only letters and white space allowed"]);
         exit;
     }
 
     // 2. Kontrolli për emailin
     if (empty($email)) {
+        http_response_code(400);
         echo json_encode(["status" => "error", "message" => "Email is required"]);
         exit;
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        http_response_code(400);
         echo json_encode(["status" => "error", "message" => "Invalid email format"]);
         exit;
     }
 
     // 3. Kontrolli për mesazhin
     if (empty($message)) {
+        http_response_code(400);
         echo json_encode(["status" => "error", "message" => "Message is required"]);
         exit;
     }
