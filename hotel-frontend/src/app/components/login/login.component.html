@@ -1,75 +1,75 @@
 <div class="contact-container">
-  <h2>{{ isLogin ? 'Login' : 'Sign Up' }}</h2>
+  <h2>{{ isLogin ? 'Hyr' : 'Regjistrohu' }}</h2>
 
   <!-- LOGIN FORM -->
   <form *ngIf="isLogin" (ngSubmit)="onLogin()">
-    <input 
-      type="email" 
-      [(ngModel)]="loginData.email" 
-      name="email" 
-      placeholder="Email Address" 
-      required 
+    <input
+      type="email"
+      [(ngModel)]="loginData.email"
+      name="email"
+      placeholder="Adresa e Email-it"
+      required
     />
 
-    <input 
-      type="password" 
-      [(ngModel)]="loginData.password" 
-      name="password" 
-      placeholder="Password" 
-      required 
+    <input
+      type="password"
+      [(ngModel)]="loginData.password"
+      name="password"
+      placeholder="Fjalëkalimi"
+      required
     />
 
-    <button type="submit">Sign In</button>
+    <button type="submit">Hyr</button>
   </form>
 
   <!-- SIGNUP FORM -->
   <form *ngIf="!isLogin" (ngSubmit)="onSignup()">
-    <input 
-      type="text" 
-      [(ngModel)]="signupData.name" 
-      name="name" 
-      placeholder="Name" 
-      required 
+    <input
+      type="text"
+      [(ngModel)]="signupData.name"
+      name="name"
+      placeholder="Emri"
+      required
     />
 
-    <input 
-      type="text" 
-      [(ngModel)]="signupData.surname" 
-      name="surname" 
-      placeholder="Surname" 
-      required 
+    <input
+      type="text"
+      [(ngModel)]="signupData.surname"
+      name="surname"
+      placeholder="Mbiemri"
+      required
     />
 
-    <input 
-      type="email" 
-      [(ngModel)]="signupData.email" 
-      name="email" 
-      placeholder="Email Address" 
-      required 
+    <input
+      type="email"
+      [(ngModel)]="signupData.email"
+      name="email"
+      placeholder="Adresa e Email-it"
+      required
     />
 
-    <input 
-      type="password" 
-      [(ngModel)]="signupData.password" 
-      name="password" 
-      placeholder="Password" 
-      required 
+    <input
+      type="password"
+      [(ngModel)]="signupData.password"
+      name="password"
+      placeholder="Fjalëkalimi"
+      required
     />
 
-    <input 
-      type="password" 
-      [(ngModel)]="signupData.confirm" 
-      name="confirm" 
-      placeholder="Confirm Password" 
-      required 
+    <input
+      type="password"
+      [(ngModel)]="signupData.confirm"
+      name="confirm"
+      placeholder="Konfirmo Fjalëkalimin"
+      required
     />
 
-    <button type="submit">Create Account</button>
+    <button type="submit">Krijo llogari</button>
   </form>
 
   <p>
     <a href="#" (click)="toggleForm($event)">
-      {{ isLogin ? 'Switch to Sign Up' : 'Switch to Login' }}
+      {{ isLogin ? 'Krijo Llogari' : 'Hyr' }}
     </a>
   </p>
 </div>
