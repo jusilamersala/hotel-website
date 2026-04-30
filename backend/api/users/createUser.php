@@ -1,18 +1,20 @@
 <?php
-    include_once '../../config/database.php';
-
     // Header-at e nevojshëm për CORS
-    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Origin: http://localhost:4200");
     header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
     header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
     header("Content-Type: application/json");
 
+
+
     // KJO ËSHTË PJESA QË MUNGON: Trajtimi i kërkesës OPTIONS
     if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-        http_response_code(200);
+        http_response_code(204);
         exit;
     }
-    
+
+    include_once '../../config/database.php';
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $data = json_decode(file_get_contents("php://input"));
 

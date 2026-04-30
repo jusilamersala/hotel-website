@@ -1,3 +1,9 @@
-#Testojme api per nje id specifike ne tabelen contact
-DELETE http://localhost:8000/api/contact/deleteContact.php?id=7
+POST http://localhost:8000/api/contact/createContact.php
+Content-Type: application/json
 Accept: application/json
+
+{
+  "full_name": "Test",
+  "email": "test@gmail.com",
+  "message": "Test"
+}
