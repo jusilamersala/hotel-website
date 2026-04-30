@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm py-3 main-nav">
-  <div class="container-fluid px-5"> 
+  <div class="container-fluid px-5">
     <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/">
       <i class="bi bi-buildings-fill text-gold fs-3"></i>
       <div class="logo-text">
@@ -13,13 +13,13 @@
     </button>
 
     <div class="collapse navbar-collapse" id="hotelNav">
-      <ul class="navbar-nav ms-auto align-items-center gap-3"> 
-        <li class="nav-item"><a class="nav-link px-3" routerLink="/" routerLinkActive="active">Home</a></li>
-        
-        <li class="nav-item"><a class="nav-link px-3" routerLink="/about" routerLinkActive="active">About Us</a></li>
-        
+      <ul class="navbar-nav ms-auto align-items-center gap-3">
+        <li class="nav-item"><a class="nav-link px-3" routerLink="/" routerLinkActive="active">Kryefaqja</a></li>
+
+        <li class="nav-item"><a class="nav-link px-3" routerLink="/about" routerLinkActive="active">Rreth Nesh</a></li>
+
         <li class="nav-item"><a class="nav-link px-3" routerLink="/rooms" routerLinkActive="active">Dhomat</a></li>
-        
+
         <li class="nav-item dropdown">
   <a class="nav-link dropdown-toggle px-3" href="#" id="spaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Spa & Wellness
@@ -27,15 +27,15 @@
   <ul class="dropdown-menu dropdown-menu-dark shadow-lg border-gold" aria-labelledby="spaDropdown">
     <li><a class="dropdown-item" [routerLink]="['/spa']" [queryParams]="{service: 'therapy'}">Terapi & Masazhe</a></li>
     <li><a class="dropdown-item" [routerLink]="['/spa']" [queryParams]="{service: 'pool'}">Pishina & Sauna</a></li>
-    <li><a class="dropdown-item" [routerLink]="['/spa']" [queryParams]="{service: 'gym'}">Gym & Fitness</a></li>
+    <li><a class="dropdown-item" [routerLink]="['/spa']" [queryParams]="{service: 'gym'}">Palester & Fitness</a></li>
   </ul>
 </li>
 
-        <li class="nav-item"><a class="nav-link px-3" routerLink="/contact" routerLinkActive="active">Contact</a></li>
-        
+        <li class="nav-item"><a class="nav-link px-3" routerLink="/contact" routerLinkActive="active">Kontakt</a></li>
+
         <li class="nav-item ms-lg-3">
           <a class="btn btn-gold rounded-pill px-4 fw-bold shadow-sm" routerLink="/login">
-            <i class="bi bi-person-circle me-1"></i> Login
+            <i class="bi bi-person-circle me-1"></i> Hyr
           </a>
         </li>
       </ul>
