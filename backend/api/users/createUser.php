@@ -5,9 +5,6 @@
     header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
     header("Content-Type: application/json");
 
-
-
-    // KJO ËSHTË PJESA QË MUNGON: Trajtimi i kërkesës OPTIONS
     if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
         http_response_code(204);
         exit;
@@ -21,7 +18,7 @@
         $name = $data->name ?? null;
         $surname = $data->surname ?? null;
         $password = $data->password ?? null;
-        $confirm_password = $data->confirm_password ?? null; // Variabla e re
+        $confirm_password = $data->confirm_password ?? null; 
         $email = $data->email ?? null;
         $role = $data->role ?? null;
 
@@ -57,9 +54,8 @@
             mysqli_stmt_execute($checkStmt);
             mysqli_stmt_store_result($checkStmt);
 
-            // Nëse numri i rreshtave është më i madh se 0, emaili ekziston
             if (mysqli_stmt_num_rows($checkStmt) > 0) {
-                http_response_code(409); // 409 Conflict
+                http_response_code(409); 
                 echo json_encode(["status" => "error", "message" => "Ky email është i regjistruar më parë!"]);
                 mysqli_stmt_close($checkStmt);
                 exit;
