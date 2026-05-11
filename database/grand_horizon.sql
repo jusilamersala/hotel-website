@@ -103,3 +103,41 @@ VALUES (
     'assets/images/rooms/deluxe-double.jpg', 
     2
 );
+
+INSERT INTO Room_Type (type, description) VALUES 
+('Standard Single', 'Dhomë komode për një person, e pajisur me krevat tek, tavolinë pune dhe sistem ngrohje/ftohje.'),
+('Luxury Single', 'Akomodim premium për një person, me mobilim modern, mini-bar dhe shërbim dhome të dedikuar.'),
+('Standard Double', 'Dhomë me krevat dopio, e përshtatshme për dy persona, me Wi-Fi dhe pajisje bazë komoditeti.'),
+('Luxury Double', 'Hapësirë elegante me krevat king-size, dekor luksoz dhe sistem zanor premium.'),
+('Twin Room', 'Dhomë me dy krevatë teke të ndarë, ideale për udhëtarë që ndajnë të njëjtën dhomë.'),
+('Triple Room', 'Dhomë e gjerë me tre krevatë teke, e krijuar për të ofruar komoditet maksimal për tre persona.'),
+('Junior Suite', 'Hapësirë që ndërthur dhomën e gjumit me një zonë të vogël ndenjeje për më shumë rehati.'),
+('Executive Suite', 'Suitë me standarde të larta, e pajisur me dhomë ndenjeje të veçantë dhe pajisje zyre.'),
+('Presidential Suite', 'Niveli më i lartë i luksit me pajisje ekskluzive, dhomë ndenjeje të madhe dhe shërbim VIP.'),
+('Family Room', 'Dhomë e përshtatur për familje, me kombinim krevatësh për të rritur dhe fëmijë.'),
+('Studio', 'Dhomë funksionale që përfshin një aneks kuzhine të vogël dhe zonë për ngrënie.');
+
+INSERT INTO Room (room_type_ID, name, floor, description, image_url, capacity, price, availability) VALUES 
+(1, 'Eco Single 101', 1, 'Dhomë komode me pamje nga kopshti.', 'assets/images/single-std.jpg', 1, 45.00, 'Available'),
+(1, 'Classic Single 201', 2, 'Dhomë e qetë, ideale për punë.', 'assets/images/single-std.jpg', 1, 45.00, 'Available'),
+(2, 'Premium Single 301', 3, 'Pamje panoramike dhe mini-bar.', 'assets/images/single-lux.jpg', 1, 65.00, 'Available'),
+(2, 'Elite Single 302', 3, 'Mobilim modern dhe shërbim premium.', 'assets/images/single-lux.jpg', 1, 65.00, 'Available'),
+(3, 'Standard Double 102', 1, 'Krevat dopio dhe shumë dritë natyrale.', 'assets/images/double-std.jpg', 2, 75.00, 'Available'),
+(3, 'Standard Double 202', 2, 'Ideale për çifte, ambient i ngrohtë.', 'assets/images/double-std.jpg', 2, 75.00, 'Available'),
+(4, 'Deluxe Double 401', 4, 'Krevat King-size dhe ballkon privat.', 'assets/images/double-lux.jpg', 2, 110.00, 'Available'),
+(4, 'Royal Double 402', 4, 'Dekor luksoz dhe jacuzzi në dhomë.', 'assets/images/double-lux.jpg', 2, 125.00, 'Available'),
+(5, 'Twin Classic 103', 1, 'Dy krevatë teke, komode për miq.', 'assets/images/twin.jpg', 2, 80.00, 'Available'),
+(5, 'Twin Superior 203', 2, 'Hapësirë e bollshme me dy krevatë.', 'assets/images/twin.jpg', 2, 80.00, 'Available'),
+(6, 'Triple Family 104', 1, 'Tre krevatë teke, shumë hapësirë.', 'assets/images/triple.jpg', 3, 100.00, 'Available'),
+(6, 'Triple Comfort 204', 2, 'Ideale për grupe miqsh.', 'assets/images/triple.jpg', 3, 100.00, 'Available'),
+(7, 'Junior Suite 501', 5, 'Zonë ndenjeje dhe krevat mbretëror.', 'assets/images/junior-suite.jpg', 2, 150.00, 'Available'),
+(7, 'Junior Suite 502', 5, 'Dizajn modern dhe komoditet ekstra.', 'assets/images/junior-suite.jpg', 2, 150.00, 'Available'),
+(8, 'Executive Business 601', 6, 'Suitë me zyrë dhe dhomë gjumi.', 'assets/images/exec-suite.jpg', 2, 220.00, 'Available'),
+(8, 'Executive VIP 602', 6, 'Për takime biznesi dhe luks.', 'assets/images/exec-suite.jpg', 2, 220.00, 'Available'),
+(9, 'Presidential 701', 7, 'Luks absolut dhe siguri maksimale.', 'assets/images/presid-suite.jpg', 4, 500.00, 'Available'),
+(9, 'Presidential 702', 7, 'Suitë elitare me pamje 360 gradë.', 'assets/images/presid-suite.jpg', 4, 500.00, 'Available'),
+(10, 'Family 105', 1, 'Kombinim krevatesh për prindër e fëmijë.', 'assets/images/family.jpg', 4, 130.00, 'Available'),
+(10, 'Family 205', 2, 'Hapësirë e madhe dhe lojëra për fëmijë.', 'assets/images/family.jpg', 4, 130.00, 'Available'),
+(11, 'Studio Kitchen 106', 1, 'Me aneks kuzhine për qëndrime të gjata.', 'assets/images/studio.jpg', 2, 90.00, 'Available'),
+(11, 'Modern Studio 206', 2, 'E vogël, praktike dhe shumë moderne.', 'assets/images/studio.jpg', 2, 90.00, 'Available');
+
