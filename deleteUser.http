@@ -1,0 +1,9 @@
+DELETE http://localhost:8000/api/users/deleteUser.php
+Content-Type: application/json
+Accept: application/json
+
+{
+  "user_ID": 15,
+  "email": "latifllariklavja@gmail.com"
+}
+

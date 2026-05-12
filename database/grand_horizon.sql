@@ -40,6 +40,9 @@ CREATE TABLE IF NOT EXISTS `User` (
     `role` VARCHAR(50)
 );
 
+ALTER TABLE User ADD COLUMN is_verified TINYINT(1) DEFAULT 0;
+ALTER TABLE User ADD COLUMN verification_token VARCHAR(255) NULL;
+
 CREATE TABLE IF NOT EXISTS `Booking` (
     `booking_ID` INT PRIMARY KEY,
     `user_ID` INT,
@@ -105,3 +108,22 @@ ALTER TABLE User MODIFY COLUMN user_ID INT AUTO_INCREMENT;
 
 ALTER TABLE Booking ADD CONSTRAINT Booking_ibfk_1 
 FOREIGN KEY (user_ID) REFERENCES User(user_ID);
+
+ALTER TABLE Room_Type MODIFY COLUMN type VARCHAR(50);
+
+ALTER TABLE Room 
+ADD COLUMN image_url VARCHAR(255) AFTER description,
+ADD COLUMN capacity INT DEFAULT 2 AFTER image_url;
+
+INSERT INTO Room (room_ID, room_type_ID, name, floor, description, price, availability, image_url, capacity) 
+VALUES (
+    1,
+    16, -- Supozojmë që 4 është ID për 'Luxury Double'
+    'Deluxe Double Room', 
+    2, 
+    'Një dhomë luksoze me krevat king-size dhe pamje nga kopshti i hotelit.', 
+    85.00, 
+    'Available', 
+    'assets/images/rooms/deluxe-double.jpg', 
+    2
+);
