@@ -40,6 +40,9 @@ CREATE TABLE IF NOT EXISTS `User` (
     `role` VARCHAR(50)
 );
 
+ALTER TABLE User ADD COLUMN is_verified TINYINT(1) DEFAULT 0;
+ALTER TABLE User ADD COLUMN verification_token VARCHAR(255) NULL;
+
 CREATE TABLE IF NOT EXISTS `Booking` (
     `booking_ID` INT PRIMARY KEY,
     `user_ID` INT,

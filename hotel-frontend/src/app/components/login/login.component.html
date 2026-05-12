@@ -1,6 +1,10 @@
 <div class="contact-container">
   <h2>{{ isLogin ? 'Hyr' : 'Regjistrohu' }}</h2>
 
+  <div *ngIf="successMsg" style="color: green; font-weight: bold; padding: 10px; border: 1px solid green; margin-bottom: 10px;">
+    {{ successMsg }}
+  </div>
+
   <!-- LOGIN FORM -->
   <form *ngIf="isLogin" (ngSubmit)="onLogin()">
     <input
