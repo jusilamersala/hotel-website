@@ -40,6 +40,9 @@ CREATE TABLE IF NOT EXISTS `User` (
     `role` VARCHAR(50)
 );
 
+ALTER TABLE User ADD COLUMN is_verified TINYINT(1) DEFAULT 0;
+ALTER TABLE User ADD COLUMN verification_token VARCHAR(255) NULL;
+
 CREATE TABLE IF NOT EXISTS `Booking` (
     `booking_ID` INT PRIMARY KEY,
     `user_ID` INT,
@@ -48,6 +51,7 @@ CREATE TABLE IF NOT EXISTS `Booking` (
     `status` ENUM('Pending', 'Confirmed', 'Cancelled'),
     `check_In_Date` DATE,
     `check_Out_Date` DATE,
+    `email_verified` BOOLEAN DEFAULT FALSE,
 
     FOREIGN KEY (user_ID) REFERENCES User(User_ID),
     FOREIGN KEY (room_ID) REFERENCES Room(Room_ID)
@@ -77,6 +81,26 @@ CREATE TABLE IF NOT EXISTS `Invoice` (
     `amount` FLOAT,
 
     FOREIGN KEY (booking_ID) REFERENCES Booking(booking_ID)
+);
+
+CREATE TABLE IF NOT EXISTS `Staff` (
+    `staff_ID` INT PRIMARY KEY AUTO_INCREMENT,
+    `name` VARCHAR(100),
+    `surname` VARCHAR(100),
+    `email` VARCHAR(100),
+    `role` VARCHAR(50),
+    `shift` VARCHAR(50)
+);
+
+CREATE TABLE IF NOT EXISTS `Timetable` (
+    `timetable_ID` INT PRIMARY KEY AUTO_INCREMENT,
+    `staff_ID` INT,
+    `date` DATE,
+    `start_time` TIME,
+    `end_time` TIME,
+    `task` VARCHAR(255),
+
+    FOREIGN KEY (staff_ID) REFERENCES Staff(staff_ID)
 );
 
 ALTER TABLE Booking DROP FOREIGN KEY Booking_ibfk_1;

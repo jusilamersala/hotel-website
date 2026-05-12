@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core'; // Shtuar OnInit
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router'; // Per lexim Url
 
 @Component({
   selector: 'app-login',
@@ -10,37 +11,27 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit { // Implemento OnInit
   isLogin = true;
+  successMsg: string | null = null; // Variabël për mesazhet pozitive
 
-  // Të dhënat për Login
-  loginData = {
-    email: '',
-    password: ''
-  };
+  loginData = { email: '', password: '' };
+  signupData = { name: '', surname: '', email: '', password: '', confirm: '' };
 
-  // Të dhënat për Signup
-  signupData = {
-    name: '',
-    surname: '',
-    email: '',
-    password: '',
-    confirm: ''
-  };
+  // Injekto ActivatedRoute në constructor
+  constructor(private http: HttpClient, private route: ActivatedRoute) {}
 
-  constructor(private http: HttpClient) {}
-
-  resetSignupForm() {
-    this.signupData = {
-      name: '',
-      surname: '',
-      email: '',
-      password: '',
-      confirm: ''
-    };
+  ngOnInit() {
+    // KONTROLLI I URL-së: Shikon nëse ka "?verified=true"
+    this.route.queryParams.subscribe(params => {
+      if (params['verified'] === 'true') {
+        this.successMsg = "Email-i u konfirmua me sukses! Tani mund të kyçeni.";
+        // E fshijmë mesazhin pas 5 sekondash
+        setTimeout(() => this.successMsg = null, 5000);
+      }
+    });
   }
 
-  // --- FUNKSIONI I LOGIN-IT (I SHTUAR) ---
   onLogin() {
     if (!this.loginData.email || !this.loginData.password) {
       alert("Ju lutem plotësoni të gjitha fushat!");
@@ -51,21 +42,17 @@ export class LoginComponent {
 
     this.http.post(url, this.loginData).subscribe({
       next: (res: any) => {
-        console.log('Login Success:', res);
         alert("Mirëseerdhët, " + res.user.name + "!");
-
-        // Ruajmë të dhënat e përdoruesit në localStorage
         localStorage.setItem('user', JSON.stringify(res.user));
       },
       error: (err) => {
-        console.error('Gabim gjatë login-it:', err);
+        // Kapim mesazhin specifik "Llogaria nuk është aktivizuar" nga PHP
         const errorMsg = err.error?.message || "Email ose fjalëkalim i gabuar.";
-        alert("Gabim: " + errorMsg);
+        alert(errorMsg);
       }
     });
   }
 
-  // --- FUNKSIONI I REGJISTRIMIT ---
   onSignup() {
     if (this.signupData.password !== this.signupData.confirm) {
       alert("Fjalëkalimet nuk përputhen!");
@@ -85,20 +72,25 @@ export class LoginComponent {
 
     this.http.post(url, payload).subscribe({
       next: (res: any) => {
-        alert("Sukses: " + res.message);
+        // Njoftojmë përdoruesin që duhet të kontrollojë email-in
+        alert("Regjistrimi u krye! Ju lutem kontrolloni email-in për të aktivizuar llogarinë.");
         this.resetSignupForm();
         this.isLogin = true;
       },
       error: (err) => {
-        console.error('Gabim gjatë regjistrimit:', err);
         const errorMsg = err.error?.message || "Ndodhi një gabim.";
         alert("Gabim: " + errorMsg);
       }
     });
   }
 
+  resetSignupForm() {
+    this.signupData = { name: '', surname: '', email: '', password: '', confirm: '' };
+  }
+
   toggleForm(event: Event) {
     event.preventDefault();
     this.isLogin = !this.isLogin;
+    this.successMsg = null; // Hiq mesazhin nëse ndërron formën
   }
 }

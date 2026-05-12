@@ -1,0 +1,122 @@
+<div class="container py-5">
+  <h1 class="text-center mb-5 text-gold">Admin Dashboard</h1>
+
+  <ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'rooms'" (click)="setActiveTab('rooms')">Manage Rooms</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'staff'" (click)="setActiveTab('staff')">Manage Staff</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'timetables'" (click)="setActiveTab('timetables')">Timetables</a>
+    </li>
+  </ul>
+
+  <div [ngSwitch]="activeTab">
+    <!-- Rooms Tab -->
+    <div *ngSwitchCase="'rooms'" class="tab-content">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Rooms</h3>
+        <button class="btn btn-gold" (click)="addRoom()">Add Room</button>
+      </div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Floor</th>
+            <th>Price</th>
+            <th>Availability</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let room of rooms">
+            <td>{{ room.room_ID }}</td>
+            <td>{{ room.name }}</td>
+            <td>{{ room.room_type }}</td>
+            <td>{{ room.floor }}</td>
+            <td>{{ room.price }}</td>
+            <td>{{ room.availability }}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary me-2" (click)="editRoom(room)">Edit</button>
+              <button class="btn btn-sm btn-outline-danger" (click)="deleteRoom(room.room_ID)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Staff Tab -->
+    <div *ngSwitchCase="'staff'" class="tab-content">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Staff</h3>
+        <button class="btn btn-gold" (click)="addStaff()">Add Staff</button>
+      </div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Shift</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of staff">
+            <td>{{ s.staff_ID }}</td>
+            <td>{{ s.name }}</td>
+            <td>{{ s.surname }}</td>
+            <td>{{ s.email }}</td>
+            <td>{{ s.role }}</td>
+            <td>{{ s.shift }}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary me-2" (click)="editStaff(s)">Edit</button>
+              <button class="btn btn-sm btn-outline-danger" (click)="deleteStaff(s.staff_ID)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Timetables Tab -->
+    <div *ngSwitchCase="'timetables'" class="tab-content">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Timetables</h3>
+        <button class="btn btn-gold" (click)="addTimetable()">Add Timetable</button>
+      </div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Staff</th>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Task</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of timetables">
+            <td>{{ t.timetable_ID }}</td>
+            <td>{{ t.name }} {{ t.surname }}</td>
+            <td>{{ t.date }}</td>
+            <td>{{ t.start_time }}</td>
+            <td>{{ t.end_time }}</td>
+            <td>{{ t.task }}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary me-2" (click)="editTimetable(t)">Edit</button>
+              <button class="btn btn-sm btn-outline-danger" (click)="deleteTimetable(t.timetable_ID)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
