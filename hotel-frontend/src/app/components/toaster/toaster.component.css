@@ -1,0 +1,71 @@
+.toast-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%); /* Kjo e qendërzon saktë në mes */
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto; /* Lejon klikimin brenda vetë njoftimit */
+  width: 230px;
+  padding: 14px 28px;
+  border-radius: 8px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Teksti në qendër */
+  font-family: sans-serif;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.404);
+  /* Animacioni i hyrjes: lart -> poshtë */
+  animation: slideDownIn 0.4s ease-out forwards;
+}
+
+.success {
+  gap: 5px;
+  background-color: #10b981;
+  border-bottom: 4px solid #059669; /* Ndryshuar në border-bottom për stil */
+}
+
+.error {
+  background-color: #c10b0b;
+}
+
+/* Klasë që do shtohet para se të fshihet njoftimi */
+.toast.fade-out {
+  animation: slideUpOut 0.4s ease-in forwards;
+}
+
+.icon {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+
+/* Animacioni i hyrjes (Nga lart -> në vendin e vet) */
+@keyframes slideDownIn {
+  from { 
+    transform: translateY(-150%); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateY(0); 
+    opacity: 1; 
+  }
+}
+
+/* Animacioni i daljes (Nga vendi i vet -> lart) */
+@keyframes slideUpOut {
+  from { 
+    transform: translateY(0); 
+    opacity: 1; 
+  }
+  to { 
+    transform: translateY(-150%); 
+    opacity: 0; 
+  }
+}
