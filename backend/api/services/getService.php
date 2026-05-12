@@ -24,7 +24,6 @@
         mysqli_stmt_close($stmt);
 
     } else {
-        // --- RASTI 2: Marrja e të gjithë përdoruesve ---
         $sql = "SELECT service_ID, service_type,service_price FROM Services";
         $result = mysqli_query($conn, $sql);
 
