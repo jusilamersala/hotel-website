@@ -20,7 +20,7 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
   selectedRoom: any = null;
 
   constructor(
-    private bookingService: BookingService, 
+    private bookingService: BookingService,
     private roomService: RoomService
   ) {}
 
@@ -32,9 +32,9 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
     // PayPal button will be rendered when needed
   }
 
-  ngOnInit(): void {
+  /*ngOnInit(): void {
     this.loadData();
-  }
+  }*/
 
   // Ngarkon të dhënat paralelisht
   loadData() {
