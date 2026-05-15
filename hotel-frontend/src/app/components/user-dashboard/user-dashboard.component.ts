@@ -20,11 +20,10 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
   selectedRoom: any = null;
 
   constructor(
-    private bookingService: BookingService, 
+    private bookingService: BookingService,
     private roomService: RoomService
   ) {}
 
-  // Single implementation of ngOnInit
   ngOnInit(): void {
     this.loadData();
   }
