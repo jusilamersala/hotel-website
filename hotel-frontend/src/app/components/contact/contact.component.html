@@ -1,9 +1,9 @@
 <div class="contact-container">
   <h2>Na Kontaktoni</h2>
   <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm.value)">
-    <input type="text" name="emri" ngModel placeholder="Emri juaj" required>
+    <input type="text" name="full_name" ngModel placeholder="Emri juaj" required>
     <input type="email" name="email" ngModel placeholder="Email" required>
-    <textarea name="mesazhi" ngModel placeholder="Mesazhi juaj" required></textarea>
+    <textarea name="message" ngModel placeholder="Mesazhi juaj" required></textarea>
     <button type="submit">Dërgo Mesazhin</button>
   </form>
 </div>
