@@ -1,13 +1,15 @@
 /* --- KONTEJNERI KRYESOR --- */
 .contact-container {
-  max-width: 500px; /* E rritëm pak për frymëmarrje */
+  max-width: 500px;
   margin: 80px auto;
   padding: 40px;
   background-color: #ffffff;
-  border-top: 5px solid #c5a059; /* Vija Gold sipër */
-  border-radius: 4px;
+  border-top: 5px solid #c5a059;
+  border-radius: 8px; /* E rritëm pak për butësi */
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-  font-family: 'Poppins', sans-serif; /* Ose fontin që përdor në projekt */
+  font-family: 'Poppins', sans-serif;
+  /* Sigurohemi që gjithçka llogaritet brenda width-it */
+  box-sizing: border-box; 
 }
 
 .contact-container h2 {
@@ -19,67 +21,70 @@
   margin-bottom: 30px;
 }
 
-/* --- INPUTET DHE TEXTAREA --- */
-input, textarea {
+/* --- INPUTET DHE TEXTAREA (Specifike për këtë formë) --- */
+.contact-container input, 
+.contact-container textarea {
   width: 100%;
   padding: 12px 15px;
   margin-bottom: 20px;
   border: 1px solid #e0e0e0;
-  border-radius: 0; /* Formë më arkitekturore */
+  border-radius: 4px; /* Pak rrumbullakim që të duket modern */
   background-color: #f9f9f9;
   transition: all 0.3s ease;
   outline: none;
+  display: block; /* Siguron që zënë rreshtin e tyre */
+  box-sizing: border-box;
 }
 
-input:focus, textarea:focus {
+.contact-container input:focus, 
+.contact-container textarea:focus {
   border-color: #c5a059;
   background-color: #fff;
   box-shadow: 0 0 8px rgba(197, 160, 89, 0.2);
 }
 
-textarea {
+.contact-container textarea {
   min-height: 120px;
-  resize: vertical; /* Lejon përdoruesin ta rrisë vetëm lartësinë */
+  resize: vertical;
 }
 
 /* --- BUTONI I DËRGIMIT --- */
-button {
+.contact-container button {
   width: 100%;
   padding: 14px;
-  background-color: #c5a059; /* Ngjyra Gold */
+  background-color: #c5a059;
   color: white;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
   border: none;
+  border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-button:hover {
+.contact-container button:hover {
   background-color: #b38f4d;
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(197, 160, 89, 0.3);
 }
 
-button:active {
-  transform: translateY(0);
-}
-
-/* --- VALIDIMI (Nëse inputi është i gabuar) --- */
-input.ng-invalid.ng-touched, 
-textarea.ng-invalid.ng-touched {
-  border-left: 4px solid #dc3545; /* Vija e kuqe tregon gabim */
+/* --- VALIDIMI --- */
+.contact-container input.ng-invalid.ng-touched, 
+.contact-container textarea.ng-invalid.ng-touched {
+  border-left: 5px solid #dc3545; /* Pak më e trashë që të bjerë në sy */
 }
 
 /* --- RESPONSIVE --- */
 @media (max-width: 576px) {
   .contact-container {
-    margin: 40px 20px;
+    margin: 40px 15px; /* Pak më shumë hapësirë në celular */
     padding: 25px;
+    width: auto; /* Lejon që margin-et anësore të funksionojnë */
   }
   
   .contact-container h2 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
   }
 }

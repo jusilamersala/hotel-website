@@ -8,33 +8,41 @@
       </div>
     </a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#hotelNav">
+    <button #hotelToggler class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#hotelNav">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="hotelNav">
       <ul class="navbar-nav ms-auto align-items-center gap-3"> 
-        <li class="nav-item"><a class="nav-link px-3" routerLink="/" routerLinkActive="active">Home</a></li>
+        <li class="nav-item">
+          <a class="nav-link px-3" routerLink="/" routerLinkActive="active" (click)="hotelToggler.click()">Home</a>
+        </li>
         
-        <li class="nav-item"><a class="nav-link px-3" routerLink="/about" routerLinkActive="active">About Us</a></li>
+        <li class="nav-item">
+          <a class="nav-link px-3" routerLink="/about" routerLinkActive="active" (click)="hotelToggler.click()">About Us</a>
+        </li>
         
-        <li class="nav-item"><a class="nav-link px-3" routerLink="/rooms" routerLinkActive="active">Dhomat</a></li>
+        <li class="nav-item">
+          <a class="nav-link px-3" routerLink="/rooms" routerLinkActive="active" (click)="hotelToggler.click()">Dhomat</a>
+        </li>
         
         <li class="nav-item dropdown">
-  <a class="nav-link dropdown-toggle px-3" href="#" id="spaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Spa & Wellness
-  </a>
-  <ul class="dropdown-menu dropdown-menu-dark shadow-lg border-gold" aria-labelledby="spaDropdown">
-    <li><a class="dropdown-item" [routerLink]="['/spa']" [queryParams]="{service: 'therapy'}">Terapi & Masazhe</a></li>
-    <li><a class="dropdown-item" [routerLink]="['/spa']" [queryParams]="{service: 'pool'}">Pishina & Sauna</a></li>
-    <li><a class="dropdown-item" [routerLink]="['/spa']" [queryParams]="{service: 'gym'}">Gym & Fitness</a></li>
-  </ul>
-</li>
+          <a class="nav-link dropdown-toggle px-3" href="#" id="spaDropdown" role="button" data-bs-toggle="dropdown">
+            Spa & Wellness
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark shadow-lg border-gold">
+            <li><a class="dropdown-item" [routerLink]="['/spa']" [queryParams]="{service: 'therapy'}" (click)="hotelToggler.click()">Terapi & Masazhe</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/spa']" [queryParams]="{service: 'pool'}" (click)="hotelToggler.click()">Pishina & Sauna</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/spa']" [queryParams]="{service: 'gym'}" (click)="hotelToggler.click()">Gym & Fitness</a></li>
+          </ul>
+        </li>
 
-        <li class="nav-item"><a class="nav-link px-3" routerLink="/contact" routerLinkActive="active">Contact</a></li>
+        <li class="nav-item">
+          <a class="nav-link px-3" routerLink="/contact" routerLinkActive="active" (click)="hotelToggler.click()">Contact</a>
+        </li>
         
         <li class="nav-item ms-lg-3">
-          <a class="btn btn-gold rounded-pill px-4 fw-bold shadow-sm" routerLink="/login">
+          <a class="btn btn-gold rounded-pill px-4 fw-bold shadow-sm" routerLink="/login" (click)="hotelToggler.click()">
             <i class="bi bi-person-circle me-1"></i> Login
           </a>
         </li>

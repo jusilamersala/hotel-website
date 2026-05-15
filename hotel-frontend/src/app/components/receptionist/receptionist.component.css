@@ -1,8 +1,53 @@
-/* Receptionist Dashboard Styles */
+/* --- RECEPTIONIST DASHBOARD --- */
+
 .card {
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  border: none;
+  margin-bottom: 1.5rem; 
+  transition: transform 0.3s ease;
 }
 
 .card-header {
   background-color: var(--hotel-gold) !important;
+  color: white;
+  font-weight: 600;
+  border-bottom: none;
+  padding: 1rem;
+}
+
+/* Rregullimi i trupit të kartës */
+.card-body {
+  padding: 1.25rem;
+}
+
+/* --- RESPONSIVE ADJUSTMENTS --- */
+
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08); 
+  }
+
+  .card-header {
+    padding: 0.75rem 1rem;
+    font-size: 1rem; /* Titulli pak më i vogël në celular */
+  }
+
+  /* Nëse ke statistika brenda kartës (p.sh. shifra të mëdha) */
+  .card-title {
+    font-size: 1.2rem;
+  }
+}
+
+/* Për ekrane shumë të vegjël */
+@media (max-width: 576px) {
+  .card-body {
+    padding: 1rem;
+  }
+  
+  
+  .card-body .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
 }

@@ -24,16 +24,13 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
     private roomService: RoomService
   ) {}
 
+  // Single implementation of ngOnInit
   ngOnInit(): void {
     this.loadData();
   }
 
   ngAfterViewInit(): void {
     // PayPal button will be rendered when needed
-  }
-
-  ngOnInit(): void {
-    this.loadData();
   }
 
   // Ngarkon të dhënat paralelisht
