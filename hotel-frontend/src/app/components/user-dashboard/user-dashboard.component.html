@@ -1,31 +1,92 @@
 <div class="container py-5">
-  <header class="text-center mb-5">
+  <header class="text-center mb-5" *ngIf="currentUser">
     <h1 class="display-4 fw-bold text-gold">User Dashboard</h1>
-    <p class="text-muted">Welcome back! Manage your stays and explore new luxury rooms.</p>
+    <p class="text-muted fs-5">Mirë se erdhe, <strong>{{ currentUser.name }} {{ currentUser.surname }}</strong>!</p>
   </header>
 
+  <div class="row mb-5" *ngIf="currentUser">
+    <div class="col-12">
+      <div class="card shadow-sm border-0 overflow-hidden">
+        <div class="card-header bg-dark text-white py-3">
+          <h5 class="mb-0"><i class="bi bi-person-circle me-2 text-gold"></i>Informacioni i Profilitt</h5>
+        </div>
+        <div class="card-body bg-light p-4">
+          <div class="row align-items-center">
+            <div class="col-md-2 text-center border-end d-none d-md-block">
+              <div class="display-1 text-gold"><i class="bi bi-person-vcard"></i></div>
+            </div>
+            <div class="col-md-10 ps-md-4">
+              <div class="row g-3">
+                <div class="col-sm-6 col-md-3">
+                  <label class="small text-uppercase text-muted fw-bold d-block">ID e Klientit</label>
+                  <span class="fw-bold">#{{ currentUser.user_ID }}</span>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <label class="small text-uppercase text-muted fw-bold d-block">Emri i Plotë</label>
+                  <span class="fw-bold">{{ currentUser.name }} {{ currentUser.surname }}</span>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <label class="small text-uppercase text-muted fw-bold d-block">Email</label>
+                  <span class="fw-bold">{{ currentUser.email }}</span>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <label class="small text-uppercase text-muted fw-bold d-block">Roli</label>
+                  <span class="badge bg-gold text-dark text-uppercase">{{ currentUser.role }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="mb-5 opacity-25">
+
   <div class="row mb-5 text-center">
-    <div class="col-md-4 mb-3">
-      <div class="card stat-card border-0 shadow-sm">
-        <div class="card-body">
+    <div class="col-sm-6 col-md-3 mb-3">
+      <div class="card stat-card border-0 shadow-sm h-100">
+        <div class="card-body d-flex flex-column justify-content-center">
           <h6 class="text-uppercase text-muted small fw-bold">Total Bookings</h6>
-          <h2 class="text-gold mb-0">{{ bookings.length }}</h2>
+          <h2 class="text-gold mb-0 fw-bold">{{ bookings.length }}</h2>
         </div>
       </div>
     </div>
-    <div class="col-md-4 mb-3">
-      <div class="card stat-card border-0 shadow-sm">
-        <div class="card-body">
+
+    <div class="col-sm-6 col-md-3 mb-3">
+      <div class="card stat-card border-0 shadow-sm h-100">
+        <div class="card-body d-flex flex-column justify-content-center">
           <h6 class="text-uppercase text-muted small fw-bold">Confirmed Stays</h6>
-          <h2 class="text-success mb-0">{{ getConfirmedCount() }}</h2>
+          <h2 class="text-success mb-0 fw-bold">{{ getConfirmedCount() }}</h2>
         </div>
       </div>
     </div>
-    <div class="col-md-4 mb-3">
-      <div class="card stat-card border-0 shadow-sm">
-        <div class="card-body">
+
+    <div class="col-sm-6 col-md-3 mb-3">
+      <div class="card stat-card border-0 shadow-sm h-100">
+        <div class="card-body d-flex flex-column justify-content-center">
           <h6 class="text-uppercase text-muted small fw-bold">Points Earned</h6>
-          <h2 class="text-dark mb-0">1,250</h2>
+          <h2 class="text-dark mb-0 fw-bold">1,250</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-md-3 mb-3">
+      <div class="card stat-card border-0 shadow-sm h-100 border-start border-3 border-primary">
+        <div class="card-body d-flex flex-column justify-content-center align-items-center">
+          <h6 class="text-uppercase text-muted small fw-bold mb-3">Fatura e Pagesës</h6>
+          
+          <div *ngIf="getConfirmedCount() > 0; else noInvoice">
+            <button class="btn btn-primary btn-sm d-flex align-items-center gap-2" (click)="generatePDF()">
+              <i class="bi bi-file-earmark-pdf-fill fs-5"></i>
+              Shkarko PDF
+            </button>
+            <p class="small text-muted mt-2 mb-0">Totali: ${{ getTotalSpent() }}</p>
+          </div>
+
+          <ng-template #noInvoice>
+            <span class="text-muted small italic">Nuk ka faturë të disponueshme</span>
+          </ng-template>
         </div>
       </div>
     </div>
@@ -82,7 +143,7 @@
                    alt="Room image" class="room-img">
             </div>
             
-            <div class="p-3 flex-grow-1">
+            <div class="p-3 flex-grow-1 d-flex flex-column">
               <div class="d-flex justify-content-between">
                 <h5 class="fw-bold">{{ room.name }}</h5>
                 <span class="text-gold fw-bold">${{ room.price }}<small class="text-muted">/nt</small></span>
@@ -100,17 +161,16 @@
     </div>
   </div>
 
-  <!-- PayPal Payment Section -->
   <div *ngIf="selectedRoom" class="row mt-4">
     <div class="col-12">
       <div class="card shadow-sm border-0">
-        <div class="card-header bg-gold text-white py-3">
-          <h3 class="h5 mb-0">Complete Payment for {{ selectedRoom.name }}</h3>
+        <div class="card-header bg-dark text-white py-3">
+          <h3 class="h5 mb-0 text-center">Complete Payment for {{ selectedRoom.name }}</h3>
         </div>
         <div class="card-body p-4 text-center">
-          <p>Room: {{ selectedRoom.name }} - ${{ selectedRoom.price }}</p>
-          <div id="paypal-button-container"></div>
-          <button class="btn btn-secondary mt-3" (click)="selectedRoom = null">Cancel</button>
+          <p class="fs-5">Room: <strong>{{ selectedRoom.name }}</strong> - <span class="text-gold fw-bold">${{ selectedRoom.price }}</span></p>
+          <div id="paypal-button-container" class="mt-4"></div>
+          <button class="btn btn-link text-muted mt-3" (click)="selectedRoom = null">Cancel and Return</button>
         </div>
       </div>
     </div>

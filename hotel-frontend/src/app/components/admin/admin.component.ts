@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RoomService } from '../../services/room.services';
 import { StaffService } from '../../services/staff.service';
-import { TimetableService } from '../../services/timetable.service';
+import { BookingService } from '../../services/booking.service'; // Shtohet për të marrë rezervimet/faturat
 
 @Component({
   selector: 'app-admin',
@@ -14,20 +14,22 @@ import { TimetableService } from '../../services/timetable.service';
 export class AdminComponent implements OnInit {
   rooms: any[] = [];
   staff: any[] = [];
-  timetables: any[] = [];
+  invoices: any[] = []; // Zëvendësoi 'timetables' për të menaxhuar faturat
   activeTab: string = 'rooms';
 
   constructor(
     private roomService: RoomService,
     private staffService: StaffService,
-    private timetableService: TimetableService
+    private bookingService: BookingService // Injektohet shërbimi i rezervimeve
   ) {}
 
   ngOnInit(): void {
     this.loadRooms();
     this.loadStaff();
-    this.loadTimetables();
+    this.loadAllInvoices(); // Ngarkon faturat sapo hapet faqja
   }
+
+  // --- NGARKIMI I TË DHËNAVE ---
 
   loadRooms() {
     this.roomService.getRooms().subscribe((data: any) => {
@@ -45,60 +47,67 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  loadTimetables() {
-    this.timetableService.getTimetables().subscribe((data: any) => {
+  loadAllInvoices() {
+    this.bookingService.getBookings().subscribe((data: any) => {
       if (data.status === 'success') {
-        this.timetables = data.data;
+        // Merr të gjitha rezervimet që do të shërbejnë si fatura për adminin
+        this.invoices = data.data;
       }
     });
   }
+
+  // --- FUNKSIONET NDURMËSE PËR MANAGEMENT ---
 
   setActiveTab(tab: string) {
     this.activeTab = tab;
   }
 
-  // Room CRUD
+  // Llogarit shumën totale të fituar nga faturat e konfirmuara
+  getTotalInvoiced(): number {
+    return this.invoices
+      .filter(i => i.status === 'Confirmed')
+      .reduce((sum, i) => sum + Number(i.price || 0), 0);
+  }
+
+  // Thërret skedarin PHP në backend për të gjeneruar faturën e klientit specifik
+  downloadInvoicePDF(userId: number) {
+    const backendUrl = `http://localhost/hotel-website/hotel-backend/gjenero-fature.php?user_id=${userId}`;
+    window.open(backendUrl, '_blank');
+  }
+
+  // --- CRUD PËR DHOMAT (Rooms) ---
+
   addRoom() {
-    // Implement modal or form
+    // Implemento modalin ose formën për shtim
   }
 
   editRoom(room: any) {
-    // Implement
+    // Implemento modifikimin
   }
 
   deleteRoom(id: number) {
-    this.roomService.deleteRoom(id).subscribe(() => {
-      this.loadRooms();
-    });
+    if (confirm("A jeni të sigurt që dëshironi të fshini këtë dhomë?")) {
+      this.roomService.deleteRoom(id).subscribe(() => {
+        this.loadRooms();
+      });
+    }
   }
 
-  // Staff CRUD
+  // --- CRUD PËR STAFIN (Staff) ---
+
   addStaff() {
-    // Implement
+    // Implemento shtimin e stafit
   }
 
   editStaff(staff: any) {
-    // Implement
+    // Implemento modifikimin e stafit
   }
 
   deleteStaff(id: number) {
-    this.staffService.deleteStaff(id).subscribe(() => {
-      this.loadStaff();
-    });
-  }
-
-  // Timetable CRUD
-  addTimetable() {
-    // Implement
-  }
-
-  editTimetable(timetable: any) {
-    // Implement
-  }
-
-  deleteTimetable(id: number) {
-    this.timetableService.deleteTimetable(id).subscribe(() => {
-      this.loadTimetables();
-    });
+    if (confirm("A jeni të sigurt që dëshironi të hiqni këtë pjesëtar të stafit?")) {
+      this.staffService.deleteStaff(id).subscribe(() => {
+        this.loadStaff();
+      });
+    }
   }
 }

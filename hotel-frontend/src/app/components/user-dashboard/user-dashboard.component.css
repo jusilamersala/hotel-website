@@ -1,4 +1,6 @@
-/* Variablat kryesore */
+/* ==========================================
+   1. VARIABLAT KRYESORE DHE KLASAT BAZË
+   ========================================== */
 :root {
   --hotel-gold: #d4af37;
   --hotel-gold-dark: #b8962e;
@@ -7,14 +9,49 @@
 
 /* Ngjyra Gold */
 .text-gold {
-  color: #d4af37;
+  color: #d4af37 !important;
 }
 
 .bg-gold {
   background-color: #d4af37 !important;
 }
 
-/* Karta e Statistikave */
+/* ==========================================
+   2. SEKSIONI I RI: PROFILI I KLIENTIT
+   ========================================== */
+.card-header.bg-dark {
+  background-color: #1a1a1a !important;
+}
+
+.display-1.text-gold i {
+  font-size: 4.5rem;
+}
+
+.badge.bg-gold {
+  background-color: #d4af37 !important;
+  color: #1a1a1a !important;
+  font-weight: 600;
+  padding: 0.5em 0.8em;
+}
+
+/* Butoni Kontur Gold për profilin */
+.btn-outline-gold {
+  color: #d4af37;
+  border: 1px solid #d4af37;
+  background-color: transparent;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-gold:hover {
+  background-color: #d4af37;
+  color: white;
+  box-shadow: 0 4px 10px rgba(212, 175, 55, 0.2);
+}
+
+/* ==========================================
+   3. KARTAT E STATISTIKAVE
+   ========================================== */
 .stat-card {
   transition: all 0.3s ease;
   border-bottom: 3px solid transparent !important;
@@ -25,7 +62,14 @@
   border-bottom: 3px solid #d4af37 !important;
 }
 
-/* Butoni Gold Custom */
+/* Rregullim për kartën e faturës që të përshtatet me borderin e ri */
+.card.border-primary {
+  border-color: #d4af37 !important; /* Kthen vijën blu të Bootstrap në Gold nëse dëshiron */
+}
+
+/* ==========================================
+   4. BUTONAT DHE VEPRIMET (CUSTOM GOLD & BLUE)
+   ========================================== */
 .btn-gold {
   background-color: #d4af37;
   color: white;
@@ -42,7 +86,24 @@
   box-shadow: 0 4px 10px rgba(184, 150, 46, 0.3);
 }
 
-/* Stili i dhomave */
+/* Stili për butonin e shkarkimit të PDF-së (Zëvendëson blunë e Bootstrap me një stil më elegant) */
+.btn-primary {
+  background-color: #1a1a1a !important;
+  border: 1px solid #d4af37 !important;
+  color: #d4af37 !important;
+  font-weight: 600;
+  transition: all 0.3s ease !important;
+}
+
+.btn-primary:hover {
+  background-color: #d4af37 !important;
+  color: #1a1a1a !important;
+  box-shadow: 0 4px 10px rgba(212, 175, 55, 0.2);
+}
+
+/* ==========================================
+   5. STILI I DHOMAVE (AVAILABLE ROOMS)
+   ========================================== */
 .room-item {
   transition: all 0.3s ease;
   background: #fff;
@@ -50,13 +111,15 @@
 
 .room-item:hover {
   border-color: #d4af37 !important;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
+/* Përmirësim: Struktura e imazhit që të mos shtrembërohet në Flexbox */
 .room-img-container {
   width: 100%;
-  max-width: 150px;
-  min-height: 120px;
+  max-width: 180px;  /* E rrita pak që të duket më mirë në ekran të madh */
+  min-height: 140px;
+  flex-shrink: 0;    /* Ndalon ndryshimin e përmasave të imazhit në desktop */
 }
 
 .room-img {
@@ -65,7 +128,9 @@
   object-fit: cover;
 }
 
-/* Stili i rezervimeve */
+/* ==========================================
+   6. STILI I REZERVIMEVE (MY BOOKINGS)
+   ========================================== */
 .booking-item {
   transition: all 0.3s ease;
 }
@@ -74,22 +139,29 @@
   background-color: #fff9f0;
 }
 
-.bg-warning-light { background-color: #fff3cd; }
-.bg-success-light { background-color: #d1e7dd; }
-.bg-danger-light { background-color: #f8d7da; }
+/* Ngjyrat e sfondit për statuset (Më të buta për syrin) */
+.bg-warning-light { background-color: #fff3cd !important; }
+.bg-success-light { background-color: #d1e7dd !important; }
+.bg-danger-light  { background-color: #f8d7da !important; }
 
-
+/* ==========================================
+   7. STRUKTURA DHE RESPONSIVITETI
+   ========================================== */
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  line-clamp: 2; /* Standard property for modern browsers */
+  line-clamp: 2; /* Standard për browser-at modernë */
 }
 
 @media (max-width: 768px) {
   .room-img-container {
     max-width: 100%;
-    height: 180px;
+    height: 200px; /* Imazhi zë të gjithë gjerësinë në telefon */
+  }
+  
+  .display-1.text-gold i {
+    font-size: 3rem;
   }
 }

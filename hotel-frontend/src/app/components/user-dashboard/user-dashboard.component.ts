@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BookingService } from '../../services/booking.service';
 import { RoomService } from '../../services/room.services';
+import { AuthService } from '../../services/auth.service'; 
 
 declare var paypal: any;
 
@@ -15,13 +16,15 @@ declare var paypal: any;
 export class UserDashboardComponent implements OnInit, AfterViewInit {
   bookings: any[] = [];
   rooms: any[] = [];
-  userId: number = 1; // Supozojmë se ID e përdoruesit të loguar është 1
+  userId: number = 1; 
   loading: boolean = true;
   selectedRoom: any = null;
+  currentUser: any = null; 
 
   constructor(
     private bookingService: BookingService,
-    private roomService: RoomService
+    private roomService: RoomService,
+    private authService: AuthService 
   ) {}
 
   ngOnInit(): void {
@@ -29,26 +32,39 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // PayPal button will be rendered when needed
+    // PayPal button do të renderohet dinamikisht kur kërkohet pagesa
   }
 
-  // Ngarkon të dhënat paralelisht
   loadData() {
     this.loading = true;
+    this.loadUserProfile(); 
     this.loadUserBookings();
     this.loadRooms();
+  }
+
+  // U rregullua gabimi TS7006 duke i shtuar tipin (err: any)
+  loadUserProfile() {
+    this.authService.getUserProfile(this.userId).subscribe({
+      next: (data: any) => {
+        if (data.status === 'success') {
+          this.currentUser = data.data; 
+        }
+      },
+      error: (err: any) => { // <-- Kjo u rregullua këtu
+        console.error("Gabim gjatë ngarkimit të profilit të përdoruesit:", err);
+      }
+    });
   }
 
   loadUserBookings() {
     this.bookingService.getBookings().subscribe({
       next: (data: any) => {
         if (data.status === 'success') {
-          // Filtrojmë rezervimet vetëm për këtë përdorues
           this.bookings = data.data.filter((b: any) => b.user_ID == this.userId);
         }
         this.loading = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error("Gabim gjatë ngarkimit të rezervimeve:", err);
         this.loading = false;
       }
@@ -62,7 +78,7 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
           this.rooms = data.data;
         }
       },
-      error: (err) => console.error("Gabim gjatë ngarkimit të dhomave:", err)
+      error: (err: any) => console.error("Gabim gjatë ngarkimit të dhomave:", err)
     });
   }
 
@@ -78,11 +94,20 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
       .reduce((sum, b) => sum + Number(b.price || 0), 0);
   }
 
-  // --- Aksionet ---
+  generatePDF() {
+    if (this.getConfirmedCount() === 0) {
+      alert("Nuk ka asnjë rezervim të konfirmuar për të gjeneruar faturë!");
+      return;
+    }
+
+    const backendUrl = `http://localhost/hotel-website/hotel-backend/gjenero-fature.php?user_id=${this.userId}`;
+    window.open(backendUrl, '_blank');
+  }
+
+  // --- Aksionet e Rezervimit dhe Pagesës ---
 
   bookRoom(room: any) {
     this.selectedRoom = room;
-    // Render PayPal button
     setTimeout(() => {
       paypal.Buttons({
         createOrder: (data: any, actions: any) => {
@@ -97,9 +122,7 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
         },
         onApprove: (data: any, actions: any) => {
           return actions.order.capture().then((details: any) => {
-            // Payment successful, create booking
             this.createBooking(room);
-            alert('Payment successful! Booking confirmed.');
           });
         }
       }).render('#paypal-button-container');
@@ -110,13 +133,13 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
     const newBooking = {
       user_ID: this.userId,
       room_ID: room.room_ID,
-      check_In_Date: new Date().toISOString().split('T')[0], // Sot
-      check_Out_Date: new Date(Date.now() + 86400000).toISOString().split('T')[0], // Nesër
+      check_In_Date: new Date().toISOString().split('T')[0], 
+      check_Out_Date: new Date(Date.now() + 86400000).toISOString().split('T')[0], 
     };
 
     this.bookingService.addBooking(newBooking).subscribe(() => {
-      alert("Rezervimi u krye me sukses!");
-      this.loadUserBookings(); // Rifresko listën
+      alert("Rezervimi u krye me sukses! Pagesa u konfirmua.");
+      this.loadUserBookings(); 
       this.selectedRoom = null;
     });
   }
@@ -128,7 +151,7 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
           alert("Rezervimi u anulua.");
           this.loadUserBookings();
         },
-        error: (err) => alert("Anulimi dështoi!")
+        error: (err: any) => alert("Anulimi dështoi!")
       });
     }
   }
