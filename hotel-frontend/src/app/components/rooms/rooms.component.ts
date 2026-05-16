@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Room } from './room.model'; // Sigurohu që path-i është i saktë
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { Room } from './room.model';
 
 @Component({
   selector: 'app-rooms',
@@ -12,9 +14,14 @@ import { Room } from './room.model'; // Sigurohu që path-i është i saktë
 })
 export class RoomsComponent implements OnInit {
   rooms: Room[] = [];
-  apiUrl = 'http://localhost:8000/api/room/getRooms.php'; 
+  apiUrl = 'http://localhost:8000/api/room/getRooms.php';
+  showAuthModal = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.fetchRooms();
@@ -22,16 +29,36 @@ export class RoomsComponent implements OnInit {
 
   fetchRooms() {
     this.http.get<Room[]>(this.apiUrl).subscribe({
-      next: (data) => {
+      next: (data: Room[]) => {
         this.rooms = data;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Gabim gjatë marrjes së dhomave:', err);
       }
     });
   }
 
-  book (id: number) {
-    console.log('ID e dhomës që po rezervohet është:', id);
+  onRoomClick() {
+    if (this.authService.isLoggedIn()) {
+      // Komento navigate deri sa të bësh booking faqen
+      // this.router.navigate(['/booking']);
+      alert('Rezervimi do të jetë i disponueshëm së shpejti!');
+    } else {
+      this.showAuthModal = true;
+    }
+  }
+
+  goToLogin() {
+    this.showAuthModal = false;
+    this.router.navigate(['/login']);
+  }
+
+  goToSignup() {
+    this.showAuthModal = false;
+    this.router.navigate(['/login'], { queryParams: { mode: 'signup' } });
+  }
+
+  closeModal() {
+    this.showAuthModal = false;
   }
 }

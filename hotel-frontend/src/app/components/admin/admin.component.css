@@ -1,21 +1,73 @@
 /* Admin Dashboard Styles */
+:root {
+  --hotel-gold: #c5a059; /* Sigurohu që kjo përputhet me temën tënde */
+  --hotel-dark: #1a1a1a;
+}
+
 .tab-content {
   background: white;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  overflow-x: hidden; /* Ndalon daljen e përmbajtjes anash */
 }
 
-.nav-tabs .nav-link {
-  color: var(--hotel-dark);
+/* Rregullimi i Tab-eve për Mobile */
+.nav-tabs {
+  display: flex;
+  flex-wrap: nowrap; /* I mban në një rresht nëse duam scroll horizontal */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-bottom: 2px solid #eee;
+}
+
+.nav-tabs .nav-item {
+  white-space: nowrap; /* Mos i lejo fjalët të thyhen në dy rreshta */
 }
 
 .nav-tabs .nav-link.active {
   background-color: var(--hotel-gold);
   color: white;
+  border-color: var(--hotel-gold);
+}
+
+/* --- RESPONSIVE TABLES --- */
+
+/* Krijon një scroll horizontal për tabelat në celular */
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .table th {
   background-color: var(--hotel-gold);
   color: white;
+  white-space: nowrap; /* I mban titujt e kolonave fiks */
+}
+
+/* Rregullime për ekrane shumë të vegjël (Celularë) */
+@media (max-width: 576px) {
+  .tab-content {
+    padding: 10px; /* Më pak hapësirë anash në mobile */
+  }
+
+  h1 {
+    font-size: 1.5rem; /* Titulli më i vogël */
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+
+  .btn-gold {
+    width: 100%; /* Butoni "Add Room" zë të gjithë gjerësinë poshtë titullit */
+    margin-top: 10px;
+  }
+
+  .d-flex.justify-content-between {
+    flex-direction: column; /* Vendos titullin dhe butonin njëri mbi tjetrin */
+    align-items: flex-start !important;
+  }
 }

@@ -29,6 +29,11 @@ export class LoginComponent implements OnInit { // Implemento OnInit
         // E fshijmë mesazhin pas 5 sekondash
         setTimeout(() => this.successMsg = null, 5000);
       }
+
+      // ← SHTO KETE: hap direkt signup kur vjen nga modali
+      if (params['mode'] === 'signup') {
+        this.isLogin = false;
+      }
     });
   }
 
