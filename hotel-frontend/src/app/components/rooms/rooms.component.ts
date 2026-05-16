@@ -30,4 +30,8 @@ export class RoomsComponent implements OnInit {
       }
     });
   }
+
+  book (id: number) {
+    console.log('ID e dhomës që po rezervohet është:', id);
+  }
 }
