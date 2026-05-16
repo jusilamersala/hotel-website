@@ -8,14 +8,14 @@
 <section class="py-5 bg-light">
   <div class="container py-4">
     <div class="row g-4">
-      
+
       <div class="col-lg-4 col-md-6" *ngFor="let room of rooms">
         <div class="card h-100 border-0 shadow-sm room-card">
           <div class="position-relative overflow-hidden">
             <img [src]="room.image_url" class="card-img-top" [alt]="room.name">
             <div class="price-tag">{{ room.price }}€ / Natë</div>
           </div>
-          
+
           <div class="card-body p-4">
             <div class="d-flex justify-content-between align-items-center mb-2">
               <h5 class="fw-bold mb-0">{{ room.name }}</h5>
@@ -24,24 +24,31 @@
               </div>
             </div>
             <p class="text-muted small">{{ room.description }}</p>
-            
+
             <div class="room-features d-flex gap-3 mb-4 py-3 border-top border-bottom">
               <span title="WiFi"><i class="bi bi-wifi text-gold"></i> Wifi</span>
               <span title="TV"><i class="bi bi-tv text-gold"></i> Smart TV</span>
               <span title="AC"><i class="bi bi-snow text-gold"></i> AC</span>
             </div>
-            
+
             <div class="d-flex justify-content-between align-items-center">
               <span class="fw-bold text-secondary">
                 <i class="bi bi-people me-1"></i> {{ room.capacity }} Persona
               </span>
-              <button class="btn btn-gold px-4 rounded-pill fw-bold" [disabled]="room.availability !== 'Available'">
+
+              <!-- ↓ NDRYSHIMI: shto (click)="onRoomClick()" te butoni -->
+              <button
+                class="btn btn-gold px-4 rounded-pill fw-bold"
+                [disabled]="room.availability !== 'Available'"
+                (click)="room.availability === 'Available' && onRoomClick()">
                 {{ room.availability === 'Available' ? 'Rezervo' : 'E Zënë' }}
               </button>
+
             </div>
           </div>
         </div>
       </div>
+
       <div class="col-12 text-center" *ngIf="rooms.length === 0">
         <p class="text-muted">Po ngarkohen dhomat ose nuk u gjet asnjë dhomë...</p>
       </div>
@@ -49,3 +56,20 @@
     </div>
   </div>
 </section>
+
+<!-- ↓ SHTO MODALIN KËTU — jashtë section-it -->
+<div class="modal-overlay" *ngIf="showAuthModal" (click)="closeModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+
+    <button class="close-btn" (click)="closeModal()">✕</button>
+
+    <h2>Llogari e Nevojshme</h2>
+    <p>Për të rezervuar një dhomë duhet të jeni të kyçur në llogarinë tuaj.</p>
+
+    <div class="modal-buttons">
+      <button class="btn-login" (click)="goToLogin()">Hyr</button>
+      <button class="btn-signup" (click)="goToSignup()">Regjistrohu</button>
+    </div>
+
+  </div>
+</div>

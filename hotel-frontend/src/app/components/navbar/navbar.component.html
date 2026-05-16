@@ -8,67 +8,81 @@
       </div>
     </a>
 
-    <button #hotelToggler class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#hotelNav">
+    <button #hotelToggler class="navbar-toggler" type="button"
+            data-bs-toggle="collapse" data-bs-target="#hotelNav">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="hotelNav">
-      <ul class="navbar-nav ms-auto align-items-center gap-3"> 
+      <ul class="navbar-nav ms-auto align-items-center gap-3">
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/" routerLinkActive="active" (click)="hotelToggler.click()">Home</a>
+          <a class="nav-link px-3" routerLink="/" routerLinkActive="active"
+             (click)="hotelToggler.click()">Kryefaqja</a>
         </li>
-        
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/about" routerLinkActive="active" (click)="hotelToggler.click()">About Us</a>
+          <a class="nav-link px-3" routerLink="/about" routerLinkActive="active"
+             (click)="hotelToggler.click()">Rreth Nesh</a>
         </li>
-        
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/rooms" routerLinkActive="active" (click)="hotelToggler.click()">Dhomat</a>
+          <a class="nav-link px-3" routerLink="/rooms" routerLinkActive="active"
+             (click)="hotelToggler.click()">Dhomat</a>
         </li>
-        
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle px-3" href="#" id="spaDropdown" role="button" data-bs-toggle="dropdown">
-            Spa & Wellness
-          </a>
+          <a class="nav-link dropdown-toggle px-3" href="#" role="button"
+             data-bs-toggle="dropdown">Spa & Wellness</a>
           <ul class="dropdown-menu dropdown-menu-dark shadow-lg border-gold">
-            <li><a class="dropdown-item" [routerLink]="['/spa']" [queryParams]="{service: 'therapy'}" (click)="hotelToggler.click()">Terapi & Masazhe</a></li>
-            <li><a class="dropdown-item" [routerLink]="['/spa']" [queryParams]="{service: 'pool'}" (click)="hotelToggler.click()">Pishina & Sauna</a></li>
-            <li><a class="dropdown-item" [routerLink]="['/spa']" [queryParams]="{service: 'gym'}" (click)="hotelToggler.click()">Gym & Fitness</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/spa']"
+                   [queryParams]="{service: 'therapy'}"
+                   (click)="hotelToggler.click()">Terapi & Masazhe</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/spa']"
+                   [queryParams]="{service: 'pool'}"
+                   (click)="hotelToggler.click()">Pishina & Sauna</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/spa']"
+                   [queryParams]="{service: 'gym'}"
+                   (click)="hotelToggler.click()">Palestër & Fitness</a></li>
           </ul>
         </li>
-
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/contact" routerLinkActive="active" (click)="hotelToggler.click()">Contact</a>
+          <a class="nav-link px-3" routerLink="/contact" routerLinkActive="active"
+             (click)="hotelToggler.click()">Kontakt</a>
         </li>
-        
-        <li class="nav-item ms-lg-3">
-          <a class="btn btn-gold rounded-pill px-4 fw-bold shadow-sm" routerLink="/login" (click)="hotelToggler.click()">
-            <i class="bi bi-person-circle me-1"></i> Login
-      <ul class="navbar-nav ms-auto align-items-center gap-3">
-        <li class="nav-item"><a class="nav-link px-3" routerLink="/" routerLinkActive="active">Kryefaqja</a></li>
 
-        <li class="nav-item"><a class="nav-link px-3" routerLink="/about" routerLinkActive="active">Rreth Nesh</a></li>
-
-        <li class="nav-item"><a class="nav-link px-3" routerLink="/rooms" routerLinkActive="active">Dhomat</a></li>
-
-        <li class="nav-item dropdown">
-  <a class="nav-link dropdown-toggle px-3" href="#" id="spaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Spa & Wellness
-  </a>
-  <ul class="dropdown-menu dropdown-menu-dark shadow-lg border-gold" aria-labelledby="spaDropdown">
-    <li><a class="dropdown-item" [routerLink]="['/spa']" [queryParams]="{service: 'therapy'}">Terapi & Masazhe</a></li>
-    <li><a class="dropdown-item" [routerLink]="['/spa']" [queryParams]="{service: 'pool'}">Pishina & Sauna</a></li>
-    <li><a class="dropdown-item" [routerLink]="['/spa']" [queryParams]="{service: 'gym'}">Palester & Fitness</a></li>
-  </ul>
-</li>
-
-        <li class="nav-item"><a class="nav-link px-3" routerLink="/contact" routerLinkActive="active">Kontakt</a></li>
-
-        <li class="nav-item ms-lg-3">
-          <a class="btn btn-gold rounded-pill px-4 fw-bold shadow-sm" routerLink="/login">
+        <!-- Nëse NUK është i loguar → shfaq butonin Hyr -->
+        <li class="nav-item ms-lg-3" *ngIf="!isLoggedIn">
+          <a class="btn btn-gold rounded-pill px-4 fw-bold shadow-sm"
+             routerLink="/login" (click)="hotelToggler.click()">
             <i class="bi bi-person-circle me-1"></i> Hyr
           </a>
         </li>
+
+        <!-- Nëse është i loguar → shfaq emrin + dropdown -->
+        <li class="nav-item dropdown ms-lg-3" *ngIf="isLoggedIn">
+          <a class="btn btn-gold rounded-pill px-4 fw-bold shadow-sm dropdown-toggle"
+             href="#" role="button" data-bs-toggle="dropdown">
+            <!-- Iniciali në rreth -->
+            <span class="bi bi-person me-2"></span>{{ userName }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow-lg">
+            <li>
+              <a class="dropdown-item" routerLink="/profile" (click)="hotelToggler.click()">
+                <i class="bi bi-person me-2"></i> Profili Im
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="/my-bookings" (click)="hotelToggler.click()">
+                <i class="bi bi-calendar-check me-2"></i> Rezervimet e Mia
+              </a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <!-- Butoni Logout -->
+              <button class="dropdown-item text-danger" (click)="logout()">
+                <i class="bi bi-box-arrow-right me-2"></i> Dil
+              </button>
+            </li>
+          </ul>
+        </li>
+
       </ul>
     </div>
   </div>

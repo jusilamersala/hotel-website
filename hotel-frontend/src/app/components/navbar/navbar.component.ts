@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive,Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service'; // ← SHTO
 
 @Component({
   selector: 'app-navbar',
@@ -9,16 +10,39 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
+  isLoggedIn = false;
+  userName = '';
+  userInitials = '';
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  ngOnInit() {
+    // Kontrollon localStorage kur navbar ngarkohet
+    const user = this.authService.getUser();
+    if (user) {
+      this.isLoggedIn = true;
+      this.userName = user.name;
+      // Gjeneron iniciale: "Arta Hoxha" → "AH"
+      this.userInitials = user.name?.charAt(0).toUpperCase();
+    }
+  }
+
+  logout() {
+    this.authService.logout();
+    this.isLoggedIn = false;
+    this.userName = '';
+    this.userInitials = '';
+    this.router.navigate(['/home']);
+  }
 
   closeMenu(toggler: HTMLButtonElement) {
-    // Kontrollon nëse butoni hamburger është i dukshëm (në mobile)
     const isMobile = window.getComputedStyle(toggler).display !== 'none';
-    
-    // Kontrollon nëse menuja është aktualisht e hapur (ka klasën 'show')
     const menu = document.getElementById('hotelNav');
     const isOpen = menu?.classList.contains('show');
-
     if (isMobile && isOpen) {
       toggler.click();
     }
