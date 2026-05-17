@@ -8,16 +8,18 @@ import { SpaComponent } from './components/spa/spa.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { ReceptionistComponent } from './components/receptionist/receptionist.component';
 import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'rooms', component: RoomsComponent },
   { path: 'contact', component: ContactComponent },
-  { path: 'about', component: AboutComponent },  
+  { path: 'about', component: AboutComponent },
   { path: 'login', component: LoginComponent },
   {path: 'spa', component: SpaComponent},
   { path: 'admin', component: AdminComponent },
   { path: 'receptionist', component: ReceptionistComponent },
-  { path: 'user-dashboard', component: UserDashboardComponent }
+  { path: 'user-dashboard', component: UserDashboardComponent },
+  { path:'reset-password',component:ResetPasswordComponent}
 ];

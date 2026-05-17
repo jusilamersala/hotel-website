@@ -7,3 +7,23 @@
     <button type="submit">Dërgo Mesazhin</button>
   </form>
 </div>
+
+<!-- MODAL SUKSESI -->
+<div class="modal-overlay" *ngIf="showSuccessModal" (click)="closeModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="closeModal()">✕</button>
+    <h2>Mesazhi u Dërgua!</h2>
+    <p>Faleminderit që na kontaktuat. Do t'ju përgjigjemi sa më shpejt!</p>
+    <button class="btn-ok" (click)="closeModal()">Mbyll</button>
+  </div>
+</div>
+
+<!-- MODAL GABIMI -->
+<div class="modal-overlay" *ngIf="showErrorModal" (click)="closeModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="closeModal()">✕</button>
+    <h2>Ndodhi një Gabim!</h2>
+    <p>{{ errorMessage }}</p>
+    <button class="btn-error" (click)="closeModal()">Provo Përsëri</button>
+  </div>
+</div>
