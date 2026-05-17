@@ -1,4 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm py-3 main-nav">
+<nav
+  class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm py-3 main-nav"
+>
   <div class="container-fluid px-5">
     <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/">
       <i class="bi bi-buildings-fill text-gold fs-3"></i>
@@ -8,72 +10,121 @@
       </div>
     </a>
 
-    <button #hotelToggler class="navbar-toggler" type="button"
-            data-bs-toggle="collapse" data-bs-target="#hotelNav">
+    <button
+      #hotelToggler
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#hotelNav"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="hotelNav">
       <ul class="navbar-nav ms-auto align-items-center gap-3">
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/" routerLinkActive="active"
-             (click)="hotelToggler.click()">Kryefaqja</a>
+          <a
+            class="nav-link px-3"
+            routerLink="/"
+            routerLinkActive="active"
+            (click)="hotelToggler.click()"
+            >Kryefaqja</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/about" routerLinkActive="active"
-             (click)="hotelToggler.click()">Rreth Nesh</a>
+          <a
+            class="nav-link px-3"
+            routerLink="/about"
+            routerLinkActive="active"
+            (click)="hotelToggler.click()"
+            >Rreth Nesh</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/rooms" routerLinkActive="active"
-             (click)="hotelToggler.click()">Dhomat</a>
+          <a
+            class="nav-link px-3"
+            routerLink="/rooms"
+            routerLinkActive="active"
+            (click)="hotelToggler.click()"
+            >Dhomat</a
+          >
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle px-3" href="#" role="button"
-             data-bs-toggle="dropdown">Spa & Wellness</a>
+          <a
+            class="nav-link dropdown-toggle px-3"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            >Spa & Wellness</a
+          >
           <ul class="dropdown-menu dropdown-menu-dark shadow-lg border-gold">
-            <li><a class="dropdown-item" [routerLink]="['/spa']"
-                   [queryParams]="{service: 'therapy'}"
-                   (click)="hotelToggler.click()">Terapi & Masazhe</a></li>
-            <li><a class="dropdown-item" [routerLink]="['/spa']"
-                   [queryParams]="{service: 'pool'}"
-                   (click)="hotelToggler.click()">Pishina & Sauna</a></li>
-            <li><a class="dropdown-item" [routerLink]="['/spa']"
-                   [queryParams]="{service: 'gym'}"
-                   (click)="hotelToggler.click()">Palestër & Fitness</a></li>
+            <li *ngFor="let service of spaServices">
+              <a
+                class="dropdown-item"
+                [routerLink]="['/spa']"
+                [queryParams]="{ id: service.service_ID }"
+                (click)="hotelToggler.click()"
+              >
+                {{ service.service_Name }}
+              </a>
+            </li>
+
           </ul>
         </li>
         <li class="nav-item">
-          <a class="nav-link px-3" routerLink="/contact" routerLinkActive="active"
-             (click)="hotelToggler.click()">Kontakt</a>
+          <a
+            class="nav-link px-3"
+            routerLink="/contact"
+            routerLinkActive="active"
+            (click)="hotelToggler.click()"
+            >Kontakt</a
+          >
         </li>
 
         <!-- Nëse NUK është i loguar → shfaq butonin Hyr -->
         <li class="nav-item ms-lg-3" *ngIf="!isLoggedIn">
-          <a class="btn btn-gold rounded-pill px-4 fw-bold shadow-sm"
-             routerLink="/login" (click)="hotelToggler.click()">
+          <a
+            class="btn btn-gold rounded-pill px-4 fw-bold shadow-sm"
+            routerLink="/login"
+            (click)="hotelToggler.click()"
+          >
             <i class="bi bi-person-circle me-1"></i> Hyr
           </a>
         </li>
 
         <!-- Nëse është i loguar → shfaq emrin + dropdown -->
         <li class="nav-item dropdown ms-lg-3" *ngIf="isLoggedIn">
-          <a class="btn btn-gold rounded-pill px-4 fw-bold shadow-sm dropdown-toggle"
-             href="#" role="button" data-bs-toggle="dropdown">
+          <a
+            class="btn btn-gold rounded-pill px-4 fw-bold shadow-sm dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+          >
             <!-- Iniciali në rreth -->
             <span class="bi bi-person me-2"></span>{{ userName }}
           </a>
-          <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow-lg">
+          <ul
+            class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow-lg"
+          >
             <li>
-              <a class="dropdown-item" routerLink="/profile" (click)="hotelToggler.click()">
+              <a
+                class="dropdown-item"
+                routerLink="/profile"
+                (click)="hotelToggler.click()"
+              >
                 <i class="bi bi-person me-2"></i> Profili Im
               </a>
             </li>
             <li>
-              <a class="dropdown-item" routerLink="/my-bookings" (click)="hotelToggler.click()">
+              <a
+                class="dropdown-item"
+                routerLink="/my-bookings"
+                (click)="hotelToggler.click()"
+              >
                 <i class="bi bi-calendar-check me-2"></i> Rezervimet e Mia
               </a>
             </li>
-            <li><hr class="dropdown-divider"></li>
+            <li><hr class="dropdown-divider" /></li>
             <li>
               <!-- Butoni Logout -->
               <button class="dropdown-item text-danger" (click)="logout()">
@@ -82,7 +133,6 @@
             </li>
           </ul>
         </li>
-
       </ul>
     </div>
   </div>

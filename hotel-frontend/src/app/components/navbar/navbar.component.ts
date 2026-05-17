@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive,Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service'; // ← SHTO
-
+import { ServicesService } from '../../services/services.service'; 
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -14,9 +14,11 @@ export class NavbarComponent implements OnInit {
   isLoggedIn = false;
   userName = '';
   userInitials = '';
+  spaServices: any[] = [];
 
   constructor(
     private authService: AuthService,
+    private servicesService: ServicesService,
     private router: Router
   ) {}
 
@@ -28,7 +30,9 @@ export class NavbarComponent implements OnInit {
       this.userName = user.name;
       // Gjeneron iniciale: "Arta Hoxha" → "AH"
       this.userInitials = user.name?.charAt(0).toUpperCase();
-    }
+
+     
+    } this.loadSpaServices();
   }
 
   logout() {
@@ -47,4 +51,17 @@ export class NavbarComponent implements OnInit {
       toggler.click();
     }
   }
+
+  loadSpaServices() {
+    this.servicesService.getServices().subscribe({
+      next: (response) => {
+        if (response.status === 'success') {
+          this.spaServices = response.data;
+        }
+      },
+      error: (err) => {
+        console.error('Gabim gjatë ngarkimit të shërbimeve:', err);
+      }});
+  }
 }
+

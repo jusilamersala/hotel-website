@@ -63,6 +63,26 @@ CREATE TABLE IF NOT EXISTS `Services` (
     `service_Price` FLOAT
 );
 
+-- 1. Ndryshojmë service_Type në service_Name dhe e bëjmë NOT NULL
+ALTER TABLE Services 
+CHANGE COLUMN service_Type service_Name VARCHAR(100) NOT NULL;
+
+-- 2. Shtojmë kolonën e përshkrimit të gjatë
+ALTER TABLE Services 
+ADD COLUMN service_Description TEXT AFTER service_Name;
+
+-- 3. Ndryshojmë service_Price nga FLOAT në DECIMAL (për saktësi parash)
+ALTER TABLE Services 
+MODIFY COLUMN service_Price DECIMAL(10, 2) DEFAULT 0.00;
+
+-- 4. Shtojmë kolonën për të dalluar nëse është i përfshirë apo jo
+ALTER TABLE Services 
+ADD COLUMN is_Included TINYINT(1) DEFAULT 0;
+
+-- 5. Sigurohemi që service_ID të jetë AUTO_INCREMENT (nëse nuk ishte)
+ALTER TABLE Services 
+MODIFY COLUMN service_ID INT AUTO_INCREMENT;
+
 CREATE TABLE IF NOT EXISTS `Booking_Services` (
     `booking_ID` INT,
     `service_ID` INT,
@@ -165,3 +185,25 @@ INSERT INTO Room (room_type_ID, name, floor, description, image_url, capacity, p
 (10, 'Family 205', 2, 'Hapësirë e madhe dhe lojëra për fëmijë.', 'assets/rooms/family-room.jpg', 4, 130.00, 'Available'),
 (11, 'Studio Kitchen 106', 1, 'Me aneks kuzhine për qëndrime të gjata.', 'assets/rooms/studio-kitchen.jpg', 2, 90.00, 'Available'),
 (11, 'Modern Studio 206', 2, 'E vogël, praktike dhe shumë moderne.', 'assets/rooms/modern-studioroom.jpg', 2, 90.00, 'Available');
+
+
+
+
+-- Fshijmë të dhënat e vjetra që të mos kemi përzierje
+TRUNCATE TABLE Services;
+
+-- Shtojmë shërbimet e Spa & Wellness
+INSERT INTO Services (service_Name, service_Description, service_Price, is_Included)
+VALUES 
+('Pishina & Sauna', 
+ 'Relaksohuni në pishinën tonë të brendshme me ujë të ngrohtë dhe ambientet e saunës finlandeze. Ky shërbim ofrohet falas për të gjithë mysafirët e hotelit dhe është i hapur çdo ditë nga ora 07:00 deri në 22:00, duke përfshirë edhe zonën e dedikuar të relaksit.', 
+ 0.00, 1),
+('Palestër & Fitness', 
+ 'Për të gjithë të apasionuarit pas sportit, qendra jonë e fitnesit ofron pajisjet më moderne për kardio dhe forcë. Ambienti është i pajisur me sistem kondicionimi dhe është në dispozicionin tuaj 24 orë në ditë për t u siguruar që rutina juaj stërvitore të mos ndërpritet.', 
+ 0.00, 1),
+('Terapi & Masazhe', 
+ 'Rigjallëroni trupin dhe mendjen tuaj me seancat tona të masazhit profesional. Mund të zgjidhni midis masazhit suedez, masazhit me gurë të nxehtë apo aromaterapisë. Çdo seancë zgjat 60 minuta dhe realizohet nga terapistë të trajnuar në një ambient tejet qetësues.', 
+ 50.00, 0),
+('Trajtime Fytyre & Wellness', 
+ 'Kujdesuni për lëkurën tuaj me trajtimet tona ekskluzive të fytyrës. Duke përdorur produkte organike të cilësisë së lartë, ky shërbim përfshin pastrim të thellë, hidratim dhe masazh facial që do t ju japë një ndjesi freskie dhe shkëlqim natyral.', 
+ 35.00, 0);
