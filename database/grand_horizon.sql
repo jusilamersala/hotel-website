@@ -207,3 +207,17 @@ VALUES
 ('Trajtime Fytyre & Wellness', 
  'Kujdesuni për lëkurën tuaj me trajtimet tona ekskluzive të fytyrës. Duke përdorur produkte organike të cilësisë së lartë, ky shërbim përfshin pastrim të thellë, hidratim dhe masazh facial që do t ju japë një ndjesi freskie dhe shkëlqim natyral.', 
  35.00, 0);
+
+ ALTER TABLE Booking_Services DROP FOREIGN KEY Booking_Services_ibfk_1;
+ALTER TABLE Invoice DROP FOREIGN KEY Invoice_ibfk_1; 
+ ALTER TABLE Booking MODIFY COLUMN booking_ID INT AUTO_INCREMENT;
+
+ ALTER TABLE Booking MODIFY COLUMN booking_ID INT AUTO_INCREMENT;
+
+ ALTER TABLE Invoice 
+ADD CONSTRAINT Invoice_ibfk_1 
+FOREIGN KEY (booking_ID) REFERENCES Booking(booking_ID);
+
+ALTER TABLE Booking_Services 
+ADD CONSTRAINT Booking_Services_ibfk_1 
+FOREIGN KEY (booking_ID) REFERENCES Booking(booking_ID);
