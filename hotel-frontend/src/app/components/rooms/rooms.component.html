@@ -5,6 +5,30 @@
   </div>
 </section>
 
+<!-- SEKSIONI I FILTRAVE -->
+<section class="py-4 bg-white border-bottom shadow-sm">
+  <div class="container text-center">
+    <div class="btn-group flex-wrap gap-2" role="group" aria-label="Room Filters">
+      <button type="button" class="btn rounded-pill px-4 fw-bold"
+              [ngClass]="selectedCategory === 'all' ? 'btn-gold' : 'btn-outline-secondary'"
+              (click)="setFilter('all')">Të gjitha</button>
+              
+      <button type="button" class="btn rounded-pill px-4 fw-bold"
+              [ngClass]="selectedCategory === 'deluxe' ? 'btn-gold' : 'btn-outline-secondary'"
+              (click)="setFilter('deluxe')">Deluxe</button>
+              
+      <button type="button" class="btn rounded-pill px-4 fw-bold"
+              [ngClass]="selectedCategory === 'suite' ? 'btn-gold' : 'btn-outline-secondary'"
+              (click)="setFilter('suite')">Suite</button>
+              
+      <button type="button" class="btn rounded-pill px-4 fw-bold"
+              [ngClass]="selectedCategory === 'standard' ? 'btn-gold' : 'btn-outline-secondary'"
+              (click)="setFilter('standard')">Standard</button>
+    </div>
+  </div>
+</section>
+
+<!-- KARTA E DHOMAVE TË FILTRUARA -->
 <section class="py-5 bg-light">
   <div class="container py-4">
     <div class="row g-4">
@@ -26,9 +50,9 @@
             <p class="text-muted small">{{ room.description }}</p>
 
             <div class="room-features d-flex gap-3 mb-4 py-3 border-top border-bottom">
-              <span title="WiFi"><i class="bi bi-wifi text-gold"></i> Wifi</span>
-              <span title="TV"><i class="bi bi-tv text-gold"></i> Smart TV</span>
-              <span title="AC"><i class="bi bi-snow text-gold"></i> AC</span>
+              <span *ngFor="let feature of room.features">
+                <i class="bi {{ feature.icon }} text-gold me-1"></i> {{ feature.label }}
+              </span>
             </div>
 
             <div class="d-flex justify-content-between align-items-center">

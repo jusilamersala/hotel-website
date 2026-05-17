@@ -1,73 +1,189 @@
-/* Admin Dashboard Styles */
+/* --- Admin Dashboard Global Styles --- */
 :root {
-  --hotel-gold: #c5a059; /* Sigurohu që kjo përputhet me temën tënde */
+  --hotel-gold: #c5a059; 
   --hotel-dark: #1a1a1a;
+  --hotel-light-gray: #f8f9fa;
+  --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
+/* Klasat Ndihmëse për Temën e Hotelit */
+.text-gold {
+  color: var(--hotel-gold) !important;
+}
+
+.btn-gold {
+  background-color: var(--hotel-gold) !important;
+  color: white !important;
+  border: 1px solid var(--hotel-gold) !important;
+  font-weight: 500;
+  padding: 6px 16px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.btn-gold:hover {
+  background-color: #b38f4b !important;
+  border-color: #b38f4b !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* --- STRUKTURA E TAB-CONTENT --- */
 .tab-content {
   background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  overflow-x: hidden; /* Ndalon daljen e përmbajtjes anash */
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  overflow-x: hidden; 
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
 }
 
-/* Rregullimi i Tab-eve për Mobile */
+/* --- RREGULLIMI I TAB-EVE (NAV-TABS) --- */
 .nav-tabs {
   display: flex;
-  flex-wrap: nowrap; /* I mban në një rresht nëse duam scroll horizontal */
+  flex-wrap: nowrap; 
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   border-bottom: 2px solid #eee;
+  gap: 5px;
+}
+
+/* Fshehim scrollbar-in e sistemit në mobile pa prishur rrëshqitjen (swipe) */
+.nav-tabs::-webkit-scrollbar {
+  display: none; 
+}
+.nav-tabs {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
 .nav-tabs .nav-item {
-  white-space: nowrap; /* Mos i lejo fjalët të thyhen në dy rreshta */
+  white-space: nowrap; 
+}
+
+.nav-tabs .nav-link {
+  color: #666;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 10px 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-tabs .nav-link:hover {
+  color: var(--hotel-gold);
+  border-bottom-color: rgba(197, 160, 89, 0.3);
 }
 
 .nav-tabs .nav-link.active {
-  background-color: var(--hotel-gold);
-  color: white;
-  border-color: var(--hotel-gold);
+  background-color: transparent !important;
+  color: var(--hotel-gold) !important;
+  border-bottom: 3px solid var(--hotel-gold) !important;
+  font-weight: 600;
 }
 
-/* --- RESPONSIVE TABLES --- */
-
-/* Krijon një scroll horizontal për tabelat në celular */
+/* --- TABELAT RESPONSIVE --- */
 .table-responsive {
   display: block;
   width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  border-radius: 8px;
+  box-shadow: inset 0 0 2px rgba(0,0,0,0.05);
+}
+
+.table {
+  margin-bottom: 0;
 }
 
 .table th {
-  background-color: var(--hotel-gold);
-  color: white;
-  white-space: nowrap; /* I mban titujt e kolonave fiks */
+  background-color: var(--hotel-dark) !important;
+  color: white !important;
+  white-space: nowrap; 
+  padding: 14px 10px;
+  font-weight: 500;
+  border-bottom: 2px solid var(--hotel-gold);
 }
 
-/* Rregullime për ekrane shumë të vegjël (Celularë) */
+.table td {
+  padding: 14px 10px;
+  white-space: nowrap; /* Ndalon thyerjen e teksteve si emrat apo email-et */
+  vertical-align: middle;
+}
+
+/* Efekti Hover mbi rreshtat e tabelës */
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.02) !important;
+}
+
+/* --- BADGES & BUTTONS --- */
+.badge {
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.btn-outline-primary {
+  color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.btn-outline-danger {
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+/* --- MEDIAs PËR PAJISJET MOBILE (RESPONSIVE) --- */
+
+@media (max-width: 768px) {
+  .tab-content {
+    padding: 15px;
+  }
+}
+
 @media (max-width: 576px) {
   .tab-content {
-    padding: 10px; /* Më pak hapësirë anash në mobile */
+    padding: 12px;
+    box-shadow: none; 
+    background: #ffffff;
+    border: 1px solid #eee;
   }
 
   h1 {
-    font-size: 1.5rem; /* Titulli më i vogël */
+    font-size: 1.6rem !important;
   }
 
   h3 {
-    font-size: 1.2rem;
+    font-size: 1.25rem !important;
   }
 
-  .btn-gold {
-    width: 100%; /* Butoni "Add Room" zë të gjithë gjerësinë poshtë titullit */
-    margin-top: 10px;
-  }
-
+  /* Kthejmë d-flex-at e kokës së seksioneve në vertikale që mos përplasen */
   .d-flex.justify-content-between {
-    flex-direction: column; /* Vendos titullin dhe butonin njëri mbi tjetrin */
-    align-items: flex-start !important;
+    flex-direction: column !important;
+    align-items: stretch !important; 
+    gap: 12px !important;
+  }
+
+  /* Butonat zënë hapësirë të plotë në mobile për t'u klikuar më lehtë */
+  .btn-gold, .btn-sm {
+    width: 100%;
+    padding: 10px; 
+    font-size: 0.95rem;
+    text-align: center;
+  }
+  
+  .d-flex.gap-1 {
+    gap: 8px !important;
+  }
+
+  /* Rregullim për badge-in e totalit të faturuar te Invoices */
+  .badge.bg-dark {
+    text-align: center;
+    width: 100%;
+    padding: 10px;
   }
 }

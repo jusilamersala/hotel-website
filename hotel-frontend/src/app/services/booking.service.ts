@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class BookingService {
@@ -7,23 +8,26 @@ export class BookingService {
 
   constructor(private http: HttpClient) {}
 
-  getBookings() {
-    return this.http.get(this.apiUrl + 'getBookings.php');
+
+  getBookings(): Observable<any> {
+    return this.http.get<any>(this.apiUrl + 'getBookings.php');
   }
 
-  getBooking(id: number) {
-    return this.http.get(`${this.apiUrl}getBookings.php?id=${id}`);
+
+  getBooking(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}getBookings.php?id=${id}`);
   }
 
-  addBooking(booking: any) {
-    return this.http.post(this.apiUrl + 'createBooking.php', booking);
+  addBooking(booking: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl + 'createBooking.php', booking);
   }
 
-  updateBooking(id: number, booking: any) {
-    return this.http.put(`${this.apiUrl}updateBooking.php?id=${id}`, booking);
+  updateBooking(id: number, booking: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}updateBooking.php?id=${id}`, booking);
   }
 
-  deleteBooking(id: number) {
-    return this.http.delete(`${this.apiUrl}deleteBooking.php?id=${id}`);
+  
+  deleteBooking(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}deleteBooking.php?id=${id}`);
   }
 }

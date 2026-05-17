@@ -10,7 +10,7 @@ import { Room } from './room.model';
   standalone: true,
   imports: [CommonModule, HttpClientModule],
   templateUrl: './rooms.component.html',
-  styleUrl: './rooms.component.scss'
+  styleUrl: './rooms.component.scss' // Ndryshuar në .scss siç e ke ti
 })
 export class RoomsComponent implements OnInit {
   rooms: Room[] = [];
