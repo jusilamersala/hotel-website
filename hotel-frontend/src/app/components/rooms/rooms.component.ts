@@ -38,11 +38,9 @@ export class RoomsComponent implements OnInit {
     });
   }
 
-  onRoomClick() {
+  onRoomClick(room :any) {
     if (this.authService.isLoggedIn()) {
-      // Komento navigate deri sa të bësh booking faqen
-      // this.router.navigate(['/booking']);
-      alert('Rezervimi do të jetë i disponueshëm së shpejti!');
+      this.router.navigate(['/reservation',room.room_ID]);
     } else {
       this.showAuthModal = true;
     }

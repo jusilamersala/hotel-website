@@ -57,6 +57,34 @@ CREATE TABLE IF NOT EXISTS `Booking` (
     FOREIGN KEY (room_ID) REFERENCES Room(Room_ID)
 );
 
+ALTER TABLE Booking
+    ADD COLUMN total_nights INT DEFAULT 0 AFTER check_Out_Date;
+
+ALTER TABLE Booking
+    ADD COLUMN total_price DECIMAL(10,2) DEFAULT 0.00 AFTER total_nights;
+
+ALTER TABLE Booking
+    ADD COLUMN phone VARCHAR(20) AFTER total_price;
+
+ALTER TABLE Booking
+    ADD COLUMN payment_method ENUM('cash','card') DEFAULT 'cash' AFTER phone;
+
+ALTER TABLE Booking
+    MODIFY COLUMN booking_Date TIMESTAMP DEFAULT CURRENT_TIMESTAMP AFTER payment_method;
+
+-- Rregullimet e Invoice
+ALTER TABLE Invoice
+    MODIFY COLUMN invoice_ID INT AUTO_INCREMENT;
+
+ALTER TABLE Invoice
+    MODIFY COLUMN amount DECIMAL(10,2) NOT NULL;
+
+ALTER TABLE Invoice
+    ADD COLUMN payment_method ENUM('cash','card') DEFAULT 'cash' AFTER amount;
+
+ALTER TABLE Invoice
+    MODIFY COLUMN invoice_Date TIMESTAMP DEFAULT CURRENT_TIMESTAMP AFTER payment_method;
+
 CREATE TABLE IF NOT EXISTS `Services` (
     `service_ID` INT PRIMARY KEY,
     `service_Type` VARCHAR(100),
@@ -67,20 +95,16 @@ CREATE TABLE IF NOT EXISTS `Services` (
 ALTER TABLE Services 
 CHANGE COLUMN service_Type service_Name VARCHAR(100) NOT NULL;
 
--- 2. Shtojmë kolonën e përshkrimit të gjatë
-ALTER TABLE Services 
+ALTER TABLE Services
 ADD COLUMN service_Description TEXT AFTER service_Name;
 
--- 3. Ndryshojmë service_Price nga FLOAT në DECIMAL (për saktësi parash)
-ALTER TABLE Services 
+ALTER TABLE Services
 MODIFY COLUMN service_Price DECIMAL(10, 2) DEFAULT 0.00;
 
--- 4. Shtojmë kolonën për të dalluar nëse është i përfshirë apo jo
-ALTER TABLE Services 
+ALTER TABLE Services
 ADD COLUMN is_Included TINYINT(1) DEFAULT 0;
 
--- 5. Sigurohemi që service_ID të jetë AUTO_INCREMENT (nëse nuk ishte)
-ALTER TABLE Services 
+ALTER TABLE Services
 MODIFY COLUMN service_ID INT AUTO_INCREMENT;
 
 CREATE TABLE IF NOT EXISTS `Booking_Services` (

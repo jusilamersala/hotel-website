@@ -36,11 +36,10 @@
                 <i class="bi bi-people me-1"></i> {{ room.capacity }} Persona
               </span>
 
-              <!-- ↓ NDRYSHIMI: shto (click)="onRoomClick()" te butoni -->
               <button
                 class="btn btn-gold px-4 rounded-pill fw-bold"
                 [disabled]="room.availability !== 'Available'"
-                (click)="room.availability === 'Available' && onRoomClick()">
+                (click)="room.availability === 'Available' && onRoomClick(room)">
                 {{ room.availability === 'Available' ? 'Rezervo' : 'E Zënë' }}
               </button>
 
