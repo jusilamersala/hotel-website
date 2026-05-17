@@ -93,3 +93,15 @@ input.ng-invalid.ng-touched {
     font-size: 1.5rem;
   }
 }
+
+/* CSS për linkun */
+.forgot-link {
+  display: block;
+  text-align: center;
+  margin-top: 12px;
+  color: #c5a059;
+  font-size: 15px;
+  text-decoration: none;
+}
+
+.forgot-link:hover { text-decoration: underline; }

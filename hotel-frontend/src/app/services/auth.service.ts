@@ -1,14 +1,31 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
-  providedIn: 'root' // <-- Kjo rresht është KRITIKE që Angular ta gjejë automatikisht
+  providedIn: 'root'
 })
 export class AuthService {
-  constructor(private http: HttpClient) {}
 
-  getUserProfile(userId: number): Observable<any> {
-    return this.http.get(`http://localhost/hotel-backend/get-user.php?user_id=${userId}`);
+  // Injekton PLATFORM_ID për të kuptuar nëse jemi në browser apo server
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
+  private isBrowser(): boolean {
+    return isPlatformBrowser(this.platformId);
+  }
+
+  isLoggedIn(): boolean {
+    if (!this.isBrowser()) return false; // ← nëse server, kthe false
+    return !!localStorage.getItem('user');
+  }
+
+  getUser(): any {
+    if (!this.isBrowser()) return null; // ← nëse server, kthe null
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  }
+
+  logout(): void {
+    if (!this.isBrowser()) return; // ← nëse server, mos bëj asgjë
+    localStorage.removeItem('user');
   }
 }

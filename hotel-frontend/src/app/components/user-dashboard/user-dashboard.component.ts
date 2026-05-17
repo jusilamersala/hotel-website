@@ -35,6 +35,11 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
     // PayPal button do të renderohet dinamikisht kur kërkohet pagesa
   }
 
+  /*ngOnInit(): void {
+    this.loadData();
+  }*/
+
+  // Ngarkon të dhënat paralelisht
   loadData() {
     this.loading = true;
     this.loadUserProfile(); 

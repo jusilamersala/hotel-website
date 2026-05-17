@@ -17,15 +17,14 @@
   color: #ffffff !important;
 }
 
-/* Korrigjimi i hover (Nga SCSS në CSS) */
-.nav-link:hover, 
+.nav-link:hover,
 .nav-link.active {
   color: #c5a059 !important;
 }
 
-.ls-2 { 
-  letter-spacing: 2px; 
-  font-size: 0.7rem; 
+.ls-2 {
+  letter-spacing: 2px;
+  font-size: 0.7rem;
 }
 /* Stilimi i kutisë së Dropdown */
 .dropdown-menu {
@@ -68,9 +67,22 @@
     padding: 1rem;
     border-top: 1px solid #c5a059;
   }
-  
+
   .nav-link {
     padding: 12px 0 !important;
     border-bottom: 1px solid rgba(255,255,255,0.05);
   }
+}
+
+.user-initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background: white;
+  color: #c5a059;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: bold;
 }
