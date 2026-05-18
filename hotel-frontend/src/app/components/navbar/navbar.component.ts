@@ -24,15 +24,12 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // 1. Dëgjojmë për çdo ndryshim të përdoruesit në kohë reale (pa pasur nevojë për refresh)
     this.authService.currentUser$.subscribe(user => {
       if (user) {
         this.isLoggedIn = true;
         this.userName = user.name;
-        // Gjeneron iniciale: "Arta" → "A"
         this.userInitials = user.name?.charAt(0).toUpperCase();
       } else {
-        // Nëse user është null (p.sh. pas logout ose kur nuk është loguar ende)
         this.isLoggedIn = false;
         this.userName = '';
         this.userInitials = '';
