@@ -1,35 +1,60 @@
 <section class="hero-section d-flex align-items-center text-white">
   <div class="container text-center py-5">
-    <h6 class="text-gold text-uppercase fw-bold ls-3 mb-3 animate__animated animate__fadeInDown">
+    <h6
+      class="text-gold text-uppercase fw-bold ls-3 mb-3 animate__animated animate__fadeInDown"
+    >
       Mirësevini në Grand Horizon
     </h6>
     <h1 class="display-1 fw-bold mb-4 animate__animated animate__fadeInUp">
-      Eksperienca juaj <br> <span class="text-gold">Më e Mirë</span>
+      Eksperienca juaj <br />
+      <span class="text-gold">Më e Mirë</span>
     </h1>
-    <p class="lead mb-5 opacity-75 mx-auto animate__animated animate__fadeIn" style="max-width: 700px;">
-      Zbuloni një botë ku luksi dhe rehatia bashkohen për t'ju ofruar pushimet që keni ëndërruar gjithmonë.
+    <p
+      class="lead mb-5 opacity-75 mx-auto animate__animated animate__fadeIn"
+      style="max-width: 700px"
+    >
+      Zbuloni një botë ku luksi dhe rehatia bashkohen për t'ju ofruar pushimet
+      që keni ëndërruar gjithmonë.
     </p>
-    
-    <div class="search-bar bg-white p-4 rounded-4 shadow-lg mx-auto animate__animated animate__slideInUp">
+
+    <div
+      class="search-bar bg-white p-4 rounded-4 shadow-lg mx-auto animate__animated animate__slideInUp"
+    >
       <div class="row g-3 align-items-end text-dark text-start">
         <div class="col-lg-3 col-md-6">
           <label class="small fw-bold mb-2">Check-in</label>
-          <input type="date" class="form-control border-0 bg-light py-3">
+          <input
+            type="date"
+            [min]="today"
+            [(ngModel)]="checkIn"
+            class="form-control border-0 bg-light py-3"
+          />
         </div>
         <div class="col-lg-3 col-md-6">
           <label class="small fw-bold mb-2">Check-out</label>
-          <input type="date" class="form-control border-0 bg-light py-3">
+          <input
+            type="date"
+            [min]="checkIn || today"
+            [(ngModel)]="checkOut"
+            class="form-control border-0 bg-light py-3"
+          />
         </div>
         <div class="col-lg-3 col-md-6">
           <label class="small fw-bold mb-2">Të rritur</label>
-          <select class="form-select border-0 bg-light py-3">
-            <option>1 Person</option>
-            <option>2 Persona</option>
-            <option>3 Persona</option>
+          <select
+            [(ngModel)]="adults"
+            class="form-select border-0 bg-light py-3"
+          >
+            <option [value]="1">1 Person</option>
+            <option [value]="2">2 Persona</option>
+            <option [value]="3">3 Persona</option>
           </select>
         </div>
         <div class="col-lg-3 col-md-12">
-          <button class="btn btn-gold w-100 py-3 fw-bold rounded-3">
+          <button
+            (click)="searchRooms()"
+            class="btn btn-gold w-100 py-3 fw-bold rounded-3"
+          >
             KËRKO DHOMËN
           </button>
         </div>
@@ -42,28 +67,45 @@
   <div class="container py-5">
     <div class="row align-items-center">
       <div class="col-lg-6 mb-4 mb-lg-0">
-        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80" 
-             class="img-fluid rounded-4 shadow" alt="Hotel View">
+        <img
+          src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80"
+          class="img-fluid rounded-4 shadow"
+          alt="Hotel View"
+        />
       </div>
       <div class="col-lg-6 ps-lg-5">
-        <h2 class="fw-bold mb-4">Pse të zgjidhni <span class="text-gold">Grand Horizon</span>?</h2>
+        <h2 class="fw-bold mb-4">
+          Pse të zgjidhni <span class="text-gold">Grand Horizon</span>?
+        </h2>
         <p class="text-muted mb-4">
-          Me mbi 20 vite eksperiencë në mikpritje, ne kurojmë çdo detaj që qëndrimi juaj të jetë i përsosur. Nga pishina panoramike deri te restoranti ynë me 5 yje.
+          Me mbi 20 vite eksperiencë në mikpritje, ne kurojmë çdo detaj që
+          qëndrimi juaj të jetë i përsosur. Nga pishina panoramike deri te
+          restoranti ynë me 5 yje.
         </p>
         <ul class="list-unstyled">
-          <li class="mb-2"><i class="bi bi-check-circle-fill text-gold me-2"></i> Wi-Fi Falas & Shpejtë</li>
-          <li class="mb-2"><i class="bi bi-check-circle-fill text-gold me-2"></i> Mëngjes Kontinental i përfshirë</li>
-          <li class="mb-2"><i class="bi bi-check-circle-fill text-gold me-2"></i> Parkim Privat i siguruar</li>
+          <li class="mb-2">
+            <i class="bi bi-check-circle-fill text-gold me-2"></i> Wi-Fi Falas &
+            Shpejtë
+          </li>
+          <li class="mb-2">
+            <i class="bi bi-check-circle-fill text-gold me-2"></i> Mëngjes
+            Kontinental i përfshirë
+          </li>
+          <li class="mb-2">
+            <i class="bi bi-check-circle-fill text-gold me-2"></i> Parkim Privat
+            i siguruar
+          </li>
         </ul>
       </div>
     </div>
   </div>
 </section>
+
 <section class="py-5 bg-light">
   <div class="container text-center py-5">
     <h6 class="text-gold text-uppercase fw-bold ls-2 mb-2">Shërbimet Tona</h6>
     <h2 class="fw-bold mb-5">Gjithçka që ju nevojitet</h2>
-    
+
     <div class="row g-4">
       <div class="col-6 col-md-3">
         <div class="service-card p-4 bg-white rounded-4 shadow-sm h-100">
@@ -92,6 +134,7 @@
     </div>
   </div>
 </section>
+
 <section class="py-5 bg-white">
   <div class="container py-5">
     <div class="d-flex justify-content-between align-items-end mb-5">
@@ -99,59 +142,46 @@
         <h6 class="text-gold text-uppercase fw-bold ls-2">Akomodimi</h6>
         <h2 class="fw-bold mb-0">Dhomat tona më të mira</h2>
       </div>
-      <a routerLink="/rooms" class="btn btn-outline-gold rounded-pill px-4">Shiko të Gjitha</a>
+      <a routerLink="/rooms" class="btn btn-outline-gold rounded-pill px-4"
+        >Shiko të Gjitha</a
+      >
     </div>
 
     <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card border-0 shadow-sm overflow-hidden room-card h-100">
+      <div class="col-md-4" *ngFor="let room of rooms">
+        <div
+          class="card border-0 shadow-sm rounded-4 overflow-hidden room-card h-100"
+        >
           <div class="position-relative">
-            <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Room">
-            <span class="badge bg-gold position-absolute top-0 end-0 m-3 px-3 py-2">80€ / Natë</span>
+            <img
+              [src]="room.image"
+              class="card-img-top room-img"
+              [alt]="room.name"
+            />
+            <div class="price-badge">{{ room.price }}€ / Natë</div>
           </div>
-          <div class="card-body p-4 text-center">
-            <h5 class="fw-bold">Suite Presidenciale</h5>
-            <p class="text-muted small">Pamje nga qyteti, Jacuzzi, Mini-bar.</p>
-            <hr class="opacity-10">
-            <div class="d-flex justify-content-center gap-3 text-gold">
-              <i class="bi bi-people"> 2 Persona</i>
-              <i class="bi bi-fullscreen"> 45m²</i>
+          <div class="card-body p-4 d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h4 class="fw-bold mb-0">{{ room.name }}</h4>
+              <div class="stars text-warning">
+                <i class="bi bi-star-fill small"></i>
+                <i class="bi bi-star-fill small mx-1"></i>
+                <i class="bi bi-star-fill small"></i>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
+            <p class="text-muted mb-4 small">{{ room.description }}</p>
 
-      <div class="col-md-4">
-        <div class="card border-0 shadow-sm overflow-hidden room-card h-100">
-          <div class="position-relative">
-            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Room">
-            <span class="badge bg-gold position-absolute top-0 end-0 m-3 px-3 py-2">120€ / Natë</span>
-          </div>
-          <div class="card-body p-4 text-center">
-            <h5 class="fw-bold">Dhoma Luxury Double</h5>
-            <p class="text-muted small">Krevat King Size, Ballkon, Pamje nga deti.</p>
-            <hr class="opacity-10">
-            <div class="d-flex justify-content-center gap-3 text-gold">
-              <i class="bi bi-people"> 2 Persona</i>
-              <i class="bi bi-fullscreen"> 35m²</i>
+            <hr class="opacity-10 mt-auto" />
+
+            <div class="d-flex gap-3 mb-4 text-muted small">
+              <span><i class="bi bi-wifi text-gold me-1"></i> Wifi</span>
+              <span><i class="bi bi-tv text-gold me-1"></i> Smart TV</span>
+              <span><i class="bi bi-snow text-gold me-1"></i> AC</span>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="card border-0 shadow-sm overflow-hidden room-card h-100">
-          <div class="position-relative">
-            <img src="https://images.unsplash.com/photo-1595576508898-0ad5c879a061?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Room">
-            <span class="badge bg-gold position-absolute top-0 end-0 m-3 px-3 py-2">55€ / Natë</span>
-          </div>
-          <div class="card-body p-4 text-center">
-            <h5 class="fw-bold">Dhoma Standarte</h5>
-            <p class="text-muted small">Ideale për udhëtime pune, komoditet maksimal.</p>
-            <hr class="opacity-10">
-            <div class="d-flex justify-content-center gap-3 text-gold">
-              <i class="bi bi-people"> 1 Person</i>
-              <i class="bi bi-fullscreen"> 25m²</i>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="fw-bold">
+                <i class="bi bi-people me-2"></i> {{ room.capacity }} Persona
+              </div>
             </div>
           </div>
         </div>
@@ -159,3 +189,147 @@
     </div>
   </div>
 </section>
+
+<section class="hero-section d-flex align-items-center text-white">
+  <div class="container text-center py-5">
+    <h6
+      class="text-gold text-uppercase fw-bold ls-3 mb-3 animate__animated animate__fadeInDown"
+    >
+      Mirësevini në Grand Horizon
+    </h6>
+    <h1 class="display-1 fw-bold mb-4 animate__animated animate__fadeInUp">
+      Eksperienca juaj <br />
+      <span class="text-gold">Më e Mirë</span>
+    </h1>
+    <p
+      class="lead mb-5 opacity-75 mx-auto animate__animated animate__fadeIn"
+      style="max-width: 700px"
+    >
+      Zbuloni një botë ku luksi dhe rehatia bashkohen për t'ju ofruar pushimet
+      që keni ëndërruar gjithmonë.
+    </p>
+
+    <div
+      class="search-bar bg-white p-4 rounded-4 shadow-lg mx-auto animate__animated animate__slideInUp"
+    >
+      <div class="row g-3 align-items-end text-dark text-start">
+        <div class="col-lg-3 col-md-6">
+          <label class="small fw-bold mb-2">Check-in</label>
+          <input
+            type="date"
+            [min]="today"
+            [(ngModel)]="checkIn"
+            class="form-control border-0 bg-light py-3"
+          />
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <label class="small fw-bold mb-2">Check-out</label>
+          <input
+            type="date"
+            [(ngModel)]="checkOut"
+            [min]="checkIn ? checkIn : today"
+            class="form-control border-0 bg-light py-3"
+          />
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <label class="small fw-bold mb-2">Të rritur</label>
+          <select
+            [(ngModel)]="adults"
+            class="form-select border-0 bg-light py-3"
+          >
+            <option [value]="1">1 Person</option>
+            <option [value]="2">2 Persona</option>
+            <option [value]="3">3 Persona</option>
+          </select>
+        </div>
+        <div class="col-lg-3 col-md-12">
+          <button
+            (click)="searchRooms()"
+            class="btn btn-gold w-100 py-3 fw-bold rounded-3"
+          >
+            KËRKO DHOMËN
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-white">
+  <div class="container py-5">
+    <div class="d-flex justify-content-between align-items-end mb-5">
+      <div>
+        <h6 class="text-gold text-uppercase fw-bold ls-2">Akomodimi</h6>
+        <h2 class="fw-bold mb-0">Dhomat tona më të mira</h2>
+      </div>
+      <a routerLink="/rooms" class="btn btn-outline-gold rounded-pill px-4"
+        >Shiko të Gjitha</a
+      >
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4" *ngFor="let room of rooms">
+        <div
+          class="card border-0 shadow-sm rounded-4 overflow-hidden room-card h-100"
+        >
+          <div class="position-relative">
+            <img
+              [src]="room.image"
+              class="card-img-top room-img"
+              [alt]="room.name"
+            />
+            <div class="price-badge">{{ room.price }}€ / Natë</div>
+          </div>
+
+          <div class="card-body p-4 d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h4 class="fw-bold mb-0">{{ room.name }}</h4>
+              <div class="stars text-warning">
+                <i class="bi bi-star-fill small"></i>
+                <i class="bi bi-star-fill small mx-1"></i>
+                <i class="bi bi-star-fill small"></i>
+              </div>
+            </div>
+
+            <p class="text-muted mb-4 small">{{ room.description }}</p>
+
+            <hr class="opacity-10 mt-auto" />
+
+            <div class="d-flex gap-3 mb-4 text-muted small">
+              <span><i class="bi bi-wifi text-gold me-1"></i> Wifi</span>
+              <span><i class="bi bi-tv text-gold me-1"></i> Smart TV</span>
+              <span><i class="bi bi-snow text-gold me-1"></i> AC</span>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="fw-bold">
+                <i class="bi bi-people me-2"></i> {{ room.capacity }} Persona
+              </div>
+              <button class="btn btn-rezervo px-4 py-2 rounded-pill fw-bold">
+                Rezervo
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal-overlay" *ngIf="showWarningModal" (click)="closeModal()">
+  <div class="modal-box text-center" (click)="$event.stopPropagation()">
+    <div class="mb-3">
+      <i class="bi bi-exclamation-triangle-fill text-warning display-4"></i>
+    </div>
+    <h3 class="fw-bold">Vëmendje!</h3>
+    <p class="text-muted">{{ modalMessage }}</p>
+    <div class="mt-4">
+      <button
+        class="btn btn-gold px-5 py-2 rounded-pill fw-bold"
+        (click)="closeModal()"
+      >
+        Kuptova
+      </button>
+    </div>
+  </div>
+</div>

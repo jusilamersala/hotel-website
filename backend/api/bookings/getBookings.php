@@ -8,7 +8,6 @@ include_once '../../config/database.php';
 $id = $_GET['id'] ?? null;
 
 if (!empty($id)) {
-    // Merr një booking specifik me ID
     $sql = "SELECT 
                 b.booking_ID,
                 b.user_ID,
@@ -21,7 +20,7 @@ if (!empty($id)) {
                 b.total_price,
                 b.phone,
                 b.payment_method,
-                b.created_at,
+                b.booking_Date,
                 u.name,
                 u.surname,
                 u.email,
@@ -63,7 +62,7 @@ if (!empty($id)) {
                 b.total_price,
                 b.phone,
                 b.payment_method,
-                b.created_at,
+                b.booking_Date,
                 u.name,
                 u.surname,
                 u.email,
@@ -75,7 +74,7 @@ if (!empty($id)) {
             FROM Booking b
             JOIN User u ON b.user_ID = u.user_ID
             JOIN Room r ON b.room_ID = r.room_ID
-            ORDER BY b.created_at DESC";
+            ORDER BY b.booking_Date DESC";
 
     $result = mysqli_query($conn, $sql);
 

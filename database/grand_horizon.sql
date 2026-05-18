@@ -1,4 +1,3 @@
--- Sigurohu që databaza ekziston
 CREATE DATABASE IF NOT EXISTS `grand_horizon`;
 USE `grand_horizon`;
 
@@ -91,8 +90,7 @@ CREATE TABLE IF NOT EXISTS `Services` (
     `service_Price` FLOAT
 );
 
--- 1. Ndryshojmë service_Type në service_Name dhe e bëjmë NOT NULL
-ALTER TABLE Services 
+ALTER TABLE Services
 CHANGE COLUMN service_Type service_Name VARCHAR(100) NOT NULL;
 
 ALTER TABLE Services
@@ -213,10 +211,8 @@ INSERT INTO Room (room_type_ID, name, floor, description, image_url, capacity, p
 
 
 
--- Fshijmë të dhënat e vjetra që të mos kemi përzierje
 TRUNCATE TABLE Services;
 
--- Shtojmë shërbimet e Spa & Wellness
 INSERT INTO Services (service_Name, service_Description, service_Price, is_Included)
 VALUES 
 ('Pishina & Sauna', 
