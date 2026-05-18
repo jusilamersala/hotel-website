@@ -4,6 +4,7 @@ header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
+// Trajtimi i kërkesës OPTIONS (CORS Preflight)
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     http_response_code(204);
     exit;
@@ -11,7 +12,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 include_once '../../config/database.php';
 
-$data           = json_decode(file_get_contents("php://input"));
+// Marrja e të dhënave nga Angular
+$data = json_decode(file_get_contents("php://input"));
+
 $user_ID        = $data->user_ID        ?? null;
 $room_ID        = $data->room_ID        ?? null;
 $check_in       = $data->check_in       ?? null;
@@ -20,87 +23,92 @@ $total_nights   = $data->total_nights   ?? null;
 $total_price    = $data->total_price    ?? null;
 $phone          = $data->phone          ?? null;
 $payment_method = $data->payment_method ?? 'cash';
+// Shërbimet ekstra që vijnë si string nga Angular
+$extra_services = $data->services       ?? ''; 
 
-// 1. Kontrollo fushat
+// 1. Kontrolli i fushave të detyrueshme
 if (!$user_ID || !$room_ID || !$check_in || !$check_out || !$phone) {
     http_response_code(400);
     echo json_encode([
         "status"  => "error",
-        "message" => "Plotësoni të gjitha fushat."
+        "message" => "Të dhënat janë të paplota."
     ]);
     exit;
 }
 
-// 2. Kontrollo nëse dhoma është e lirë
-$checkAvail = "SELECT booking_ID FROM Booking 
-               WHERE room_ID = ? 
-               AND status != 'Cancelled'
-               AND (check_In_Date < ? AND check_Out_Date > ?)";
-$stmt = mysqli_prepare($conn, $checkAvail);
-mysqli_stmt_bind_param($stmt, "iss", $room_ID, $check_out, $check_in);
-mysqli_stmt_execute($stmt);
-$result = mysqli_stmt_get_result($stmt);
+// Nisim transaksionin për siguri maksimale
+mysqli_begin_transaction($conn);
 
-if (mysqli_fetch_assoc($result)) {
-    http_response_code(409);
-    echo json_encode([
-        "status"  => "error",
-        "message" => "Dhoma është e zënë në datat e zgjedhura."
-    ]);
-    exit;
-}
+try {
+    // 2. Kontrollo nëse dhoma është e lirë për këto data
+    $checkAvail = "SELECT booking_ID FROM Booking 
+                   WHERE room_ID = ? 
+                   AND status != 'Cancelled'
+                   AND (check_In_Date < ? AND check_Out_Date > ?)";
+    
+    $stmt = mysqli_prepare($conn, $checkAvail);
+    mysqli_stmt_bind_param($stmt, "iss", $room_ID, $check_out, $check_in);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
 
-// 3. Krijo Booking
-$sql = "INSERT INTO Booking 
-        (user_ID, room_ID, booking_Date, check_In_Date, check_Out_Date,
-         total_nights, total_price, phone, payment_method, status) 
-        VALUES (?, ?, CURDATE(), ?, ?, ?, ?, ?, ?, 'Pending')";
+    if (mysqli_fetch_assoc($result)) {
+        throw new Exception("Dhoma është e zënë në këto data.");
+    }
 
-$stmt2 = mysqli_prepare($conn, $sql);
-mysqli_stmt_bind_param($stmt2, "iissidss",
-    $user_ID,
-    $room_ID,
-    $check_in,
-    $check_out,
-    $total_nights,
-    $total_price,
-    $phone,
-    $payment_method
-);
+    // 3. Krijojmë rezervimin në tabelën Booking
+    // Shtova kolonën 'services' nëse e ke në tabelë, nëse jo mund ta heqësh
+    $sql = "INSERT INTO Booking 
+            (user_ID, room_ID, booking_Date, check_In_Date, check_Out_Date,
+             total_nights, total_price, phone, payment_method, status) 
+            VALUES (?, ?, CURDATE(), ?, ?, ?, ?, ?, ?, 'Pending')";
 
-if (mysqli_stmt_execute($stmt2)) {
-
-    // 4. Merr booking_ID të ri
-    $booking_ID = mysqli_insert_id($conn);
-
-    // 5. Krijo Invoice automatikisht
-    $invoiceSql = "INSERT INTO Invoice 
-                   (booking_ID, invoice_Date, status, amount, payment_method) 
-                   VALUES (?, CURDATE(), 'Pending', ?, ?)";
-    $invoiceStmt = mysqli_prepare($conn, $invoiceSql);
-    mysqli_stmt_bind_param($invoiceStmt, "ids",
-        $booking_ID,
+    $stmt2 = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt2, "iissidss",
+        $user_ID,
+        $room_ID,
+        $check_in,
+        $check_out,
+        $total_nights,
         $total_price,
+        $phone,
         $payment_method
     );
+    mysqli_stmt_execute($stmt2);
+
+    // 4. Marrim ID-në e rezervimit të sapokrijuar
+    $booking_ID = mysqli_insert_id($conn);
+
+    // 5. Krijojmë faturën automatikisht në tabelën Invoice
+    $invoiceSql = "INSERT INTO Invoice (booking_ID, invoice_Date, status, amount) 
+                   VALUES (?, CURDATE(), 'Pending', ?)";
+    $invoiceStmt = mysqli_prepare($conn, $invoiceSql);
+    mysqli_stmt_bind_param($invoiceStmt, "id", $booking_ID, $total_price);
     mysqli_stmt_execute($invoiceStmt);
 
-    // 6. Ndrysho availability të dhomës
+    // 6. Përditësojmë disponueshmërinë e dhomës
     $updateRoom = "UPDATE Room SET availability = 'Occupied' WHERE room_ID = ?";
     $stmt3 = mysqli_prepare($conn, $updateRoom);
     mysqli_stmt_bind_param($stmt3, "i", $room_ID);
     mysqli_stmt_execute($stmt3);
 
+    // Nëse çdo gjë shkoi mirë, ruajmë ndryshimet përfundimisht
+    mysqli_commit($conn);
+
     http_response_code(201);
     echo json_encode([
         "status"  => "success",
-        "message" => "Rezervimi u krye me sukses!"
+        "message" => "Rezervimi dhe fatura u krijuan me sukses!"
     ]);
-} else {
+
+} catch (Exception $e) {
+    // Në rast gabimi, anulojmë të gjitha veprimet (Rollback)
+    mysqli_rollback($conn);
     http_response_code(500);
     echo json_encode([
         "status"  => "error",
-        "message" => "Ndodhi një gabim: " . mysqli_error($conn)
+        "message" => $e->getMessage()
     ]);
 }
+
+mysqli_close($conn);
 ?>
