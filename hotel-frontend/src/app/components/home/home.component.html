@@ -59,6 +59,7 @@
     </div>
   </div>
 </section>
+
 <section class="py-5 bg-light">
   <div class="container text-center py-5">
     <h6 class="text-gold text-uppercase fw-bold ls-2 mb-2">Shërbimet Tona</h6>
@@ -92,6 +93,7 @@
     </div>
   </div>
 </section>
+
 <section class="py-5 bg-white">
   <div class="container py-5">
     <div class="d-flex justify-content-between align-items-end mb-5">
@@ -103,59 +105,37 @@
     </div>
 
     <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card border-0 shadow-sm overflow-hidden room-card h-100">
+      <div class="col-md-4" *ngFor="let room of rooms">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden room-card h-100">
           <div class="position-relative">
-            <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Room">
-            <span class="badge bg-gold position-absolute top-0 end-0 m-3 px-3 py-2">80€ / Natë</span>
+            <img [src]="room.image" class="card-img-top room-img" [alt]="room.name" />
+            <div class="price-badge">{{ room.price }}€ / Natë</div>
           </div>
-          <div class="card-body p-4 text-center">
-            <h5 class="fw-bold">Suite Presidenciale</h5>
-            <p class="text-muted small">Pamje nga qyteti, Jacuzzi, Mini-bar.</p>
-            <hr class="opacity-10">
-            <div class="d-flex justify-content-center gap-3 text-gold">
-              <i class="bi bi-people"> 2 Persona</i>
-              <i class="bi bi-fullscreen"> 45m²</i>
+          <div class="card-body p-4 d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h4 class="fw-bold mb-0">{{ room.name }}</h4>
+              <div class="stars text-warning">
+                <i class="bi bi-star-fill small"></i>
+                <i class="bi bi-star-fill small mx-1"></i>
+                <i class="bi bi-star-fill small"></i>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
+            <p class="text-muted mb-4 small">{{ room.description }}</p>
 
-      <div class="col-md-4">
-        <div class="card border-0 shadow-sm overflow-hidden room-card h-100">
-          <div class="position-relative">
-            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Room">
-            <span class="badge bg-gold position-absolute top-0 end-0 m-3 px-3 py-2">120€ / Natë</span>
-          </div>
-          <div class="card-body p-4 text-center">
-            <h5 class="fw-bold">Dhoma Luxury Double</h5>
-            <p class="text-muted small">Krevat King Size, Ballkon, Pamje nga deti.</p>
-            <hr class="opacity-10">
-            <div class="d-flex justify-content-center gap-3 text-gold">
-              <i class="bi bi-people"> 2 Persona</i>
-              <i class="bi bi-fullscreen"> 35m²</i>
-            </div>
-          </div>
-        </div>
-      </div>
+            <hr class="opacity-10 mt-auto" />
 
-      <div class="col-md-4">
-        <div class="card border-0 shadow-sm overflow-hidden room-card h-100">
-          <div class="position-relative">
-            <img src="https://images.unsplash.com/photo-1595576508898-0ad5c879a061?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Room">
-            <span class="badge bg-gold position-absolute top-0 end-0 m-3 px-3 py-2">55€ / Natë</span>
-          </div>
-          <div class="card-body p-4 text-center">
-            <h5 class="fw-bold">Dhoma Standarte</h5>
-            <p class="text-muted small">Ideale për udhëtime pune, komoditet maksimal.</p>
-            <hr class="opacity-10">
-            <div class="d-flex justify-content-center gap-3 text-gold">
-              <i class="bi bi-people"> 1 Person</i>
-              <i class="bi bi-fullscreen"> 25m²</i>
+            <div class="d-flex gap-3 mb-4 text-muted small">
+              <span><i class="bi bi-wifi text-gold me-1"></i> Wifi</span>
+              <span><i class="bi bi-tv text-gold me-1"></i> Smart TV</span>
+              <span><i class="bi bi-snow text-gold me-1"></i> AC</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="fw-bold">
+                <i class="bi bi-people me-2"></i> {{ room.capacity }} Persona
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </div> </div>
   </div>
 </section>
