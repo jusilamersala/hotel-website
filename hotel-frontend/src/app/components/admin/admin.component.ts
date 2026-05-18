@@ -6,7 +6,7 @@ import { RoomService } from '../../services/room.services';
 import { StaffService } from '../../services/staff.service';
 import { TimetableService } from '../../services/timetable.service';
 import { BookingService } from '../../services/booking.service';
-import {ContactService} from '../../services/contact.service';
+import { ContactService } from '../../services/contact.service';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -23,7 +23,7 @@ export class AdminComponent implements OnInit {
   invoices: any[] = [];
   timetables: any[] = [];
   bookings: any[] = [];
-  contact :any[]=[];
+  contact: any[] = [];
   activeTab: string = 'rooms';
 
   showModal: boolean = false;
@@ -35,7 +35,7 @@ export class AdminComponent implements OnInit {
     private staffService: StaffService,
     private timetableService: TimetableService,
     private bookingService: BookingService,
-    private contactService :ContactService
+    private contactService: ContactService
   ) {}
 
   ngOnInit(): void {
@@ -47,7 +47,7 @@ export class AdminComponent implements OnInit {
     this.loadAllInvoices();
   }
 
-  // --- NAVIGIMI ---
+  // --- NAVIGIMI (U bashkua dhe u pastrua deklarimi i dyfishtë) ---
   setActiveTab(tab: string) {
     this.activeTab = tab;
     if (tab === 'invoices') {
@@ -105,13 +105,11 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  setActiveTab(tab: string) {
-    this.activeTab = tab;
+  // --- CRUD ROOMS & STAFF ---
+  addRoom() {
+    // Implement modal or form (U mbyll kllapa këtu që mungonte!)
   }
 
-  // Room CRUD
-  addRoom() {
-    // Implement modal or form
   loadAllInvoices() {
     this.http.get('http://localhost:8000/api/admin/getInvoices.php').subscribe({
       next: (res: any) => {
@@ -200,7 +198,6 @@ export class AdminComponent implements OnInit {
     doc.save(`Fatura_Admin_${invoice.invoice_ID}.pdf`);
   }
 
-  // --- CRUD ROOMS & STAFF ---
   deleteRoom(id: number) {
     if (confirm('Fshij dhomën?')) {
       this.roomService.deleteRoom(id).subscribe(() => this.loadRooms());
@@ -213,7 +210,6 @@ export class AdminComponent implements OnInit {
     }
   }
 
-  // --- MODAL MODIFIER ---
   openDeleteModal(id: number) {
     this.selectedBookingId = id;
     this.showModal = true;
