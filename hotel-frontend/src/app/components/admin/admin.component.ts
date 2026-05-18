@@ -4,6 +4,7 @@ import { RoomService } from '../../services/room.services';
 import { StaffService } from '../../services/staff.service';
 import { TimetableService } from '../../services/timetable.service';
 import { BookingService } from '../../services/booking.service';
+import {ContactService} from '../../services/contact.service';
 
 @Component({
   selector: 'app-admin',
@@ -17,6 +18,7 @@ export class AdminComponent implements OnInit {
   staff: any[] = [];
   timetables: any[] = [];
   bookings: any[] = [];
+  contact :any[]=[];
   activeTab: string = 'rooms';
 
   showModal: boolean = false;
@@ -26,7 +28,8 @@ export class AdminComponent implements OnInit {
     private roomService: RoomService,
     private staffService: StaffService,
     private timetableService: TimetableService,
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private contactService :ContactService
   ) {}
 
   ngOnInit(): void {
@@ -34,6 +37,7 @@ export class AdminComponent implements OnInit {
     this.loadStaff();
     this.loadTimetables();
     this.loadBookings();
+    this.loadContacts();
   }
 
   loadRooms() {
@@ -69,6 +73,19 @@ export class AdminComponent implements OnInit {
       },
       error: (err) => {
         console.error('Gabim gjatë ngarkimit të rezervimeve:', err);
+      }
+    });
+  }
+
+  loadContacts() {
+    this.contactService.getContact().subscribe({
+      next: (data: any) => {
+        if (data && data.status === 'success') {
+          this.contact = data.data;
+        }
+      },
+      error: (err) => {
+        console.error('Gabim gjatë ngarkimit të mesazheve:', err);
       }
     });
   }
