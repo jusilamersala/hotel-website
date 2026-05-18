@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive,Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service'; // ← SHTO
-import { ServicesService } from '../../services/services.service'; 
+import { RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { ServicesService } from '../../services/services.service';
+
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -23,23 +24,27 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Kontrollon localStorage kur navbar ngarkohet
-    const user = this.authService.getUser();
-    if (user) {
-      this.isLoggedIn = true;
-      this.userName = user.name;
-      // Gjeneron iniciale: "Arta Hoxha" → "AH"
-      this.userInitials = user.name?.charAt(0).toUpperCase();
+    // 1. Dëgjojmë për çdo ndryshim të përdoruesit në kohë reale (pa pasur nevojë për refresh)
+    this.authService.currentUser$.subscribe(user => {
+      if (user) {
+        this.isLoggedIn = true;
+        this.userName = user.name;
+        // Gjeneron iniciale: "Arta" → "A"
+        this.userInitials = user.name?.charAt(0).toUpperCase();
+      } else {
+        // Nëse user është null (p.sh. pas logout ose kur nuk është loguar ende)
+        this.isLoggedIn = false;
+        this.userName = '';
+        this.userInitials = '';
+      }
+    });
 
-     
-    } this.loadSpaServices();
+    this.loadSpaServices();
   }
 
   logout() {
+    // 2. Thërrasim logout nga shërbimi, i cili automatikisht do të njoftojë subscribe-in më lart
     this.authService.logout();
-    this.isLoggedIn = false;
-    this.userName = '';
-    this.userInitials = '';
     this.router.navigate(['/home']);
   }
 
@@ -61,7 +66,7 @@ export class NavbarComponent implements OnInit {
       },
       error: (err) => {
         console.error('Gabim gjatë ngarkimit të shërbimeve:', err);
-      }});
+      }
+    });
   }
 }
-

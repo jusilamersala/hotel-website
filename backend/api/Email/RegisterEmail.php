@@ -1,5 +1,7 @@
 <?php
-require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../../vendor/phpmailer/phpmailer/src/Exception.php';
+require __DIR__ . '/../../vendor/phpmailer/phpmailer/src/PHPMailer.php';
+require __DIR__ . '/../../vendor/phpmailer/phpmailer/src/SMTP.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;

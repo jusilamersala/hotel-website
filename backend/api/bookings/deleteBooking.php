@@ -2,6 +2,7 @@
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: http://localhost:4200");
 header("Access-Control-Allow-Methods: DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     http_response_code(204);
@@ -17,6 +18,13 @@ if (empty($id)) {
     echo json_encode(["status" => "error", "message" => "Mungon ID."]);
     exit;
 }
+
+
+$deleteInvoice = "DELETE FROM Invoice WHERE booking_ID = ?";
+$stmt_invoice  = mysqli_prepare($conn, $deleteInvoice);
+mysqli_stmt_bind_param($stmt_invoice, "i", $id);
+mysqli_stmt_execute($stmt_invoice);
+mysqli_stmt_close($stmt_invoice);
 
 // 1. Merr room_ID para se të fshijë — për të kthyer availability
 $getRoom = "SELECT room_ID FROM Booking WHERE booking_ID = ?";
