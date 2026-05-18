@@ -5,6 +5,30 @@
   </div>
 </section>
 
+
+<!-- SEKSIONI I FILTRAVE -->
+<section class="py-4 bg-white border-bottom shadow-sm">
+  <div class="container text-center">
+    <div class="btn-group flex-wrap gap-2" role="group" aria-label="Room Filters">
+      <button type="button" class="btn rounded-pill px-4 fw-bold"
+              [ngClass]="selectedCategory === 'all' ? 'btn-gold' : 'btn-outline-secondary'"
+              (click)="setFilter('all')">Të gjitha</button>
+              
+      <button type="button" class="btn rounded-pill px-4 fw-bold"
+              [ngClass]="selectedCategory === 'deluxe' ? 'btn-gold' : 'btn-outline-secondary'"
+              (click)="setFilter('deluxe')">Deluxe</button>
+              
+      <button type="button" class="btn rounded-pill px-4 fw-bold"
+              [ngClass]="selectedCategory === 'suite' ? 'btn-gold' : 'btn-outline-secondary'"
+              (click)="setFilter('suite')">Suite</button>
+              
+      <button type="button" class="btn rounded-pill px-4 fw-bold"
+              [ngClass]="selectedCategory === 'family' ? 'btn-gold' : 'btn-outline-secondary'"
+              (click)="setFilter('family')">Family</button>
+    </div>
+  </div>
+</section>
+
 <section class="py-5 bg-light">
   <div class="container py-4">
     <div class="row g-4">

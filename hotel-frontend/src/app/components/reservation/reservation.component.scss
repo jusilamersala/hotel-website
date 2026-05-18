@@ -457,6 +457,112 @@
 .close-btn:hover { color: #333; }
 
 /* --- RESPONSIVE --- */
+/* --- SHTESA PËR FLEXIBILITET (Shto te klasat përkatëse sipër) --- */
+.room-preview {
+  display: flex;
+  flex-wrap: wrap; /* Lejon thyerjen nëse nuk ka vend */
+  gap: 20px;
+  /* ... pjesa tjetër mbetet njëlloj ... */
+}
+
+.stepper {
+  width: 100%;
+  overflow-x: auto; /* Lejon scrolling nëse ekrani është tepër i vogël */
+  padding-bottom: 10px;
+}
+
+
+
+
+/* --- RESPONSIVE I PËRMIRËSUAR --- */
+@media (max-width: 768px) {
+  .reservation-container {
+    margin: 10px;
+    padding: 20px;
+    width: auto;
+  }
+
+  /* Rregullimi i Stepper-it për celular */
+  .stepper {
+    justify-content: space-between;
+    gap: 0;
+  }
+
+  .step span {
+    display: none; /* Fshehim tekstin "DHOMA", "DATAT" etj. në celular për hapësirë */
+  }
+
+  .step-circle {
+    width: 35px;
+    height: 35px;
+    font-size: 13px;
+  }
+
+  .step-line {
+    margin-bottom: 17px; /* Centrim me rrethin e vogël */
+  }
+
+  /* Pamja e dhomës në celular */
+  .room-preview {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .room-preview img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 16/9;
+  }
+
+  .room-details {
+    justify-content: center;
+  }
+
+  /* Butonat e pagesës në kolonë */
+  .payment-options {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .payment-option {
+    padding: 15px;
+  }
+
+  /* Butonat e veprimit (Back/Next) */
+  .step-actions {
+    flex-direction: column-reverse; /* Next i pari sipër, Back poshtë në celular */
+    gap: 12px;
+  }
+
+  .btn-next, .btn-back, .btn-confirm {
+    width: 100%; /* Butonat zënë gjithë gjerësinë */
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .modal-box {
+    width: 85%;
+    padding: 25px;
+  }
+}
+
+/* Për pajisje shumë të vogla (iPhone SE etj) */
+@media (max-width: 480px) {
+  .step-line {
+    display: none; /* Heqim vijat lidhëse që të mos ngjishen rrethet */
+  }
+  
+  .stepper {
+    gap: 10px;
+  }
+
+  .room-info h3 {
+    font-size: 15px;
+  }
+}
+
 @media (max-width: 768px) {
   .reservation-container {
     margin: 20px;

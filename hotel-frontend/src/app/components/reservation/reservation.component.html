@@ -1,6 +1,5 @@
 <div class="reservation-container">
 
-  <!-- STEPPER -->
   <div class="stepper">
     <div class="step" [class.active]="currentStep >= 1" [class.done]="currentStep > 1">
       <div class="step-circle">{{ currentStep > 1 ? '✓' : '1' }}</div>
@@ -28,7 +27,6 @@
 
   <div class="step-content">
 
-    <!-- HAPI 1 - DHOMA -->
     <div *ngIf="currentStep === 1 && room">
       <h2>Dhoma e Zgjedhur</h2>
       <div class="room-preview">
@@ -48,112 +46,127 @@
       </div>
     </div>
 
-    <!-- HAPI 2 - DATAT -->
     <div *ngIf="currentStep === 2">
-      <h2>Zgjidhni Datat</h2>
+      <h2>Zgjidhni Datat dhe Shërbimet</h2>
 
       <div class="form-group">
         <label>Check-in</label>
-        <input type="date"
-               [(ngModel)]="checkIn"
-               [min]="today"
-               (change)="calculateTotal()">
+        <input type="date" [(ngModel)]="checkIn" [min]="today" (change)="calculateTotal()">
       </div>
 
       <div class="form-group">
         <label>Check-out</label>
-        <input type="date"
-               [(ngModel)]="checkOut"
-               [min]="checkIn || today"
-               (change)="calculateTotal()">
+        <input type="date" [(ngModel)]="checkOut" [min]="checkIn || today" (change)="calculateTotal()">
       </div>
 
-      <div class="price-summary" *ngIf="totalNights > 0">
-        <div class="summary-row">
-          <span>Netët</span>
-          <span>{{ totalNights }}</span>
+      <div class="extra-services-container" style="margin-top: 20px; padding: 15px; background: #f9f9f9; border: 1px solid #eee; border-radius: 4px;">
+        <h4 style="font-size: 14px; margin-bottom: 12px; color: #1a1a1a;">SHËRBIME EKSTRA:</h4>
+        <div *ngFor="let service of extraServices" class="service-item" style="margin-bottom: 8px;">
+          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; color: #555;">
+            <input type="checkbox" [(ngModel)]="service.selected" (change)="calculateTotal()" style="accent-color: #c5a059; width: 16px; height: 16px;">
+            <span>{{ service.name }} (+{{ service.price }}€)</span>
+          </label>
         </div>
-        <div class="summary-row">
-          <span>Çmimi për natë</span>
-          <span>{{ room?.price }}€</span>
+      </div>
+
+      <div class="price-summary-box" *ngIf="totalNights > 0" style="margin-top: 20px; padding: 15px; background: #fdf8f0; border-left: 4px solid #c5a059;">
+        <div class="summary-row" style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 5px;">
+          <span>Netët ({{ totalNights }})</span>
+          <span>{{ totalNights * room?.price }}€</span>
         </div>
-        <div class="summary-row total">
+        <div class="summary-row" *ngFor="let s of getSelectedServices()" style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 5px;">
+          <span>{{ s.name }}</span>
+          <span>{{ s.price }}€</span>
+        </div>
+        <div class="summary-row total" style="display: flex; justify-content: space-between; font-weight: 700; font-size: 16px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #e0e0e0; color: #1a1a1a;">
           <span>Totali</span>
           <span>{{ totalPrice }}€</span>
         </div>
       </div>
     </div>
 
-    <!-- HAPI 3 - KONTAKTI -->
     <div *ngIf="currentStep === 3">
       <h2>Të Dhënat Personale</h2>
-
       <div class="form-group">
-        <label>Emri</label>
+        <label>Emri i Plotë</label>
         <input type="text" [value]="user?.name" disabled class="disabled-input">
       </div>
-
       <div class="form-group">
-        <label>Email</label>
+        <label>Adresa Email</label>
         <input type="email" [value]="user?.email" disabled class="disabled-input">
       </div>
-
       <div class="form-group">
         <label>Numri i Telefonit *</label>
-        <input type="tel"
-               [(ngModel)]="phone"
-               name="phone"
-               placeholder="+355 6X XXX XXXX">
+        <input type="tel" [(ngModel)]="phone" placeholder="+355 6X XXX XXXX">
       </div>
     </div>
 
-    <!-- HAPI 4 - PAGESA -->
     <div *ngIf="currentStep === 4">
       <h2>Pagesa & Konfirmimi</h2>
 
-      <div class="final-summary">
-        <h3>Përmbledhja</h3>
-        <div class="summary-row">
-          <span>Dhoma</span>
-          <span>{{ room?.name }}</span>
+      <div class="invoice-box" id="invoice-preview">
+        <div class="invoice-header">
+          <div class="hotel-brand">
+            <h3>GRAND HORIZON</h3>
+            <p>Luxury Hotel & Spa</p>
+          </div>
+          <div class="invoice-details">
+            <p><strong>Fatura:</strong> #GH-2026-{{ room?.room_ID || '00' }}</p>
+            <p><strong>Data:</strong> {{ today }}</p>
+          </div>
         </div>
-        <div class="summary-row">
-          <span>Check-in</span>
-          <span>{{ checkIn }}</span>
-        </div>
-        <div class="summary-row">
-          <span>Check-out</span>
-          <span>{{ checkOut }}</span>
-        </div>
-        <div class="summary-row">
-          <span>Netët</span>
-          <span>{{ totalNights }}</span>
-        </div>
-        <div class="summary-row total">
-          <span>Totali</span>
-          <span>{{ totalPrice }}€</span>
+
+        <div class="invoice-body">
+          <div class="invoice-client">
+            <p><strong>Klienti:</strong> {{ user?.name }}</p>
+            <p><strong>Tel:</strong> {{ phone }}</p>
+          </div>
+
+          <table class="invoice-table">
+            <thead>
+              <tr>
+                <th>Përshkrimi</th>
+                <th class="text-right">Vlera</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Akomodimi ({{ room?.name }} x {{ totalNights }} netë)</td>
+                <td class="text-right">{{ totalNights * room?.price }}€</td>
+              </tr>
+              <tr *ngFor="let s of getSelectedServices()">
+                <td>{{ s.name }}</td>
+                <td class="text-right">{{ s.price }}€</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td><strong>TOTALI</strong></td>
+                <td class="text-right"><strong>{{ totalPrice }}€</strong></td>
+              </tr>
+            </tfoot>
+          </table>
         </div>
       </div>
 
       <div class="payment-options">
-        <div class="payment-option"
-             [class.selected]="paymentMethod === 'cash'"
-             (click)="paymentMethod = 'cash'">
+        <div class="payment-option" [class.selected]="paymentMethod === 'cash'" (click)="paymentMethod = 'cash'">
           <i class="bi bi-cash-coin"></i>
           <span>Cash në Hotel</span>
         </div>
-        <div class="payment-option"
-             [class.selected]="paymentMethod === 'card'"
-             (click)="paymentMethod = 'card'">
-          <i class="bi bi-credit-card"></i>
-          <span>Kartë Krediti</span>
+        <div class="payment-option" [class.selected]="paymentMethod === 'paypal'" (click)="setupPaypal()">
+          <i class="bi bi-paypal"></i>
+          <span>PayPal</span>
         </div>
+      </div>
+
+      <div *ngIf="paymentMethod === 'paypal'" class="paypal-container">
+        <div id="paypal-button-container"></div>
       </div>
     </div>
 
   </div>
 
-  <!-- BUTONAT -->
   <div class="step-actions">
     <button class="btn-back" (click)="prevStep()" *ngIf="currentStep > 1">
       ← Kthehu
@@ -162,26 +175,37 @@
       Vazhdo →
     </button>
     <button class="btn-confirm" (click)="onSubmit()"
-            *ngIf="currentStep === 4" [disabled]="isLoading">
+            *ngIf="currentStep === 4 && paymentMethod === 'cash'" [disabled]="isLoading">
       {{ isLoading ? 'Duke u procesuar...' : '✓ Konfirmo Rezervimin' }}
     </button>
   </div>
 
 </div>
 
-<!-- MODAL SUKSESI -->
 <div class="modal-overlay" *ngIf="showSuccessModal">
-  <div class="modal-box">
-    <h2>Rezervimi u Krye!</h2>
-    <p>Rezervimi juaj u konfirmua. Ju presim në Grand Horizon!</p>
-    <button class="btn-ok" (click)="goToHome()">Kthehu te Kryefaqja</button>
+  <div class="modal-box" style="max-width: 450px;">
+    <div class="modal-icon" style="color: #c5a059; font-size: 60px; margin-bottom: 10px;">
+      <i class="bi bi-file-earmark-check"></i>
+    </div>
+    <h2 style="color: #1a1a1a;">Rezervimi u Krye!</h2>
+    <p style="margin-bottom: 25px;">Ju faleminderit që zgjodhët Grand Horizon. Tani mund të shkarkoni faturën tuaj zyrtare në format PDF.</p>
+    
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <button class="btn-ok" (click)="generatePDF()" style="background: #1a1a1a; display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <i class="bi bi-download"></i> SHKARKO FATURËN (PDF)
+      </button>
+      
+      <button class="btn-ok" (click)="goToHome()" style="background: transparent; border: 1px solid #ddd; color: #777;">
+        Kthehu te Kryefaqja
+      </button>
+    </div>
   </div>
 </div>
 
-<!-- MODAL GABIMI -->
 <div class="modal-overlay" *ngIf="showErrorModal" (click)="closeErrorModal()">
   <div class="modal-box" (click)="$event.stopPropagation()">
     <button class="close-btn" (click)="closeErrorModal()">✕</button>
+    <div class="modal-icon" style="color: #dc3545;">✕</div>
     <h2>Gabim!</h2>
     <p>{{ errorMessage }}</p>
     <button class="btn-error" (click)="closeErrorModal()">Provo Përsëri</button>
