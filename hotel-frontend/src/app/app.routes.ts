@@ -21,5 +21,6 @@ export const routes: Routes = [
   { path: 'admin', component: AdminComponent },
   { path: 'receptionist', component: ReceptionistComponent },
   { path: 'user-dashboard', component: UserDashboardComponent },
-  { path: 'reservation/:id', component: ReservationComponent }
+  { path: 'reservation/:id', component: ReservationComponent },
+  { path: '**', redirectTo: 'home' }
 ];
