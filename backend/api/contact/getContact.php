@@ -4,11 +4,9 @@ include_once '../../config/database.php';
 header("Content-Type: application/json");
 header("Access-Control-Allow-Methods: GET");
 
-// Kontrollojmë nëse ka një ID në URL (p.sh. getUser.php?id=5)
 $id = $_GET['id'] ?? null;
 
 if (!empty($id)) {
-    // --- RASTI 1: Marrja e një përdoruesi specifik ---
     $sql = "SELECT id, full_name, email, message FROM contact WHERE id = ?";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "i", $id);
@@ -25,8 +23,7 @@ if (!empty($id)) {
     mysqli_stmt_close($stmt);
 
 } else {
-    // --- RASTI 2: Marrja e të gjithë mesazheve ---
-    $sql = "SELECT full_name, email, message FROM contact";
+    $sql = "SELECT id,full_name, email, message FROM contact";
     $result = mysqli_query($conn, $sql);
 
     if ($result) {

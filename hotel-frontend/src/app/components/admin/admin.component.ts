@@ -6,6 +6,7 @@ import { RoomService } from '../../services/room.services';
 import { StaffService } from '../../services/staff.service';
 import { TimetableService } from '../../services/timetable.service';
 import { BookingService } from '../../services/booking.service';
+import {ContactService} from '../../services/contact.service';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -22,6 +23,7 @@ export class AdminComponent implements OnInit {
   invoices: any[] = [];
   timetables: any[] = [];
   bookings: any[] = [];
+  contact :any[]=[];
   activeTab: string = 'rooms';
 
   showModal: boolean = false;
@@ -33,6 +35,7 @@ export class AdminComponent implements OnInit {
     private staffService: StaffService,
     private timetableService: TimetableService,
     private bookingService: BookingService,
+    private contactService :ContactService
   ) {}
 
   ngOnInit(): void {
@@ -40,6 +43,7 @@ export class AdminComponent implements OnInit {
     this.loadStaff();
     this.loadTimetables();
     this.loadBookings();
+    this.loadContacts();
     this.loadAllInvoices();
   }
 
@@ -88,6 +92,26 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  loadContacts() {
+    this.contactService.getContact().subscribe({
+      next: (data: any) => {
+        if (data && data.status === 'success') {
+          this.contact = data.data;
+        }
+      },
+      error: (err) => {
+        console.error('Gabim gjatë ngarkimit të mesazheve:', err);
+      }
+    });
+  }
+
+  setActiveTab(tab: string) {
+    this.activeTab = tab;
+  }
+
+  // Room CRUD
+  addRoom() {
+    // Implement modal or form
   loadAllInvoices() {
     this.http.get('http://localhost:8000/api/admin/getInvoices.php').subscribe({
       next: (res: any) => {
