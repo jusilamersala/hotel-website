@@ -38,5 +38,5 @@
 /* Fix për Mobile */
 @media (max-width: 767px) {
   .footer { text-align: center; }
-  .footer .row > div { margin-bottom: 30px; } /* Hapësirë mes kolonave */
+  .footer .row > div { margin-bottom: 30px; } 
 }

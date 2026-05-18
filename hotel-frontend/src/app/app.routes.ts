@@ -8,7 +8,6 @@ import { SpaComponent } from './components/spa/spa.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { ReceptionistComponent } from './components/receptionist/receptionist.component';
 import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
-// 1. Importo komponentin e rezervimit (ndrysho rrugën e skedarit nëse nuk është saktësisht kjo)
 import { ReservationComponent } from './components/reservation/reservation.component'; 
 
 export const routes: Routes = [
@@ -22,6 +21,7 @@ export const routes: Routes = [
   { path: 'admin', component: AdminComponent },
   { path: 'receptionist', component: ReceptionistComponent },
   { path: 'user-dashboard', component: UserDashboardComponent },
-  
-  { path: 'reservation/:id', component: ReservationComponent }
+  { path: 'reservation/:id', component: ReservationComponent },
+
+  { path: '**', redirectTo: 'home' }
 ];

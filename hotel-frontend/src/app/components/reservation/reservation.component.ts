@@ -26,15 +26,12 @@ export class ReservationComponent implements OnInit {
   totalNights = 0;
   totalPrice = 0;
 
-  extraServices = [
-    { id: 1, name: 'Pishinë & Spa', price: 15, selected: false },
-    { id: 2, name: 'Gym & Fitness', price: 10, selected: false },
-    { id: 3, name: 'Terapi Masazhi', price: 30, selected: false }
-  ];
+  // Lista e shërbimeve që vijnë nga DB
+  extraServices: any[] = [];
 
   phone = '';
   paymentMethod = 'cash';
-  user: any = null;
+  user: any = { name: '', email: '' }; 
   showSuccessModal = false;
   showErrorModal = false;
   errorMessage = '';
@@ -49,17 +46,58 @@ export class ReservationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.user = this.authService.getUser();
+    // 1. Marrja e të dhënave të përdoruesit të loguar
+    const userData = this.authService.getUser();
+    if (userData) {
+      this.user = userData;
+    }
+
+    // 2. Marrja e të dhënave të dhomës specifike
     const roomId = this.route.snapshot.paramMap.get('id');
     if (roomId) {
       this.http.get(`http://localhost:8000/api/bookings/getRoom.php?id=${roomId}`)
         .subscribe({
-          next: (data: any) => { this.room = data; },
+          next: (data: any) => { 
+            this.room = data; 
+            this.calculateTotal();
+          },
           error: () => { this.router.navigate(['/rooms']); }
         });
     }
+
+    // 3. Marrja e shërbimeve ekstra (Path-i i saktë sipas folderit tuaj)
+    this.http.get('http://localhost:8000/api/services/getService.php')
+      .subscribe({
+        next: (response: any) => {
+          console.log("Përgjigjja nga API:", response);
+
+          // Kontrollojmë nëse statusi është success dhe nëse ka data
+          if (response && response.status === 'success' && Array.isArray(response.data)) {
+            
+            this.extraServices = response.data
+              .filter((s: any) => {
+                // Marrim çmimin pavarësisht nëse vjen service_Price ose service_price
+                const val = s.service_Price !== undefined ? s.service_Price : s.service_price;
+                return parseFloat(val) > 0;
+              })
+              .map((s: any) => ({
+                id: s.service_ID || s.service_id,
+                name: s.service_Name || s.service_name, 
+                price: parseFloat(s.service_Price !== undefined ? s.service_Price : s.service_price),
+                selected: false
+              }));
+
+            console.log("Shërbimet e mapuara:", this.extraServices);
+            this.calculateTotal(); 
+          }
+        },
+        error: (err) => {
+          console.error("Gabim në lidhjen me getService.php:", err);
+        }
+      });
   }
 
+  // --- LOGJIKA E KALKULIMIT ---
   calculateTotal() {
     if (this.checkIn && this.checkOut) {
       const start = new Date(this.checkIn);
@@ -71,7 +109,9 @@ export class ReservationComponent implements OnInit {
         const servicesPrice = this.extraServices
           .filter(s => s.selected)
           .reduce((sum, s) => sum + s.price, 0);
-        this.totalPrice = (diff * this.room?.price) + servicesPrice;
+        
+        const roomPrice = this.room?.price || this.room?.room_Price || 0;
+        this.totalPrice = (diff * parseFloat(roomPrice)) + servicesPrice;
       } else {
         this.totalNights = 0;
         this.totalPrice = 0;
@@ -87,6 +127,7 @@ export class ReservationComponent implements OnInit {
     return this.getSelectedServices().map(s => s.name).join(', ');
   }
 
+  // --- PAYPAL ---
   setupPaypal() {
     this.paymentMethod = 'paypal';
     setTimeout(() => {
@@ -99,49 +140,36 @@ export class ReservationComponent implements OnInit {
     const paypalSdk = (window as any).paypal;
 
     if (!paypalSdk) {
-      console.log("Duke pritur SDK-në e PayPal...");
       setTimeout(() => this.renderPaypalButtons(), 500);
       return;
     }
 
     if (container) {
       container.innerHTML = ''; 
-      
       paypalSdk.Buttons({
-        style: {
-          layout: 'vertical',
-          color:  'gold',
-          shape:  'rect',
-          label:  'paypal'
-        },
+        style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal' },
         createOrder: (data: any, actions: any) => {
           return actions.order.create({
             purchase_units: [{
-              amount: { 
-                currency_code: 'EUR',
-                value: this.totalPrice.toString() 
-              },
-              description: `Rezervim: ${this.room?.name || 'Dhoma Hotel'}`
+              amount: { currency_code: 'EUR', value: this.totalPrice.toString() },
+              description: `Rezervim Hotel: ${this.room?.name || 'Dhoma'}`
             }]
           });
         },
         onApprove: (data: any, actions: any) => {
           return actions.order.capture().then(() => {
-            console.log('Pagesa u krye me sukses!');
             this.onSubmit(); 
           });
         },
         onError: (err: any) => {
-          console.error('PayPal Error:', err);
           this.errorMessage = "Pati një problem me dritaren e PayPal.";
           this.showErrorModal = true;
         }
       }).render('#paypal-button-container');
-    } else {
-      setTimeout(() => this.renderPaypalButtons(), 100);
     }
   }
 
+  // --- NAVIGIMI I HAPAVE ---
   nextStep() {
     if (this.currentStep === 2) {
       if (!this.checkIn || !this.checkOut || this.totalNights <= 0) {
@@ -151,8 +179,8 @@ export class ReservationComponent implements OnInit {
       }
     }
     if (this.currentStep === 3) {
-      if (!this.phone) {
-        this.errorMessage = "Ju lutem vendosni numrin e telefonit!";
+      if (!this.phone || this.phone.length < 6) {
+        this.errorMessage = "Ju lutem vendosni një numër telefoni!";
         this.showErrorModal = true;
         return;
       }
@@ -164,6 +192,7 @@ export class ReservationComponent implements OnInit {
     if (this.currentStep > 1) this.currentStep--;
   }
 
+  // --- DËRGIMI I REZERVIMIT ---
   onSubmit() {
     this.isLoading = true;
     const payload = {
@@ -192,22 +221,19 @@ export class ReservationComponent implements OnInit {
       });
   }
 
-  // FUNKSIONI I PDF-së (BRENDA KLASËS)
+  // --- PDF GENERATION ---
   generatePDF() {
     if (!this.room) return;
-
     const doc = new jsPDF();
     
-    // Stilimi i titullit
     doc.setFontSize(22);
     doc.setTextColor(197, 160, 89); 
     doc.text('GRAND HORIZON - LUXURY HOTEL', 105, 20, { align: 'center' });
     
     doc.setFontSize(10);
     doc.setTextColor(100);
-    doc.text('Vlorë, Albania | www.grandhorizon.al', 105, 27, { align: 'center' });
+    doc.text('Bulevardi Kryesor, Tiranë | www.grandhorizon.al', 105, 27, { align: 'center' });
     
-    // Informacioni i Faturës
     doc.setDrawColor(200);
     doc.line(20, 35, 190, 35);
     
@@ -216,7 +242,6 @@ export class ReservationComponent implements OnInit {
     doc.text(`Fatura: #GH-2026-${this.room.room_ID}`, 20, 45);
     doc.text(`Data: ${this.today}`, 20, 52);
     
-    // Informacioni i Klientit
     doc.setFont("helvetica", "bold");
     doc.text('Detajet e Klientit:', 20, 65);
     doc.setFont("helvetica", "normal");
@@ -224,10 +249,9 @@ export class ReservationComponent implements OnInit {
     doc.text(`Email: ${this.user?.email}`, 20, 79);
     doc.text(`Tel: ${this.phone}`, 20, 86);
     
-    // Tabela e Shërbimeve
     const head = [['Përshkrimi', 'Çmimi']];
-    const data: any[] = [
-      [`Akomodimi: ${this.room.name} (${this.totalNights} netë)`, `${this.totalNights * this.room.price}€`],
+    const bodyData: any[] = [
+      [`Akomodimi: ${this.room.name || 'Dhoma'} (${this.totalNights} netë)`, `${this.totalNights * (this.room.price || this.room.room_Price)}€`],
       ...this.getSelectedServices().map(s => [s.name, `${s.price}€`]),
       [{ content: 'TOTALI', styles: { fontStyle: 'bold' } }, { content: `${this.totalPrice}€`, styles: { fontStyle: 'bold' } }]
     ];
@@ -235,20 +259,24 @@ export class ReservationComponent implements OnInit {
     autoTable(doc, {
       startY: 95,
       head: head,
-      body: data,
+      body: bodyData,
       theme: 'striped',
       headStyles: { fillColor: [197, 160, 89] },
       margin: { left: 20, right: 20 }
     });
 
-    // Footer
     const finalY = (doc as any).lastAutoTable.finalY + 10;
     doc.setFontSize(10);
     doc.setFont("helvetica", "italic");
-    doc.text('Faleminderit që zgjodhët Grand Horizon! Ju presim së shpejti.', 105, finalY + 10, { align: 'center' });
+    doc.text('Faleminderit që zgjodhët Grand Horizon!', 105, finalY + 10, { align: 'center' });
 
-    // Shkarkimi i PDF
-    doc.save(`Fatura_GrandHorizon_${this.user?.name.replace(/\s+/g, '_')}.pdf`);
+    doc.save(`Fatura_GrandHorizon_${this.user?.name?.replace(/\s+/g, '_') || 'Rezervim'}.pdf`);
+  }
+
+  onPhoneInput(): void {
+    if (this.phone) {
+      this.phone = this.phone.replace(/\D/g, '');
+    }
   }
 
   goToHome() { this.router.navigate(['/home']); }

@@ -15,7 +15,7 @@
 
     <div class="step" [class.active]="currentStep >= 3" [class.done]="currentStep > 3">
       <div class="step-circle">{{ currentStep > 3 ? '✓' : '3' }}</div>
-      <span>Kontakti</span>
+      <span>Fatura</span>
     </div>
     <div class="step-line" [class.active]="currentStep > 3"></div>
 
@@ -97,7 +97,7 @@
       </div>
       <div class="form-group">
         <label>Numri i Telefonit *</label>
-        <input type="tel" [(ngModel)]="phone" placeholder="+355 6X XXX XXXX">
+        <input type="text" [(ngModel)]="phone" name="phone" placeholder="06XXXXXXXX" (keyup)="onPhoneInput()" (blur)="onPhoneInput()">
       </div>
     </div>
 
