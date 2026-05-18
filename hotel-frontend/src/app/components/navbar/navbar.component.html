@@ -81,7 +81,6 @@
           >
         </li>
 
-        <!-- Nëse NUK është i loguar → shfaq butonin Hyr -->
         <li class="nav-item ms-lg-3" *ngIf="!isLoggedIn">
           <a
             class="btn btn-gold rounded-pill px-4 fw-bold shadow-sm"
@@ -92,7 +91,6 @@
           </a>
         </li>
 
-        <!-- Nëse është i loguar → shfaq emrin + dropdown -->
         <li class="nav-item dropdown ms-lg-3" *ngIf="isLoggedIn">
           <a
             class="btn btn-gold rounded-pill px-4 fw-bold shadow-sm dropdown-toggle"
@@ -115,18 +113,8 @@
                 <i class="bi bi-person me-2"></i> Profili Im
               </a>
             </li>
-            <li>
-              <a
-                class="dropdown-item"
-                routerLink="/my-bookings"
-                (click)="hotelToggler.click()"
-              >
-                <i class="bi bi-calendar-check me-2"></i> Rezervimet e Mia
-              </a>
-            </li>
             <li><hr class="dropdown-divider" /></li>
             <li>
-              <!-- Butoni Logout -->
               <button class="dropdown-item text-danger" (click)="logout()">
                 <i class="bi bi-box-arrow-right me-2"></i> Dil
               </button>
