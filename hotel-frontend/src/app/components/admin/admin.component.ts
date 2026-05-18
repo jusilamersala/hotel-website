@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RoomService } from '../../services/room.services';
 import { StaffService } from '../../services/staff.service';
 import { TimetableService } from '../../services/timetable.service';
+import { BookingService } from '../../services/booking.service';
 
 @Component({
   selector: 'app-admin',
@@ -15,23 +16,29 @@ export class AdminComponent implements OnInit {
   rooms: any[] = [];
   staff: any[] = [];
   timetables: any[] = [];
+  bookings: any[] = [];
   activeTab: string = 'rooms';
+
+  showModal: boolean = false;
+  selectedBookingId: number | null = null;
 
   constructor(
     private roomService: RoomService,
     private staffService: StaffService,
-    private timetableService: TimetableService
+    private timetableService: TimetableService,
+    private bookingService: BookingService
   ) {}
 
   ngOnInit(): void {
     this.loadRooms();
     this.loadStaff();
     this.loadTimetables();
+    this.loadBookings();
   }
 
   loadRooms() {
     this.roomService.getRooms().subscribe((data: any) => {
-      if (data.status === 'success') {
+      if (data && data.status === 'success') {
         this.rooms = data.data;
       }
     });
@@ -39,7 +46,7 @@ export class AdminComponent implements OnInit {
 
   loadStaff() {
     this.staffService.getStaff().subscribe((data: any) => {
-      if (data.status === 'success') {
+      if (data && data.status === 'success') {
         this.staff = data.data;
       }
     });
@@ -47,8 +54,21 @@ export class AdminComponent implements OnInit {
 
   loadTimetables() {
     this.timetableService.getTimetables().subscribe((data: any) => {
-      if (data.status === 'success') {
+      if (data && data.status === 'success') {
         this.timetables = data.data;
+      }
+    });
+  }
+
+  loadBookings() {
+    this.bookingService.getBookings().subscribe({
+      next: (data: any) => {
+        if (data && data.status === 'success') {
+          this.bookings = data.data;
+        }
+      },
+      error: (err) => {
+        console.error('Gabim gjatë ngarkimit të rezervimeve:', err);
       }
     });
   }
@@ -100,5 +120,32 @@ export class AdminComponent implements OnInit {
     this.timetableService.deleteTimetable(id).subscribe(() => {
       this.loadTimetables();
     });
+  }
+
+
+  openDeleteModal(id: number) {
+    this.selectedBookingId = id;
+    this.showModal = true;
+  }
+
+  closeDeleteModal() {
+    this.showModal = false;
+    this.selectedBookingId = null;
+  }
+
+  confirmDelete() {
+    if (this.selectedBookingId !== null) {
+      this.bookingService.deleteBooking(this.selectedBookingId).subscribe({
+        next: () => {
+          this.loadBookings();
+          this.closeDeleteModal();
+        },
+        error: (err: any) => {
+          console.error("Gabim gjatë fshirjes së rezervimit:", err);
+          alert("Fshirja dështoi!");
+          this.closeDeleteModal();
+        }
+      });
+    }
   }
 }

@@ -105,3 +105,105 @@ input.ng-invalid.ng-touched {
 }
 
 .forgot-link:hover { text-decoration: underline; }
+
+/* --- MODAL OVERLAY --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px); /* Shton një efekt modern mjegullimi në sfond */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.25s ease-out;
+}
+
+/* --- MODAL BOX --- */
+.modal-box {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 40px;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-box h2 {
+  color: #1a1a1a;
+  margin-bottom: 12px;
+  font-size: 24px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+}
+
+.modal-box p {
+  color: #666;
+  margin-bottom: 25px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.modal-box input {
+  border-radius: 6px;
+}
+
+.modal-box button:not(.close-btn) {
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+/* --- CLOSE BUTTON (Rregullimi Kryesor) --- */
+.modal-box .close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #f3f4f6; /* Sfond i lehtë rrethor */
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #666;
+  width: 32px; /* Madhësi fikse që të mos bëhet 100% */
+  height: 32px;
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.modal-box .close-btn:hover {
+  background: #e5e7eb;
+  color: #000;
+  transform: scale(1.05);
+  box-shadow: none;
+}
+
+.modal-box .close-btn:active {
+  transform: scale(0.95);
+}
+
+/* --- ANIMATIONS --- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+@media (max-width: 480px) {
+  .modal-box {
+    margin: 0 20px;
+    padding: 30px 20px;
+  }
+}

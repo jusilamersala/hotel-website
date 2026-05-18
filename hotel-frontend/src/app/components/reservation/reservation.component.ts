@@ -6,8 +6,6 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-
-// Deklarojmë PayPal si globale
 declare var paypal: any;
 
 @Component({
@@ -105,8 +103,8 @@ export class ReservationComponent implements OnInit {
     }
 
     if (container) {
-      container.innerHTML = ''; 
-      
+      container.innerHTML = '';
+
       paypalSdk.Buttons({
         style: {
           layout: 'vertical',
@@ -117,9 +115,9 @@ export class ReservationComponent implements OnInit {
         createOrder: (data: any, actions: any) => {
           return actions.order.create({
             purchase_units: [{
-              amount: { 
+              amount: {
                 currency_code: 'EUR',
-                value: this.totalPrice.toString() 
+                value: this.totalPrice.toString()
               },
               description: `Rezervim: ${this.room?.name || 'Dhoma Hotel'}`
             }]
@@ -128,7 +126,7 @@ export class ReservationComponent implements OnInit {
         onApprove: (data: any, actions: any) => {
           return actions.order.capture().then(() => {
             console.log('Pagesa u krye me sukses!');
-            this.onSubmit(); 
+            this.onSubmit();
           });
         },
         onError: (err: any) => {
@@ -175,7 +173,7 @@ export class ReservationComponent implements OnInit {
       total_price: this.totalPrice,
       phone: this.phone,
       payment_method: this.paymentMethod,
-      services: this.getSelectedServicesNames() 
+      services: this.getSelectedServicesNames()
     };
 
     this.http.post('http://localhost:8000/api/bookings/createBooking.php', payload)
@@ -192,30 +190,29 @@ export class ReservationComponent implements OnInit {
       });
   }
 
-  // FUNKSIONI I PDF-së (BRENDA KLASËS)
   generatePDF() {
     if (!this.room) return;
 
     const doc = new jsPDF();
-    
+
     // Stilimi i titullit
     doc.setFontSize(22);
-    doc.setTextColor(197, 160, 89); 
+    doc.setTextColor(197, 160, 89);
     doc.text('GRAND HORIZON - LUXURY HOTEL', 105, 20, { align: 'center' });
-    
+
     doc.setFontSize(10);
     doc.setTextColor(100);
     doc.text('Vlorë, Albania | www.grandhorizon.al', 105, 27, { align: 'center' });
-    
+
     // Informacioni i Faturës
     doc.setDrawColor(200);
     doc.line(20, 35, 190, 35);
-    
+
     doc.setFontSize(12);
     doc.setTextColor(0);
     doc.text(`Fatura: #GH-2026-${this.room.room_ID}`, 20, 45);
     doc.text(`Data: ${this.today}`, 20, 52);
-    
+
     // Informacioni i Klientit
     doc.setFont("helvetica", "bold");
     doc.text('Detajet e Klientit:', 20, 65);
@@ -223,8 +220,8 @@ export class ReservationComponent implements OnInit {
     doc.text(`Emri: ${this.user?.name}`, 20, 72);
     doc.text(`Email: ${this.user?.email}`, 20, 79);
     doc.text(`Tel: ${this.phone}`, 20, 86);
-    
-    // Tabela e Shërbimeve
+
+    // Tabela e Sherbimeve
     const head = [['Përshkrimi', 'Çmimi']];
     const data: any[] = [
       [`Akomodimi: ${this.room.name} (${this.totalNights} netë)`, `${this.totalNights * this.room.price}€`],

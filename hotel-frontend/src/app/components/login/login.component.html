@@ -79,4 +79,15 @@
       Keni harruar fjalëkalimin?
     </a>
   </p>
+
+  <div class="modal-overlay" *ngIf="showAuthModal" (click)="closeModal()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+
+      <button class="close-btn" (click)="closeModal()">✕</button>
+
+      <h2>Regjistrimi u krye!</h2>
+      <p>Ju lutem kontrolloni email-in për të aktivizuar llogarinë.</p>
+      </div>
+
+    </div>
 </div>

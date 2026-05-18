@@ -40,6 +40,7 @@ if ($email && $password) {
                 "user" => [
                     "id" => $user['user_ID'],
                     "name" => $user['name'],
+                    "email"=>$user['email'],
                     "role" => $user['role']
                 ]
             ]);
