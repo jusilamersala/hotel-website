@@ -1,182 +1,113 @@
 <div class="container-fluid py-4 px-md-5"> 
-  
-  <!-- Karta e Mirëseardhjes për Recepsionistin -->
-  <div class="card border-0 shadow-sm bg-dark text-white mb-4">
-    <div class="card-body p-4 d-flex align-items-center justify-content-between">
-      <div>
-        <h1 class="fs-3 m-0 text-gold font-monospace fw-bold">Mirëseerdhe, Recepsionist! 👋</h1>
-        <p class="text-light-50 m-0 mt-1 small">Menaxho rezervimet aktive dhe regjistro klientët walk-in direkt nga tabela.</p>
-      </div>
-      <div class="d-none d-md-block text-gold fs-1">
-        <i class="bi bi-person-badge-fill"></i>
-      </div>
-    </div>
-  </div>
+  
+  <!-- Karta e Mirëseardhjes për Recepsionistin -->
+  <div class="card border-0 shadow-sm bg-dark text-white mb-4">
+    <div class="card-body p-4 d-flex align-items-center justify-content-between">
+      <div>
+        <h1 class="fs-3 m-0 text-gold font-monospace fw-bold">Mirë se erdhe, Recepsionist! 👋</h1>
+        <p class="text-light-50 m-0 mt-1 small">Menaxho rezervimet aktive dhe regjistro klientët walk-in direkt nga tabela.</p>
+      </div>
+      <div class="d-none d-md-block text-gold fs-1">
+        <i class="bi bi-person-badge-fill"></i>
+      </div>
+    </div>
+  </div>
 
-  <!-- TABELA 1: Rezervimet Ekzistuese / Aktive -->
-  <div class="card border-0 shadow-sm mb-5">
-    <div class="card-header bg-gold text-white p-3">
-      <h3 class="m-0 fs-4"><i class="bi bi-journal-check me-2"></i>All Active Bookings & Bills</h3>
-    </div>
-    <div class="card-body p-0"> 
-      <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-          <thead class="table-light">
-            <tr>
-              <th class="ps-3">ID</th>
-              <th>User</th>
-              <th>Room Type</th>
-              <th>Room Price</th>
-              <th>Extra Service</th>
-              <th>Service Price</th>
-              <th>Total Bill</th>
-              <th>Check-in</th>
-              <th>Check-out</th>
-              <th>Status</th>
-              <th>Booking Date</th>
-              <th class="pe-3">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let booking of bookings">
-              <td class="ps-3 fw-bold">#{{ booking.booking_ID }}</td>
-              <td class="text-nowrap">{{ booking.name }} {{ booking.surname }}</td>
-              <td class="text-nowrap">{{ booking.room_type }}</td>
-              <td class="text-nowrap">{{ booking.price }} Lekë</td>
-              <td>
-                <span *ngIf="booking.extra_service" class="badge bg-secondary p-2">{{ booking.extra_service }}</span>
-                <span *ngIf="!booking.extra_service" class="text-muted small">None</span>
-              </td>
-              <td class="text-nowrap">{{ booking.service_price || 0 }} Lekë</td>
-              <td class="text-nowrap fw-bold text-success">
-                {{ booking.price + (booking.service_price || 0) }} Lekë
-              </td>
-              <td class="text-nowrap">{{ booking.check_In_Date }}</td>
-              <td class="text-nowrap">{{ booking.check_Out_Date }}</td>
-              <td>
-                <span class="badge" [ngClass]="{
-                  'bg-warning': booking.status === 'Pending',
-                  'bg-success': booking.status === 'Confirmed',
-                  'bg-danger': booking.status === 'Cancelled'
-                }">{{ booking.status }}</span>
-              </td>
-              <td class="text-nowrap text-muted small">{{ booking.booking_Date | date:'dd/MM/yyyy HH:mm' }}</td>
-              <td class="pe-3">
-                <div class="d-flex gap-2">
-                  <select class="form-select form-select-sm" [value]="booking.status" (change)="updateBookingStatus(booking.booking_ID, $event)">
-                    <option value="Pending">Pending</option>
-                    <option value="Confirmed">Confirmed</option>
-                    <option value="Cancelled">Cancelled</option>
-                  </select>
-                  <button class="btn btn-sm btn-outline-danger" (click)="deleteBooking(booking.booking_ID)">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+  <!-- TABELA: Walk-In Bookings (Plotësohen direkt nga Recepsionisti) -->
+  <div class="card border-0 shadow-sm">
+    <div class="card-header bg-secondary text-white p-3 d-flex justify-content-between align-items-center">
+      <h3 class="m-0 fs-4"><i class="bi bi-person-plus-fill me-2"></i>New Walk-In Entries (Direct Input)</h3>
+      <button class="btn btn-sm btn-light" (click)="addEmptyWalkInRow()">
+        <i class="bi bi-plus-lg me-1"></i>Shto Rresht të Ri
+      </button>
+    </div>
+    <div class="card-body p-0"> 
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th class="ps-3" style="width: 70px;">ID</th>
+              <th>Guest Name</th>
+              <th>Room Type</th>
+              <th style="width: 120px;">Room Price</th>
+              <th>Extra Service</th>
+              <th style="width: 120px;">Service Price</th>
+              <th style="width: 130px;">Check-in Date</th>
+              <th style="width: 130px;">Check-out Date</th>
+              <th style="width: 130px;">Status</th>
+              <th class="pe-3" style="width: 100px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Supozojmë se ke një koleksion 'walkIns' në komponentin Angular -->
+            <tr *ngFor="let w of walkIns; let i = index">
+              
+              <!-- ID auto-generated ose thjesht numër rreshti -->
+              <td class="ps-3 text-muted fw-bold">#{{ w.booking_ID || (i + 1) }}</td>
+              
+              <!-- Emër & Mbiemër fusha input -->
+              <td>
+                <div class="d-flex gap-1">
+                  <input type="text" class="form-control form-control-sm" [(ngModel)]="w.name" placeholder="Emri" required>
+                  <input type="text" class="form-control form-control-sm" [(ngModel)]="w.surname" placeholder="Mbiemri" required>
+                </div>
+              </td>
+              
+              <!-- Room Type Selection -->
+              <td>
+                <select class="form-select form-select-sm" [(ngModel)]="w.room_type" required>
+                  <option value="" disabled selected>Zgjidh...</option>
+                  <option value="Deluxe Room">Deluxe Room</option>
+                  <option value="Standard Room">Standard Room</option>
+                  <option value="Suite">Suite</option>
+                </select>
+              </td>
+              
+              <!-- Room Price -->
+              <td>
+                <input type="number" class="form-control form-control-sm" [(ngModel)]="w.price" placeholder="Lekë" required>
+              </td>
+              
+              <!-- Extra Service -->
+              <td>
+                <input type="text" class="form-control form-control-sm" [(ngModel)]="w.extra_service" placeholder="p.sh. Gym, Pool">
+              </td>
+              
+              <!-- Service Price -->
+              <td>
+                <input type="number" class="form-control form-control-sm" [(ngModel)]="w.service_price" placeholder="0">
+              </td>
+              
+              <!-- Check-In -->
+              <td>
+                <input type="date" class="form-control form-control-sm" [(ngModel)]="w.check_In_Date" required>
+              </td>
+              
+              <!-- Check-Out -->
+              <td>
+                <input type="date" class="form-control form-control-sm" [(ngModel)]="w.check_Out_Date" required>
+              </td>
+              
+              <!-- Status -->
+              <td>
+                <select class="form-select form-select-sm text-success fw-bold" [(ngModel)]="w.status">
+                  <option value="Confirmed">Confirmed</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </td>
+              
+              <!-- Actions (Ruaj në Databazë) -->
+              <td class="pe-3">
+                <button class="btn btn-sm btn-success w-100 text-nowrap" (click)="saveWalkIn(w)">
+                  <i class="bi bi-cloud-arrow-up-fill me-1"></i> Ruaj
+                </button>
+              </td>
 
-
-  <!-- TABELA 2: Walk-In Bookings (Plotësohen direkt nga Recepsionisti) -->
-  <div class="card border-0 shadow-sm">
-    <div class="card-header bg-secondary text-white p-3 d-flex justify-content-between align-items-center">
-      <h3 class="m-0 fs-4"><i class="bi bi-person-plus-fill me-2"></i>New Walk-In Entries (Direct Input)</h3>
-      <button class="btn btn-sm btn-light" (click)="addEmptyWalkInRow()">
-        <i class="bi bi-plus-lg me-1"></i>Shto Rresht të Ri
-      </button>
-    </div>
-    <div class="card-body p-0"> 
-      <div class="table-responsive">
-        <table class="table align-middle mb-0">
-          <thead class="table-dark">
-            <tr>
-              <th class="ps-3" style="width: 70px;">ID</th>
-              <th>Guest Name</th>
-              <th>Room Type</th>
-              <th style="width: 120px;">Room Price</th>
-              <th>Extra Service</th>
-              <th style="width: 120px;">Service Price</th>
-              <th style="width: 130px;">Check-in Date</th>
-              <th style="width: 130px;">Check-out Date</th>
-              <th style="width: 130px;">Status</th>
-              <th class="pe-3" style="width: 100px;">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Supozojmë se ke një koleksion 'walkIns' në komponentin Angular -->
-            <tr *ngFor="let w of walkIns; let i = index">
-              
-              <!-- ID auto-generated ose thjesht numër rreshti -->
-              <td class="ps-3 text-muted fw-bold">#{{ w.booking_ID || (i + 1) }}</td>
-              
-              <!-- Emër & Mbiemër fusha input -->
-              <td>
-                <div class="d-flex gap-1">
-                  <input type="text" class="form-control form-control-sm" [(ngModel)]="w.name" placeholder="Emri" required>
-                  <input type="text" class="form-control form-control-sm" [(ngModel)]="w.surname" placeholder="Mbiemri" required>
-                </div>
-              </td>
-              
-              <!-- Room Type Selection -->
-              <td>
-                <select class="form-select form-select-sm" [(ngModel)]="w.room_type" required>
-                  <option value="" disabled selected>Zgjidh...</option>
-                  <option value="Deluxe Room">Deluxe Room</option>
-                  <option value="Standard Room">Standard Room</option>
-                  <option value="Suite">Suite</option>
-                </select>
-              </td>
-              
-              <!-- Room Price -->
-              <td>
-                <input type="number" class="form-control form-control-sm" [(ngModel)]="w.price" placeholder="Lekë" required>
-              </td>
-              
-              <!-- Extra Service -->
-              <td>
-                <input type="text" class="form-control form-control-sm" [(ngModel)]="w.extra_service" placeholder="p.sh. Gym, Pool">
-              </td>
-              
-              <!-- Service Price -->
-              <td>
-                <input type="number" class="form-control form-control-sm" [(ngModel)]="w.service_price" placeholder="0">
-              </td>
-              
-              <!-- Check-In -->
-              <td>
-                <input type="date" class="form-control form-control-sm" [(ngModel)]="w.check_In_Date" required>
-              </td>
-              
-              <!-- Check-Out -->
-              <td>
-                <input type="date" class="form-control form-control-sm" [(ngModel)]="w.check_Out_Date" required>
-              </td>
-              
-              <!-- Status -->
-              <td>
-                <select class="form-select form-select-sm text-success fw-bold" [(ngModel)]="w.status">
-                  <option value="Confirmed">Confirmed</option>
-                  <option value="Pending">Pending</option>
-                  <option value="Cancelled">Cancelled</option>
-                </select>
-              </td>
-              
-              <!-- Actions (Ruaj në Databazë) -->
-              <td class="pe-3">
-                <button class="btn btn-sm btn-success w-100 text-nowrap" (click)="saveWalkIn(w)">
-                  <i class="bi bi-cloud-arrow-up-fill me-1"></i> Ruaj
-                </button>
-              </td>
-
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-</div> 
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
