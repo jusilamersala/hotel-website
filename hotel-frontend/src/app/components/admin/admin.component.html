@@ -13,9 +13,9 @@
     <li class="nav-item">
       <a
         class="nav-link text-nowrap"
-        [class.active]="activeTab === 'staff'"
-        (click)="setActiveTab('staff')"
-        >Menaxho Staf</a
+        [class.active]="activeTab === 'services'"
+        (click)="setActiveTab('services')"
+        >Menaxho Shërbimet</a
       >
     </li>
     <li class="nav-item">
@@ -35,45 +35,53 @@
       >
     </li>
     <li class="nav-item">
-      <a class="nav-link text-nowrap" [class.active]="activeTab === 'contacts'" (click)="setActiveTab('contacts')">Mesazhet</a>
+      <a
+        class="nav-link text-nowrap"
+        [class.active]="activeTab === 'contacts'"
+        (click)="setActiveTab('contacts')"
+        >Mesazhet</a
+      >
     </li>
   </ul>
 
   <div [ngSwitch]="activeTab">
-
     <div *ngSwitchCase="'rooms'" class="tab-content shadow-sm p-3">
       <div
         class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-3 gap-2"
       >
         <h3 class="m-0">Dhomat</h3>
-        <button class="btn btn-gold btn-sm w-auto" >
-          + Shto Dhomë
-        </button>
+        <button class="btn btn-gold btn-sm w-auto">+ Shto Dhomë</button>
       </div>
 
       <div class="table-responsive border-0">
         <table class="table table-hover align-middle">
           <thead class="table-dark">
             <tr>
+              <th>Id</th>
               <th>Emri</th>
               <th>Tipi</th>
-              <th>Çmimi</th>
+              <th>Kati</th>
+              <th>Pershkrimi</th>
+              <th>Kapaciteti</th>
+              <th>Cmimi</th>
               <th class="text-center">Veprime</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let room of rooms">
-              <td class="text-nowrap fw-bold">{{ room.name }}</td>
+              <td class="text-nowrap fw-bold">{{ room.room_ID }}</td>
+              <td>{{ room.name }}</td>
               <td>{{ room.room_type }}</td>
+              <td>{{ room.floor }}</td>
+              <td>{{ room.description }}</td>
+              <td>{{ room.capacity }}</td>
               <td class="text-nowrap">{{ room.price }}€</td>
               <td>
                 <div class="d-flex gap-1 justify-content-center">
-                  <button
-                    class="btn btn-sm btn-outline-primary"
-                  >
+                  <button class="btn btn-sm btn-outline-primary">
                     <i class="bi bi-pencil"></i>
                   </button>
-                  <button>
+                  <button
                     class="btn btn-sm btn-outline-danger"
                     (click)="deleteRoom(room.room_ID)"
                   >
@@ -87,31 +95,42 @@
       </div>
     </div>
 
-    <div *ngSwitchCase="'staff'" class="tab-content shadow-sm p-3">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3>Staff Management</h3>
-        <button class="btn btn-gold btn-sm">+ Shto Staf</button>
+    <div *ngSwitchCase="'services'" class="tab-content shadow-sm p-3">
+      <div
+        class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-3 gap-2"
+      >
+        <h3 class="m-0">Shërbimet</h3>
+        <button class="btn btn-gold btn-sm w-auto">+ Shto Shërbim</button>
       </div>
-      <div class="table-responsive">
+
+      <div class="table-responsive border-0">
         <table class="table table-hover align-middle">
           <thead class="table-dark">
             <tr>
+              <th>Id</th>
               <th>Emri</th>
-              <th>Pozicioni</th>
+              <th>Përshkrimi</th>
+              <th>Çmimi</th>
               <th class="text-center">Veprime</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let s of staff">
-              <td>{{ s.name }} {{ s.surname }}</td>
-              <td>{{ s.position }}</td>
-              <td class="text-center">
-                <button
-                  class="btn btn-sm btn-outline-danger"
-                  (click)="deleteStaff(s.staff_ID)"
-                >
-                  <i class="bi bi-trash"></i>
-                </button>
+            <tr *ngFor="let service of services">
+              <td class="text-nowrap fw-bold">{{ service.service_ID }}</td>
+              <td>{{ service.service_Name }}</td>
+              <td>{{ service.service_Description }}</td>
+              <td class="text-nowrap">{{ service.service_Price }}€</td>
+              <td>
+                <div class="d-flex gap-1 justify-content-center">
+                  <button class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline-danger"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -245,43 +264,51 @@
     </div>
 
     <div *ngSwitchCase="'contacts'" class="tab-content shadow-sm p-3">
-      <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-3 gap-2">
+      <div
+        class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-3 gap-2"
+      >
         <h3 class="m-0">Mesazhet nga Forma e Kontaktit</h3>
       </div>
 
       <div class="table-responsive border-0">
         <table class="table table-hover align-middle">
           <thead class="table-dark">
-          <tr>
-            <th>ID</th>
-            <th>Emri</th>
-            <th>Email</th>
-            <th>Mesazhi</th>
-          </tr>
+            <tr>
+              <th>ID</th>
+              <th>Emri</th>
+              <th>Email</th>
+              <th>Mesazhi</th>
+            </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let msg of contact">
-            <td class="text-nowrap fw-bold">#{{ msg.id }}</td>
-            <td class="text-nowrap">{{ msg.full_name }}</td>
-            <td><a href="mailto:{{ msg.email }}" class="text-decoration-none">{{ msg.email }}</a></td>
-            <td class="fw-semibold">{{ msg.subject }}</td>
-            <td>
-              <div class="text-wrap" style="min-width: 200px; max-width: 400px;">
-                {{ msg.message }}
-              </div>
-            </td>
-          </tr>
+            <tr *ngFor="let msg of contact">
+              <td class="text-nowrap fw-bold">#{{ msg.id }}</td>
+              <td class="text-nowrap">{{ msg.full_name }}</td>
+              <td>
+                <a href="mailto:{{ msg.email }}" class="text-decoration-none">{{
+                  msg.email
+                }}</a>
+              </td>
+              <td class="fw-semibold">{{ msg.subject }}</td>
+              <td>
+                <div
+                  class="text-wrap"
+                  style="min-width: 200px; max-width: 400px"
+                >
+                  {{ msg.message }}
+                </div>
+              </td>
+            </tr>
 
-          <tr *ngIf="contact.length === 0">
-            <td colspan="6" class="text-center py-4 text-muted">
-              Nuk ka asnjë mesazh të ri.
-            </td>
-          </tr>
+            <tr *ngIf="contact.length === 0">
+              <td colspan="6" class="text-center py-4 text-muted">
+                Nuk ka asnjë mesazh të ri.
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
     </div>
-
   </div>
 </div>
 

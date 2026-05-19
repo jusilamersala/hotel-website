@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RoomService } from '../../services/room.services';
-import { StaffService } from '../../services/staff.service';
-import { TimetableService } from '../../services/timetable.service';
+import { ServicesService } from '../../services/services.service';
 import { BookingService } from '../../services/booking.service';
 import { ContactService } from '../../services/contact.service';
 import jsPDF from 'jspdf';
@@ -19,9 +18,8 @@ import autoTable from 'jspdf-autotable';
 })
 export class AdminComponent implements OnInit {
   rooms: any[] = [];
-  staff: any[] = [];
+  services: any[] = [];
   invoices: any[] = [];
-  timetables: any[] = [];
   bookings: any[] = [];
   contact: any[] = [];
   activeTab: string = 'rooms';
@@ -32,17 +30,15 @@ export class AdminComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private roomService: RoomService,
-    private staffService: StaffService,
-    private timetableService: TimetableService,
     private bookingService: BookingService,
-    private contactService: ContactService
+    private contactService: ContactService,
+    private servicesService: ServicesService,
   ) {}
 
   ngOnInit(): void {
     this.loadRooms();
-    this.loadStaff();
-    this.loadTimetables();
     this.loadBookings();
+    this.loadServices();
     this.loadContacts();
     this.loadAllInvoices();
   }
@@ -58,25 +54,31 @@ export class AdminComponent implements OnInit {
   // --- NGARKIMI I TË DHËNAVE ---
   loadRooms() {
     this.roomService.getRooms().subscribe((data: any) => {
-      if (data && data.status === 'success') {
+      console.log('Dhomat që erdhën:', data);
+
+      // Nëse data është Array (siç e dërgove), e marrim direkt.
+      // Nëse është objekt me .data, e marrim atë.
+      if (Array.isArray(data)) {
+        this.rooms = data;
+      } else if (data && data.data) {
         this.rooms = data.data;
       }
     });
   }
 
-  loadStaff() {
-    this.staffService.getStaff().subscribe((data: any) => {
-      if (data && data.status === 'success') {
-        this.staff = data.data;
-      }
-    });
-  }
-
-  loadTimetables() {
-    this.timetableService.getTimetables().subscribe((data: any) => {
-      if (data && data.status === 'success') {
-        this.timetables = data.data;
-      }
+  // Brenda AdminComponent
+  loadServices() {
+    this.servicesService.getServices().subscribe({
+      next: (res: any) => {
+        // JSON-i yt ka 'status' dhe 'data'
+        if (res && res.status === 'success') {
+          this.services = res.data;
+          console.log('Shërbimet u ngarkuan me sukses!');
+        }
+      },
+      error: (err) => {
+        console.error('Gabim: Nuk u gjet skedari getService(s).php', err);
+      },
     });
   }
 
@@ -101,7 +103,7 @@ export class AdminComponent implements OnInit {
       },
       error: (err) => {
         console.error('Gabim gjatë ngarkimit të mesazheve:', err);
-      }
+      },
     });
   }
 
@@ -201,12 +203,6 @@ export class AdminComponent implements OnInit {
   deleteRoom(id: number) {
     if (confirm('Fshij dhomën?')) {
       this.roomService.deleteRoom(id).subscribe(() => this.loadRooms());
-    }
-  }
-
-  deleteStaff(id: number) {
-    if (confirm('Hiq stafin?')) {
-      this.staffService.deleteStaff(id).subscribe(() => this.loadStaff());
     }
   }
 
