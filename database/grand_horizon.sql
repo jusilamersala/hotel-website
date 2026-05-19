@@ -258,4 +258,3 @@ UPDATE `User`
 SET 
  role= 'Admin'
 WHERE `user_ID` = 16;
-

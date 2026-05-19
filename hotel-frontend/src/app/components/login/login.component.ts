@@ -49,9 +49,9 @@ export class LoginComponent implements OnInit {
     this.http.post(url, this.loginData).subscribe({
       next: (res: any) => {
         this.authService.setUser(res.user);
+        this.router.navigate(['/user-dashboard']);
 
-        // KONTROLLI I ROLIT:
-        // Kontrollojmë nëse roli është 'Admin' (sigurohu që shkruhet saktë si në databazë)
+
         if (res.user && res.user.role === 'Admin') {
           this.router.navigate(['/admin']);
         } else if (res.user && res.user.role === 'Receptionist') {
