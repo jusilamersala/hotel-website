@@ -107,8 +107,8 @@
             <li>
               <a
                 class="dropdown-item"
-                routerLink="/profile"
-                (click)="hotelToggler.click()"
+                href="#"
+                (click)="navigateToProfile(); hotelToggler.click(); $event.preventDefault()"
               >
                 <i class="bi bi-person me-2"></i> Profili Im
               </a>

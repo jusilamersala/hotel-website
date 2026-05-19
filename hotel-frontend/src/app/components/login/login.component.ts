@@ -51,9 +51,12 @@ export class LoginComponent implements OnInit {
         this.authService.setUser(res.user);
 
         // KONTROLLI I ROLIT:
-        // Kontrollojmë nëse roli është 'Admin' (sigurohu që shkruhet saktë si në databazë)
-        if (res.user && res.user.role === 'Admin') {
+        // Kontrollojmë rolin dhe navigojmë sipas përkatësisë
+        const role = res.user?.role?.toLowerCase().trim() || '';
+        if (role === 'admin') {
           this.router.navigate(['/admin']);
+        } else if (role === 'reception') {
+          this.router.navigate(['/receptionist']);
         } else {
           this.router.navigate(['/home']);
         }

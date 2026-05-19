@@ -15,6 +15,7 @@ export class NavbarComponent implements OnInit {
   isLoggedIn = false;
   userName = '';
   userInitials = '';
+  userRole = '';
   spaServices: any[] = [];
 
   constructor(
@@ -29,17 +30,31 @@ export class NavbarComponent implements OnInit {
       if (user) {
         this.isLoggedIn = true;
         this.userName = user.name;
+        this.userRole = user.role || '';
         // Gjeneron iniciale: "Arta" → "A"
         this.userInitials = user.name?.charAt(0).toUpperCase();
       } else {
         // Nëse user është null (p.sh. pas logout ose kur nuk është loguar ende)
         this.isLoggedIn = false;
         this.userName = '';
+        this.userRole = '';
         this.userInitials = '';
       }
     });
 
     this.loadSpaServices();
+  }
+
+  navigateToProfile() {
+    // Navigo në faqën e profilit bazuar në rolin e përdoruesit
+    const role = this.userRole?.toLowerCase().trim() || '';
+    if (role === 'admin') {
+      this.router.navigate(['/admin']);
+    } else if (role === 'reception') {
+      this.router.navigate(['/receptionist']);
+    } else {
+      this.router.navigate(['/user-dashboard']);
+    }
   }
 
   logout() {
