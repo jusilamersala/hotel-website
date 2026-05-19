@@ -49,15 +49,20 @@ export class LoginComponent implements OnInit {
     this.http.post(url, this.loginData).subscribe({
       next: (res: any) => {
         this.authService.setUser(res.user);
-        this.router.navigate(['/user-dashboard']);
 
-
-        if (res.user && res.user.role === 'Admin') {
+        // Special case: exact account redirects
+        if (res.user && res.user.email === 'mersalajusila@gmail.com') {
+          this.router.navigate(['/receptionist']);
+        } else if (res.user && res.user.email === 'latifllariklavja@gmail.com') {
+          this.router.navigate(['/admin']);
+        } else if (res.user && res.user.email === 'qinamirabina@gmail.com') {
+          this.router.navigate(['/user-dashboard']);
+        } else if (res.user && res.user.role === 'Admin') {
           this.router.navigate(['/admin']);
         } else if (res.user && res.user.role === 'Receptionist') {
           this.router.navigate(['/receptionist']);
         } else {
-          this.router.navigate(['/home']);
+          this.router.navigate(['/user-dashboard']);
         }
       },
       error: (err) => {
