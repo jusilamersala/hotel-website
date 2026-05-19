@@ -3,141 +3,120 @@
 
   <ul class="nav nav-tabs mb-4 flex-nowrap overflow-auto">
     <li class="nav-item">
-      <a
-        class="nav-link text-nowrap"
-        [class.active]="activeTab === 'rooms'"
-        (click)="setActiveTab('rooms')"
-        >Menaxho Dhomat</a
-      >
+      <a class="nav-link text-nowrap" [class.active]="activeTab === 'rooms'"
+         (click)="setActiveTab('rooms')">Menaxho Dhomat</a>
     </li>
     <li class="nav-item">
-      <a
-        class="nav-link text-nowrap"
-        [class.active]="activeTab === 'services'"
-        (click)="setActiveTab('services')"
-        >Menaxho Shërbimet</a
-      >
+      <a class="nav-link text-nowrap" [class.active]="activeTab === 'services'"
+         (click)="setActiveTab('services')">Menaxho Shërbimet</a>
     </li>
     <li class="nav-item">
-      <a
-        class="nav-link text-nowrap"
-        [class.active]="activeTab === 'bookings'"
-        (click)="setActiveTab('bookings')"
-        >Menaxho Rezervimet</a
-      >
+      <a class="nav-link text-nowrap" [class.active]="activeTab === 'bookings'"
+         (click)="setActiveTab('bookings')">Menaxho Rezervimet</a>
     </li>
     <li class="nav-item">
-      <a
-        class="nav-link text-nowrap"
-        [class.active]="activeTab === 'invoices'"
-        (click)="setActiveTab('invoices')"
-        >Manage Invoices</a
-      >
+      <a class="nav-link text-nowrap" [class.active]="activeTab === 'invoices'"
+         (click)="setActiveTab('invoices')">Menaxho Faturat</a>
     </li>
     <li class="nav-item">
-      <a
-        class="nav-link text-nowrap"
-        [class.active]="activeTab === 'contacts'"
-        (click)="setActiveTab('contacts')"
-        >Mesazhet</a
-      >
+      <a class="nav-link text-nowrap" [class.active]="activeTab === 'contacts'"
+         (click)="setActiveTab('contacts')">Mesazhet</a>
     </li>
   </ul>
 
   <div [ngSwitch]="activeTab">
+
+    <!-- ===== ROOMS ===== -->
     <div *ngSwitchCase="'rooms'" class="tab-content shadow-sm p-3">
-      <div
-        class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-3 gap-2"
-      >
+      <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-3 gap-2">
         <h3 class="m-0">Dhomat</h3>
-        <button class="btn btn-gold btn-sm w-auto">+ Shto Dhomë</button>
+        <button class="btn btn-gold btn-sm w-auto" (click)="addRoom()">+ Shto Dhomë</button>
       </div>
-
       <div class="table-responsive border-0">
         <table class="table table-hover align-middle">
           <thead class="table-dark">
-            <tr>
-              <th>Id</th>
-              <th>Emri</th>
-              <th>Tipi</th>
-              <th>Kati</th>
-              <th>Pershkrimi</th>
-              <th>Kapaciteti</th>
-              <th>Cmimi</th>
-              <th class="text-center">Veprime</th>
-            </tr>
+          <tr>
+            <th>Id</th><th>Emri</th><th>Kati</th>
+            <th>Pershkrimi</th><th>Kapaciteti</th>
+            <th>Cmimi</th><th class="text-center">Veprime</th>
+          </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let room of rooms">
-              <td class="text-nowrap fw-bold">{{ room.room_ID }}</td>
-              <td>{{ room.name }}</td>
-              <td>{{ room.room_type }}</td>
-              <td>{{ room.floor }}</td>
-              <td>{{ room.description }}</td>
-              <td>{{ room.capacity }}</td>
-              <td class="text-nowrap">{{ room.price }}€</td>
-              <td>
-                <div class="d-flex gap-1 justify-content-center">
-                  <button class="btn btn-sm btn-outline-primary">
-                    <i class="bi bi-pencil"></i>
-                  </button>
-                  <button
-                    class="btn btn-sm btn-outline-danger"
-                    (click)="deleteRoom(room.room_ID)"
-                  >
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
+          <tr *ngFor="let room of rooms">
+            <td class="text-nowrap fw-bold">{{ room.room_ID }}</td>
+            <td>{{ room.name }}</td>
+            <td>{{ room.floor }}</td>
+            <td>{{ room.description }}</td>
+            <td>{{ room.capacity }}</td>
+            <td class="text-nowrap">{{ room.price }}€</td>
+            <td>
+              <div class="d-flex gap-1 justify-content-center">
+                <button class="btn btn-sm btn-outline-primary" (click)="openEditModal(room)">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" (click)="openDeleteModalRoom(room.room_ID)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>
     </div>
 
+    <!-- ===== SERVICES ===== -->
     <div *ngSwitchCase="'services'" class="tab-content shadow-sm p-3">
-      <div
-        class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-3 gap-2"
-      >
+      <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-3 gap-2">
         <h3 class="m-0">Shërbimet</h3>
-        <button class="btn btn-gold btn-sm w-auto">+ Shto Shërbim</button>
+        <button class="btn btn-gold btn-sm w-auto"
+                (click)="openAddServiceModal()">+ Shto Shërbim</button>
       </div>
-
       <div class="table-responsive border-0">
         <table class="table table-hover align-middle">
           <thead class="table-dark">
-            <tr>
-              <th>Id</th>
-              <th>Emri</th>
-              <th>Përshkrimi</th>
-              <th>Çmimi</th>
-              <th class="text-center">Veprime</th>
-            </tr>
+          <tr>
+            <th>Id</th><th>Emri</th><th>Përshkrimi</th>
+            <th>Çmimi</th><th>I Përfshirë</th>
+            <th class="text-center">Veprime</th>
+          </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let service of services">
-              <td class="text-nowrap fw-bold">{{ service.service_ID }}</td>
-              <td>{{ service.service_Name }}</td>
-              <td>{{ service.service_Description }}</td>
-              <td class="text-nowrap">{{ service.service_Price }}€</td>
-              <td>
-                <div class="d-flex gap-1 justify-content-center">
-                  <button class="btn btn-sm btn-outline-primary">
-                    <i class="bi bi-pencil"></i>
-                  </button>
-                  <button
-                    class="btn btn-sm btn-outline-danger"
-                  >
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
+          <tr *ngFor="let service of services">
+            <td class="text-nowrap fw-bold">{{ service.service_ID }}</td>
+            <td>{{ service.service_Name }}</td>
+            <td>
+              <div style="max-width: 300px; white-space: nowrap;
+                            overflow: hidden; text-overflow: ellipsis;">
+                {{ service.service_Description }}
+              </div>
+            </td>
+            <td class="text-nowrap">{{ service.service_Price }}€</td>
+            <td>
+                <span class="badge"
+                      [ngClass]="service.is_Included ? 'bg-success' : 'bg-secondary'">
+                  {{ service.is_Included ? 'Po' : 'Jo' }}
+                </span>
+            </td>
+            <td>
+              <div class="d-flex gap-1 justify-content-center">
+                <button class="btn btn-sm btn-outline-primary"
+                        (click)="openEditServiceModal(service)">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger"
+                        (click)="openDeleteServiceModal(service.service_ID)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>
     </div>
 
+    <!-- ===== BOOKINGS ===== -->
     <div *ngSwitchCase="'bookings'" class="tab-content shadow-sm p-3">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="m-0">Rezervimet</h3>
@@ -145,183 +124,371 @@
       <div class="table-responsive border-0">
         <table class="table table-hover align-middle">
           <thead class="table-dark">
-            <tr>
-              <th>ID</th>
-              <th>Klienti</th>
-              <th>Dhoma</th>
-              <th>Check In / Out</th>
-              <th>Totali</th>
-              <th>Statusi</th>
-              <th class="text-center">Veprim</th>
-            </tr>
+          <tr>
+            <th>ID</th><th>Klienti</th><th>Dhoma</th>
+            <th>Check In / Out</th><th>Totali</th>
+            <th>Statusi</th><th class="text-center">Veprim</th>
+          </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let booking of bookings">
-              <td class="text-nowrap fw-bold">#{{ booking.booking_ID }}</td>
-              <td>
-                {{ booking.name }} {{ booking.surname }}<br /><small
-                  class="text-muted"
-                  >{{ booking.email }}</small
-                >
-              </td>
-              <td>
-                <span class="fw-semibold">{{ booking.room_name }}</span>
-              </td>
-              <td class="text-nowrap">
-                <small class="d-block"
-                  ><strong>In:</strong> {{ booking.check_In_Date }}</small
-                >
-                <small class="d-block"
-                  ><strong>Out:</strong> {{ booking.check_Out_Date }}</small
-                >
-              </td>
-              <td class="text-nowrap fw-bold text-success">
-                {{ booking.total_price }}€
-              </td>
-              <td>
-                <span
-                  class="badge"
-                  [ngClass]="{
-                    'bg-success': booking.status?.toLowerCase() === 'confirmed',
-                    'bg-warning text-dark':
-                      booking.status?.toLowerCase() === 'pending',
-                    'bg-danger': booking.status?.toLowerCase() === 'cancelled',
-                  }"
-                  >{{ booking.status }}</span
-                >
-              </td>
-              <td>
-                <div class="d-flex gap-1 justify-content-center">
-                  <button
-                    class="btn btn-sm btn-outline-danger"
-                    (click)="openDeleteModal(booking.booking_ID)"
-                  >
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
+          <tr *ngFor="let booking of bookings">
+            <td class="text-nowrap fw-bold">#{{ booking.booking_ID }}</td>
+            <td>
+              {{ booking.name }} {{ booking.surname }}<br/>
+              <small class="text-muted">{{ booking.email }}</small>
+            </td>
+            <td><span class="fw-semibold">{{ booking.room_name }}</span></td>
+            <td class="text-nowrap">
+              <small class="d-block"><strong>In:</strong> {{ booking.check_In_Date }}</small>
+              <small class="d-block"><strong>Out:</strong> {{ booking.check_Out_Date }}</small>
+            </td>
+            <td class="text-nowrap fw-bold text-success">{{ booking.total_price }}€</td>
+            <td>
+                <span class="badge" [ngClass]="{
+                  'bg-success':          booking.status?.toLowerCase() === 'confirmed',
+                  'bg-warning text-dark': booking.status?.toLowerCase() === 'pending',
+                  'bg-danger':           booking.status?.toLowerCase() === 'cancelled'
+                }">{{ booking.status }}</span>
+            </td>
+            <td>
+              <div class="d-flex gap-1 justify-content-center">
+                <button class="btn btn-sm btn-outline-danger"
+                        (click)="openDeleteModal(booking.booking_ID)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>
     </div>
 
+    <!-- ===== INVOICES ===== -->
     <div *ngSwitchCase="'invoices'" class="tab-content shadow-sm p-3">
-      <div
-        class="d-flex flex-column flex-sm-row justify-content-between align-items-center mb-3 gap-2"
-      >
+      <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mb-3 gap-2">
         <h3 class="m-0">Invoices & Payments</h3>
-        <span class="badge bg-dark text-gold p-2"
-          >Totali i Faturuar: {{ getTotalInvoiced() }}€</span
-        >
+        <span class="badge bg-dark text-gold p-2">
+          Totali i Faturuar: {{ getTotalInvoiced() }}€
+        </span>
       </div>
       <div class="table-responsive">
         <table class="table table-hover align-middle">
           <thead class="table-dark">
-            <tr>
-              <th>ID</th>
-              <th>Klienti</th>
-              <th>Data</th>
-              <th>Shuma</th>
-              <th>Statusi</th>
-              <th class="text-center">Actions</th>
-            </tr>
+          <tr>
+            <th>ID</th><th>Klienti</th><th>Data</th>
+            <th>Shuma</th><th>Statusi</th>
+            <th class="text-center">Actions</th>
+          </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let invoice of invoices">
-              <td class="fw-bold">#INV-{{ invoice.invoice_ID }}</td>
-              <td>{{ invoice.user_name }} {{ invoice.user_surname }}</td>
-              <td>{{ invoice.check_In_Date }}</td>
-              <td class="fw-bold">{{ invoice.price }}€</td>
-              <td>
-                <select
-                  class="form-select form-select-sm"
-                  [value]="invoice.status"
-                  (change)="
-                    updateInvoiceStatus(
-                      invoice.invoice_ID,
-                      $any($event.target).value
-                    )
-                  "
-                >
-                  <option value="Pending">Pending</option>
-                  <option value="Confirmed">Confirmed</option>
-                  <option value="Cancelled">Cancelled</option>
-                </select>
-              </td>
-              <td class="text-center">
-                <button
-                  class="btn btn-sm btn-gold"
-                  (click)="downloadInvoicePDF(invoice)"
-                >
-                  <i class="bi bi-file-earmark-pdf"></i> PDF
-                </button>
-              </td>
-            </tr>
+          <tr *ngFor="let invoice of invoices">
+            <td class="fw-bold">#INV-{{ invoice.invoice_ID }}</td>
+            <td>{{ invoice.user_name }} {{ invoice.user_surname }}</td>
+            <td>{{ invoice.check_In_Date }}</td>
+            <td class="fw-bold">{{ invoice.price }}€</td>
+            <td>
+              <select class="form-select form-select-sm" [value]="invoice.status"
+                      (change)="updateInvoiceStatus(invoice.invoice_ID, $any($event.target).value)">
+                <option value="Pending">Pending</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-gold" (click)="downloadInvoicePDF(invoice)">
+                <i class="bi bi-file-earmark-pdf"></i> PDF
+              </button>
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>
     </div>
 
+    <!-- ===== CONTACTS ===== -->
     <div *ngSwitchCase="'contacts'" class="tab-content shadow-sm p-3">
-      <div
-        class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-3 gap-2"
-      >
-        <h3 class="m-0">Mesazhet nga Forma e Kontaktit</h3>
-      </div>
-
+      <h3 class="mb-3">Mesazhet nga Forma e Kontaktit</h3>
       <div class="table-responsive border-0">
         <table class="table table-hover align-middle">
           <thead class="table-dark">
-            <tr>
-              <th>ID</th>
-              <th>Emri</th>
-              <th>Email</th>
-              <th>Mesazhi</th>
-            </tr>
+          <tr>
+            <th>ID</th><th>Emri</th><th>Email</th><th>Mesazhi</th>
+          </tr>
           </thead>
           <tbody>
           <tr *ngFor="let msg of contact">
             <td class="text-nowrap fw-bold">#{{ msg.id }}</td>
             <td class="text-nowrap">{{ msg.full_name }}</td>
-            <td><a href="mailto:{{ msg.email }}" class="text-decoration-none">{{ msg.email }}</a></td>
+            <td>
+              <a href="mailto:{{ msg.email }}" class="text-decoration-none">
+                {{ msg.email }}
+              </a>
+            </td>
             <td>
               <div class="text-wrap" style="min-width: 200px; max-width: 400px;">
                 {{ msg.message }}
               </div>
             </td>
           </tr>
-
-            <tr *ngIf="contact.length === 0">
-              <td colspan="6" class="text-center py-4 text-muted">
-                Nuk ka asnjë mesazh të ri.
-              </td>
-            </tr>
+          <tr *ngIf="contact.length === 0">
+            <td colspan="4" class="text-center py-4 text-muted">
+              Nuk ka asnjë mesazh të ri.
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>
     </div>
+
   </div>
 </div>
 
-<div *ngIf="showModal" class="custom-modal-overlay">
+<!-- MODAL: FSHIRJA E REZERVIMIT -->
+<div *ngIf="showModal && selectedBookingId !== null" class="custom-modal-overlay">
+  <div class="custom-modal-box">
+    <div class="modal-icon-warning"><i class="bi bi-exclamation-circle-fill"></i></div>
+    <h4>Konfirmo Fshirjen</h4>
+    <p>A do ta fshish këtë rezervim?<br/>
+      <strong>(ID: #{{ selectedBookingId }})</strong></p>
+    <div class="custom-modal-buttons">
+      <button class="btn btn-light-cancel" (click)="closeDeleteModal()">Jo, Anulo</button>
+      <button class="btn btn-danger-confirm" (click)="deleteBooking()">Po, Fshije</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: FSHIRJA E DHOMËS -->
+<div *ngIf="showModal && selectedRoomID !== null" class="custom-modal-overlay">
+  <div class="custom-modal-box">
+    <div class="modal-icon-warning"><i class="bi bi-exclamation-circle-fill"></i></div>
+    <h4>Konfirmo Fshirjen</h4>
+    <p>A do ta fshish këtë dhomë?<br/>
+      <strong>(ID: #{{ selectedRoomID }})</strong></p>
+    <div class="custom-modal-buttons">
+      <button class="btn btn-light-cancel" (click)="closeDeleteModalRoom()">Jo, Anulo</button>
+      <button class="btn btn-danger-confirm" (click)="deleteRoom()">Po, Fshije</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: MODIFIKIMI I DHOMËS -->
+<div *ngIf="showEditModal" class="custom-modal-overlay">
+  <div class="custom-modal-box" style="max-width: 500px; text-align: left;">
+    <h3 class="mb-4 text-gold border-bottom pb-2">
+      Modifiko Dhomën #{{ selectedRoom.room_ID }}
+    </h3>
+    <form (ngSubmit)="updateRoom()">
+      <div class="mb-3">
+        <label class="form-label fw-bold">Emri i Dhomës (Automatik)</label>
+        <input type="text" class="form-control bg-light text-muted"
+               [(ngModel)]="selectedRoom.name" name="name" readonly>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Tipi / Lloji i Dhomës</label>
+        <select class="form-select" [(ngModel)]="selectedRoom.room_Type_ID"
+                name="room_Type_ID" (change)="onRoomTypeOrFloorChange()" required>
+          <option value="undefined" disabled>Zgjidhni llojin e dhomës</option>
+          <option *ngFor="let type of roomTypes" [value]="type.room_Type_ID">
+            {{ type.type }}
+          </option>
+        </select>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label fw-bold">Kati</label>
+          <input type="number" class="form-control"
+                 [(ngModel)]="selectedRoom.floor" name="floor"
+                 (input)="onRoomTypeOrFloorChange()">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label fw-bold">Kapaciteti</label>
+          <input type="number" class="form-control"
+                 [(ngModel)]="selectedRoom.capacity" name="capacity">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Çmimi (€)</label>
+        <input type="number" class="form-control"
+               [(ngModel)]="selectedRoom.price" name="price" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Disponueshmëria</label>
+        <select class="form-select"
+                [(ngModel)]="selectedRoom.availability" name="availability">
+          <option value="Available">Available</option>
+          <option value="Occupied">Occupied</option>
+          <option value="Maintenance">Maintenance</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label class="form-label fw-bold">Përshkrimi</label>
+        <textarea class="form-control" rows="3"
+                  [(ngModel)]="selectedRoom.description" name="description"></textarea>
+      </div>
+      <div class="custom-modal-buttons d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-light-cancel px-4"
+                (click)="closeEditModal()">Anulo</button>
+        <button type="submit" class="btn btn-gold px-4"
+                style="background-color: #c5a059; color: white;">Ruaj Ndryshimet</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: SHTIMI I DHOMËS -->
+<div *ngIf="showAddModal" class="custom-modal-overlay">
+  <div class="custom-modal-box" style="max-width: 500px; text-align: left;">
+    <h3 class="mb-4 text-gold border-bottom pb-2">Shto Dhomë të Re</h3>
+    <form (ngSubmit)="submitAddRoom()">
+      <div class="mb-3">
+        <label class="form-label fw-bold">Emri i Dhomës (Automatik)</label>
+        <input type="text" class="form-control bg-light text-muted"
+               [value]="newRoom.previewName || 'Do të gjenerohet automatikisht'"
+               readonly>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Tipi / Lloji i Dhomës *</label>
+        <select class="form-select" [(ngModel)]="newRoom.room_Type_ID"
+                name="room_Type_ID" (change)="onNewRoomTypeOrFloorChange()" required>
+          <option [value]="null" disabled>Zgjidhni llojin</option>
+          <option *ngFor="let type of roomTypes" [value]="type.room_Type_ID">
+            {{ type.type }}
+          </option>
+        </select>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label fw-bold">Kati</label>
+          <input type="number" class="form-control"
+                 [(ngModel)]="newRoom.floor" name="floor"
+                 (input)="onNewRoomTypeOrFloorChange()">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label fw-bold">Kapaciteti</label>
+          <input type="number" class="form-control"
+                 [(ngModel)]="newRoom.capacity" name="capacity" min="1">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Çmimi (€) *</label>
+        <input type="number" class="form-control"
+               [(ngModel)]="newRoom.price" name="price" min="0" required>
+      </div>
+      <div class="mb-4">
+        <label class="form-label fw-bold">Përshkrimi</label>
+        <textarea class="form-control" rows="3"
+                  [(ngModel)]="newRoom.description" name="description"></textarea>
+      </div>
+      <div class="custom-modal-buttons d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-light-cancel px-4"
+                (click)="closeAddModal()">Anulo</button>
+        <button type="submit" class="btn btn-gold px-4"
+                style="background-color: #c5a059; color: white;">+ Shto Dhomën</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: SHTIMI I SHËRBIMIT -->
+<div *ngIf="showAddServiceModal" class="custom-modal-overlay">
+  <div class="custom-modal-box" style="max-width: 500px; text-align: left;">
+    <h3 class="mb-4 text-gold border-bottom pb-2">Shto Shërbim të Ri</h3>
+    <form (ngSubmit)="submitAddService()">
+      <div class="mb-3">
+        <label class="form-label fw-bold">Emri i Shërbimit *</label>
+        <input type="text" class="form-control"
+               [(ngModel)]="newService.service_Name"
+               name="service_Name" placeholder="p.sh. Spa & Wellness" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Përshkrimi *</label>
+        <textarea class="form-control" rows="4"
+                  [(ngModel)]="newService.service_Description"
+                  name="service_Description"
+                  placeholder="Përshkruani shërbimin..." required></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Çmimi (€)</label>
+        <input type="number" class="form-control"
+               [(ngModel)]="newService.service_Price"
+               name="service_Price" min="0">
+      </div>
+      <div class="mb-4">
+        <label class="form-label fw-bold">I Përfshirë në Çmim?</label>
+        <select class="form-select"
+                [(ngModel)]="newService.is_Included" name="is_Included">
+          <option [value]="1">Po - I përfshirë</option>
+          <option [value]="0">Jo - Me pagesë</option>
+        </select>
+      </div>
+      <div class="custom-modal-buttons d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-light-cancel px-4"
+                (click)="closeAddServiceModal()">Anulo</button>
+        <button type="submit" class="btn btn-gold px-4"
+                style="background-color: #c5a059; color: white;">+ Shto Shërbimin</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: MODIFIKIMI I SHËRBIMIT -->
+<div *ngIf="showEditServiceModal" class="custom-modal-overlay">
+  <div class="custom-modal-box" style="max-width: 500px; text-align: left;">
+    <h3 class="mb-4 text-gold border-bottom pb-2">
+      Modifiko Shërbimin #{{ selectedService.service_ID }}
+    </h3>
+    <form (ngSubmit)="updateService()">
+      <div class="mb-3">
+        <label class="form-label fw-bold">Emri i Shërbimit *</label>
+        <input type="text" class="form-control"
+               [(ngModel)]="selectedService.service_Name"
+               name="service_Name" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Përshkrimi *</label>
+        <textarea class="form-control" rows="4"
+                  [(ngModel)]="selectedService.service_Description"
+                  name="service_Description" required></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Çmimi (€)</label>
+        <input type="number" class="form-control"
+               [(ngModel)]="selectedService.service_Price"
+               name="service_Price" min="0">
+      </div>
+      <div class="mb-4">
+        <label class="form-label fw-bold">I Përfshirë në Çmim?</label>
+        <select class="form-select"
+                [(ngModel)]="selectedService.is_Included" name="is_Included">
+          <option [value]="1">Po - I përfshirë</option>
+          <option [value]="0">Jo - Me pagesë</option>
+        </select>
+      </div>
+      <div class="custom-modal-buttons d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-light-cancel px-4"
+                (click)="closeEditServiceModal()">Anulo</button>
+        <button type="submit" class="btn btn-gold px-4"
+                style="background-color: #c5a059; color: white;">Ruaj Ndryshimet</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: FSHIRJA E SHËRBIMIT -->
+<div *ngIf="showDeleteServiceModal" class="custom-modal-overlay">
   <div class="custom-modal-box">
     <div class="modal-icon-warning">
       <i class="bi bi-exclamation-circle-fill"></i>
     </div>
     <h4>Konfirmo Fshirjen</h4>
-    <p>
-      A do ta fshish këtë rezervim? <br /><strong
-        >(ID: #{{ selectedBookingId }})</strong
-      >
-    </p>
+    <p>A do ta fshish këtë shërbim?<br/>
+      <strong>(ID: #{{ selectedServiceId }})</strong></p>
     <div class="custom-modal-buttons">
-      <button class="btn btn-light-cancel" (click)="closeDeleteModal()">
-        Jo, Anulo
-      </button>
-      <button class="btn btn-danger-confirm" (click)="confirmDelete()">
-        Po, Fshije
-      </button>
+      <button class="btn btn-light-cancel"
+              (click)="closeDeleteServiceModal()">Jo, Anulo</button>
+      <button class="btn btn-danger-confirm"
+              (click)="deleteService()">Po, Fshije</button>
     </div>
   </div>
 </div>

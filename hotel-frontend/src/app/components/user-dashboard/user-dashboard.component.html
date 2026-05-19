@@ -1,118 +1,147 @@
-<div class="container py-5">
-  <header class="text-center mb-5">
-    <h1 class="display-4 fw-bold text-gold">User Dashboard</h1>
-    <p class="text-muted">Welcome back! Manage your stays and explore new luxury rooms.</p>
-  </header>
+<div class="dashboard-wrapper">
 
-  <div class="row mb-5 text-center">
-    <div class="col-md-4 mb-3">
-      <div class="card stat-card border-0 shadow-sm">
-        <div class="card-body">
-          <h6 class="text-uppercase text-muted small fw-bold">Total Bookings</h6>
-          <h2 class="text-gold mb-0">{{ bookings.length }}</h2>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 mb-3">
-      <div class="card stat-card border-0 shadow-sm">
-        <div class="card-body">
-          <h6 class="text-uppercase text-muted small fw-bold">Confirmed Stays</h6>
-          <h2 class="text-success mb-0">{{ getConfirmedCount() }}</h2>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 mb-3">
-      <div class="card stat-card border-0 shadow-sm">
-        <div class="card-body">
-          <h6 class="text-uppercase text-muted small fw-bold">Points Earned</h6>
-          <h2 class="text-dark mb-0">1,250</h2>
-        </div>
-      </div>
-    </div>
+  <!-- ── LOADING SPINNER ── -->
+  <div *ngIf="loading" class="loading-overlay">
+    <div class="spinner-ring"></div>
+    <p class="loading-text">Duke ngarkuar të dhënat...</p>
   </div>
 
-  <div class="row">
-    <div class="col-lg-6 mb-4">
-      <div class="card h-100 shadow-sm border-0">
-        <div class="card-header bg-gold text-white py-3">
-          <h3 class="h5 mb-0"><i class="bi bi-calendar-check me-2"></i>My Bookings</h3>
+  <div [class.content-hidden]="loading">
+
+    <!-- ── HEADER ── -->
+    <header class="dashboard-header">
+      <div class="header-inner">
+        <div class="header-text">
+          <p class="header-greeting">Mirë se erdhet</p>
+          <h1 class="header-name">{{ user?.name }}</h1>
+          <p class="header-sub">Menaxhoni qëndrimet tuaja dhe eksploroni dhoma luksoze.</p>
         </div>
-        <div class="card-body p-4">
-          <div *ngIf="bookings.length === 0" class="text-center py-5 text-muted">
-            <p>No bookings yet. Start planning your next trip!</p>
+      </div>
+    </header>
+
+    <!-- ── STAT CARDS ── -->
+    <section class="stats-section">
+      <div class="stat-card">
+        <div class="stat-icon stat-icon--blue">
+          <i class="bi bi-calendar-check fs-4"></i>
+        </div>
+        <div>
+          <p class="stat-label">Total Rezervimesh</p>
+          <h2 class="stat-value">{{ bookings.length }}</h2>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon stat-icon--green">
+          <i class="bi bi-check-circle fs-4"></i>
+        </div>
+        <div>
+          <p class="stat-label">Konfirmuara</p>
+          <h2 class="stat-value stat-value--green">{{ getConfirmedCount() }}</h2>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon stat-icon--gold">
+          <i class="bi bi-coin fs-4"></i>
+        </div>
+        <div>
+          <p class="stat-label">Pikë të Fituara</p>
+          <h2 class="stat-value stat-value--gold">1,250</h2>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MAIN GRID ── -->
+    <div class="main-grid">
+
+      <!-- MY BOOKINGS -->
+      <div class="panel">
+        <div class="panel-header">
+          <i class="bi bi-calendar-check"></i>
+          Rezervimet e Mia
+        </div>
+        <div class="panel-body">
+
+          <!-- Empty state -->
+          <div *ngIf="bookings.length === 0" class="empty-state">
+            <div class="empty-icon"></div>
+            <p class="empty-title">Asnjë rezervim ende.</p>
+            <p class="empty-sub">Filloni të planifikoni udhëtimin tuaj të radhës!</p>
           </div>
 
-          <div *ngFor="let booking of bookings" class="booking-item mb-3 p-3 border rounded-3 position-relative">
-            <div class="d-flex justify-content-between align-items-start">
+          <!-- Booking cards -->
+          <div *ngFor="let booking of bookings" class="booking-card">
+            <div class="booking-top">
               <div>
-                <h5 class="fw-bold mb-1">{{ booking.room_name }}</h5>
-                <p class="small text-muted mb-2">
-                  <span class="me-3">📅 {{ booking.check_In_Date }}</span>
-                  <span>🌙 {{ booking.check_Out_Date }}</span>
+                <h5 class="booking-room">{{ booking.room_name }}</h5>
+                <p class="booking-dates">
+                  <span> {{ booking.check_In_Date }}</span>
+                  <span class="mx-2">→</span>
+                  <span> {{ booking.check_Out_Date }}</span>
                 </p>
-                <div class="badge-status mb-2">
-                  <span class="badge" [ngClass]="{
-                    'bg-warning-light text-warning': booking.status === 'Pending',
-                    'bg-success-light text-success': booking.status === 'Confirmed',
-                    'bg-danger-light text-danger': booking.status === 'Cancelled'
-                  }">{{ booking.status }}</span>
-                </div>
               </div>
-              <button *ngIf="booking.status !== 'Cancelled'" 
-                      class="btn btn-sm btn-outline-danger border-0" 
-                      (click)="cancelBooking(booking.booking_ID)"
-                      title="Cancel Booking">
-                Cancel
-              </button>
+              <div class="booking-right">
+                <span class="status-badge"
+                      [ngClass]="{
+                    'status-pending':   booking.status === 'Pending',
+                    'status-confirmed': booking.status === 'Confirmed',
+                    'status-cancelled': booking.status === 'Cancelled'
+                  }">
+                  {{ booking.status }}
+                </span>
+                <button
+                  *ngIf="booking.status !== 'Cancelled'"
+                  class="btn-cancel"
+                  (click)="cancelBooking(booking.booking_ID)"
+                  title="Anulo Rezervimin">
+                  Anulo
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- AVAILABLE ROOMS -->
+      <div class="panel">
+        <div class="panel-header">
+          <i class="bi bi-door-open"></i>
+          Dhoma Luksoze të Disponueshme
+        </div>
+        <div class="panel-body">
+          <div *ngFor="let room of rooms" class="room-card">
+            <div class="room-img-wrap">
+              <img
+                [src]="room.image_url || 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&q=80&w=300'"
+                [alt]="room.name"
+                class="room-img" />
+              <span class="room-avail-badge" [class.unavailable]="room.availability !== 'Available'">
+                {{ room.availability === 'Available' ? 'E Lirë' : 'E Zënë' }}
+              </span>
+            </div>
+            <div class="room-info">
+              <div class="room-info-top">
+                <h5 class="room-name">{{ room.name }}</h5>
+                <span class="room-price">${{ room.price }}<small>/nt</small></span>
+              </div>
+              <p class="room-desc">{{ room.description }}</p>
+              <!-- Navigon te /reservation/:id — jo PayPal në dashboard -->
+              <a
+                *ngIf="room.availability === 'Available'"
+                (click)="bookRoom(room)"
+                class="btn-book">
+                Rezervo Dhomën
+              </a>
+              <span *ngIf="room.availability !== 'Available'" class="btn-book btn-book--disabled">
+                Jo e Disponueshme
+              </span>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="col-lg-6 mb-4">
-      <div class="card h-100 shadow-sm border-0">
-        <div class="card-header bg-gold text-white py-3">
-          <h3 class="h5 mb-0"><i class="bi bi-door-open me-2"></i>Available Luxury Rooms</h3>
-        </div>
-        <div class="card-body p-4">
-          <div *ngFor="let room of rooms" class="room-item mb-4 p-0 border rounded-3 overflow-hidden d-flex flex-column flex-md-row">
-            <div class="room-img-container">
-              <img [src]="room.image_url || 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&q=80&w=300'" 
-                   alt="Room image" class="room-img">
-            </div>
-            
-            <div class="p-3 flex-grow-1">
-              <div class="d-flex justify-content-between">
-                <h5 class="fw-bold">{{ room.name }}</h5>
-                <span class="text-gold fw-bold">${{ room.price }}<small class="text-muted">/nt</small></span>
-              </div>
-              <p class="small text-muted mb-3 line-clamp-2">{{ room.description }}</p>
-              <button *ngIf="room.availability === 'Available'" 
-                      class="btn btn-gold btn-sm w-100 mt-auto" 
-                      (click)="bookRoom(room)">
-                Book This Room
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PayPal Payment Section -->
-  <div *ngIf="selectedRoom" class="row mt-4">
-    <div class="col-12">
-      <div class="card shadow-sm border-0">
-        <div class="card-header bg-gold text-white py-3">
-          <h3 class="h5 mb-0">Complete Payment for {{ selectedRoom.name }}</h3>
-        </div>
-        <div class="card-body p-4 text-center">
-          <p>Room: {{ selectedRoom.name }} - ${{ selectedRoom.price }}</p>
-          <div id="paypal-button-container"></div>
-          <button class="btn btn-secondary mt-3" (click)="selectedRoom = null">Cancel</button>
-        </div>
-      </div>
     </div>
   </div>
 </div>

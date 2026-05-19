@@ -29,7 +29,7 @@ export class ReservationComponent implements OnInit {
 
   phone = '';
   paymentMethod = 'cash';
-  user: any = { name: '', email: '' }; 
+  user: any = { name: '', email: '' };
   showSuccessModal = false;
   showErrorModal = false;
   errorMessage = '';
@@ -55,8 +55,8 @@ export class ReservationComponent implements OnInit {
     if (roomId) {
       this.http.get(`http://localhost:8000/api/bookings/getRoom.php?id=${roomId}`)
         .subscribe({
-          next: (data: any) => { 
-            this.room = data; 
+          next: (data: any) => {
+            this.room = data;
             this.calculateTotal();
           },
           error: () => { this.router.navigate(['/rooms']); }
@@ -71,7 +71,7 @@ export class ReservationComponent implements OnInit {
 
           // Kontrollojmë nëse statusi është success dhe nëse ka data
           if (response && response.status === 'success' && Array.isArray(response.data)) {
-            
+
             this.extraServices = response.data
               .filter((s: any) => {
                 // Marrim çmimin pavarësisht nëse vjen service_Price ose service_price
@@ -80,13 +80,13 @@ export class ReservationComponent implements OnInit {
               })
               .map((s: any) => ({
                 id: s.service_ID || s.service_id,
-                name: s.service_Name || s.service_name, 
+                name: s.service_Name || s.service_name,
                 price: parseFloat(s.service_Price !== undefined ? s.service_Price : s.service_price),
                 selected: false
               }));
 
             console.log("Shërbimet e mapuara:", this.extraServices);
-            this.calculateTotal(); 
+            this.calculateTotal();
           }
         },
         error: (err) => {
@@ -107,7 +107,7 @@ export class ReservationComponent implements OnInit {
         const servicesPrice = this.extraServices
           .filter(s => s.selected)
           .reduce((sum, s) => sum + s.price, 0);
-        
+
         const roomPrice = this.room?.price || this.room?.room_Price || 0;
         this.totalPrice = (diff * parseFloat(roomPrice)) + servicesPrice;
       } else {
@@ -143,7 +143,7 @@ export class ReservationComponent implements OnInit {
     }
 
     if (container) {
-      container.innerHTML = ''; 
+      container.innerHTML = '';
 
       paypalSdk.Buttons({
         style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal' },
@@ -157,7 +157,7 @@ export class ReservationComponent implements OnInit {
         },
         onApprove: (data: any, actions: any) => {
           return actions.order.capture().then(() => {
-            this.onSubmit(); 
+            this.onSubmit();
           });
         },
         onError: (err: any) => {
@@ -168,7 +168,6 @@ export class ReservationComponent implements OnInit {
     }
   }
 
-  // --- NAVIGIMI I HAPAVE ---
   nextStep() {
     if (this.currentStep === 2) {
       if (!this.checkIn || !this.checkOut || this.totalNights <= 0) {
@@ -191,7 +190,6 @@ export class ReservationComponent implements OnInit {
     if (this.currentStep > 1) this.currentStep--;
   }
 
-  // --- DËRGIMI I REZERVIMIT ---
   onSubmit() {
     this.isLoading = true;
     const payload = {
@@ -230,7 +228,7 @@ export class ReservationComponent implements OnInit {
     doc.setFontSize(10);
     doc.setTextColor(100);
     doc.text('Bulevardi Kryesor, Tiranë | www.grandhorizon.al', 105, 27, { align: 'center' });
-    
+
     doc.setDrawColor(200);
     doc.line(20, 35, 190, 35);
 

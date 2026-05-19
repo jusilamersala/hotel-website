@@ -1,42 +1,47 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 import { BookingService } from '../../services/booking.service';
 import { RoomService } from '../../services/room.services';
+import { RouterLink } from '@angular/router';
+
 
 declare var paypal: any;
 
 @Component({
   selector: 'app-user-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterLink],
   templateUrl: './user-dashboard.component.html',
   styleUrls: ['./user-dashboard.component.css']
 })
-export class UserDashboardComponent implements OnInit, AfterViewInit {
-  bookings: any[] = [];
-  rooms: any[] = [];
-  userId: number = 1; // Supozojmë se ID e përdoruesit të loguar është 1
-  loading: boolean = true;
+export class UserDashboardComponent implements OnInit {
+  bookings: any[]  = [];
+  rooms: any[]     = [];
+  user: any        = null;   // { id, name, email, role }
+  loading          = true;
   selectedRoom: any = null;
 
   constructor(
+    private authService:    AuthService,
     private bookingService: BookingService,
-    private roomService: RoomService
+    private roomService:    RoomService,
+    private router:         Router
   ) {}
 
   ngOnInit(): void {
+    // Read the logged-in user from localStorage
+    this.user = this.authService.getUser();
+
+    if (!this.user) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
     this.loadData();
   }
 
-  ngAfterViewInit(): void {
-    // PayPal button will be rendered when needed
-  }
-
-  /*ngOnInit(): void {
-    this.loadData();
-  }*/
-
-  // Ngarkon të dhënat paralelisht
   loadData() {
     this.loading = true;
     this.loadUserBookings();
@@ -47,30 +52,24 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
     this.bookingService.getBookings().subscribe({
       next: (data: any) => {
         if (data.status === 'success') {
-          // Filtrojmë rezervimet vetëm për këtë përdorues
-          this.bookings = data.data.filter((b: any) => b.user_ID == this.userId);
+          this.bookings = data.data.filter((b: any) => b.user_ID == this.user.id);
         }
         this.loading = false;
       },
       error: (err) => {
-        console.error("Gabim gjatë ngarkimit të rezervimeve:", err);
+        console.error('Bookings error:', err);
         this.loading = false;
       }
     });
   }
-
   loadRooms() {
     this.roomService.getRooms().subscribe({
       next: (data: any) => {
-        if (data.status === 'success') {
-          this.rooms = data.data;
-        }
+        this.rooms = data.status === 'success' ? data.data : [];
       },
-      error: (err) => console.error("Gabim gjatë ngarkimit të dhomave:", err)
+      error: (err) => console.error('Rooms error:', err)
     });
   }
-
-  // --- Funksionet Ndihmëse për HTML ---
 
   getConfirmedCount(): number {
     return this.bookings.filter(b => b.status === 'Confirmed').length;
@@ -82,58 +81,60 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
       .reduce((sum, b) => sum + Number(b.price || 0), 0);
   }
 
-  // --- Aksionet ---
-
   bookRoom(room: any) {
     this.selectedRoom = room;
-    // Render PayPal button
     setTimeout(() => {
       paypal.Buttons({
-        createOrder: (data: any, actions: any) => {
-          return actions.order.create({
+        createOrder: (_data: any, actions: any) =>
+          actions.order.create({
             purchase_units: [{
-              amount: {
-                value: room.price.toString()
-              },
+              amount:      { value: room.price.toString() },
               description: `Booking for ${room.name}`
             }]
-          });
-        },
-        onApprove: (data: any, actions: any) => {
-          return actions.order.capture().then((details: any) => {
-            // Payment successful, create booking
+          }),
+        onApprove: (_data: any, actions: any) =>
+          actions.order.capture().then(() => {
             this.createBooking(room);
-            alert('Payment successful! Booking confirmed.');
-          });
-        }
+          })
       }).render('#paypal-button-container');
     }, 100);
   }
 
   createBooking(room: any) {
+    const today    = new Date();
+    const tomorrow = new Date(today.getTime() + 86400000);
+
     const newBooking = {
-      user_ID: this.userId,
-      room_ID: room.room_ID,
-      check_In_Date: new Date().toISOString().split('T')[0], // Sot
-      check_Out_Date: new Date(Date.now() + 86400000).toISOString().split('T')[0], // Nesër
+      user_ID:        this.user.id,           // real user ID
+      room_ID:        room.room_ID,
+      check_In_Date:  today.toISOString().split('T')[0],
+      check_Out_Date: tomorrow.toISOString().split('T')[0]
     };
 
-    this.bookingService.addBooking(newBooking).subscribe(() => {
-      alert("Rezervimi u krye me sukses!");
-      this.loadUserBookings(); // Rifresko listën
-      this.selectedRoom = null;
+    this.bookingService.addBooking(newBooking).subscribe({
+      next: () => {
+        alert('Rezervimi u krye me sukses!');
+        this.selectedRoom = null;
+        this.loadUserBookings();
+      },
+      error: () => alert('Rezervimi dështoi!')
     });
   }
 
   cancelBooking(id: number) {
-    if (confirm("A jeni të sigurt që dëshironi të anuloni këtë rezervim?")) {
+    if (confirm('A jeni të sigurt që dëshironi të anuloni këtë rezervim?')) {
       this.bookingService.updateBooking(id, { status: 'Cancelled' }).subscribe({
         next: () => {
-          alert("Rezervimi u anulua.");
+          alert('Rezervimi u anulua.');
           this.loadUserBookings();
         },
-        error: (err) => alert("Anulimi dështoi!")
+        error: () => alert('Anulimi dështoi!')
       });
     }
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }
