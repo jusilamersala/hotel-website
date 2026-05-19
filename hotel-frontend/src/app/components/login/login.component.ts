@@ -54,6 +54,8 @@ export class LoginComponent implements OnInit {
         // Kontrollojmë nëse roli është 'Admin' (sigurohu që shkruhet saktë si në databazë)
         if (res.user && res.user.role === 'Admin') {
           this.router.navigate(['/admin']);
+        } else if (res.user && res.user.role === 'Receptionist') {
+          this.router.navigate(['/receptionist']);
         } else {
           this.router.navigate(['/home']);
         }
