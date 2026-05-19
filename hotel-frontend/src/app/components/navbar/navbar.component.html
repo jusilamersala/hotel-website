@@ -105,13 +105,13 @@
             class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow-lg"
           >
             <li>
-              <a
+              <button
+                type="button"
                 class="dropdown-item"
-                routerLink="/receptionist"
-                (click)="hotelToggler.click()"
+                (click)="openProfile(hotelToggler, $event)"
               >
                 <i class="bi bi-person me-2"></i> Profili Im
-              </a>
+              </button>
             </li>
             <li><hr class="dropdown-divider" /></li>
             <li>

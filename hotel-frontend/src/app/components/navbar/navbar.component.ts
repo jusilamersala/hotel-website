@@ -48,6 +48,39 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/home']);
   }
 
+  openProfile(toggler: HTMLButtonElement, event?: Event) {
+    // Prevent any default anchor/button behavior that could cause navigation
+    event?.preventDefault();
+
+    // Close mobile menu if open
+    try {
+      this.closeMenu(toggler);
+    } catch (e) {
+      // ignore
+    }
+
+    const user = this.authService.getUser();
+    if (!user) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    // Special-case specific email
+    if (user.email === 'mersalajusila@gmail.com') {
+      this.router.navigate(['/receptionist']);
+      return;
+    }
+
+    // Role-based routing
+    if (user.role === 'Admin') {
+      this.router.navigate(['/admin']);
+    } else if (user.role === 'Receptionist') {
+      this.router.navigate(['/receptionist']);
+    } else {
+      this.router.navigate(['/user-dashboard']);
+    }
+  }
+
   closeMenu(toggler: HTMLButtonElement) {
     const isMobile = window.getComputedStyle(toggler).display !== 'none';
     const menu = document.getElementById('hotelNav');

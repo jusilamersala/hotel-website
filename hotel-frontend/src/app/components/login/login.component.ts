@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
         // Special case: exact account redirects
         if (res.user && res.user.email === 'mersalajusila@gmail.com') {
           this.router.navigate(['/receptionist']);
-        } else if (res.user && res.user.email === 'latifllariklavja@gmail.com') {
+        } else if (res.user && res.user.email === 'latifllarriklavja@gmail.com') {
           this.router.navigate(['/admin']);
         } else if (res.user && res.user.email === 'qinamirabina@gmail.com') {
           this.router.navigate(['/user-dashboard']);
