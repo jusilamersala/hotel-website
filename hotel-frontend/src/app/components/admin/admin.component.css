@@ -1,7 +1,12 @@
 /* Admin Dashboard Styles */
 :root {
-  --hotel-gold: #c5a059; /* Sigurohu që kjo përputhet me temën tënde */
+  --hotel-gold: #c5a059;
   --hotel-dark: #1a1a1a;
+}
+
+/* Kjo siguron që klasa text-gold e përdorur te titulli të marrë ngjyrën e saktë */
+.text-gold {
+  color: var(--hotel-gold) !important;
 }
 
 .tab-content {
@@ -9,31 +14,48 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  overflow-x: hidden; /* Ndalon daljen e përmbajtjes anash */
+  overflow-x: hidden;
 }
 
-/* Rregullimi i Tab-eve për Mobile */
+/* Stili i butonave "Add Room" ose butona të tjerë kryesorë */
+.btn-gold {
+  background-color: var(--hotel-gold) !important;
+  color: white !important;
+  border: 1px solid var(--hotel-gold) !important;
+  transition: all 0.3s ease;
+}
+
+.btn-gold:hover {
+  background-color: #b38f4b !important; /* Një nuancë më e errët kur kalon mausi */
+  border-color: #b38f4b !important;
+}
+
+/* --- Rregullimi i Tab-eve --- */
 .nav-tabs {
   display: flex;
-  flex-wrap: nowrap; /* I mban në një rresht nëse duam scroll horizontal */
+  flex-wrap: nowrap;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   border-bottom: 2px solid #eee;
 }
 
 .nav-tabs .nav-item {
-  white-space: nowrap; /* Mos i lejo fjalët të thyhen në dy rreshta */
+  white-space: nowrap;
+}
+
+/* Ndryshon ngjyrën e shkrimit të tab-eve që nuk janë aktive që të duken më bukur */
+.nav-tabs .nav-link {
+  color: #555;
+  cursor: pointer;
 }
 
 .nav-tabs .nav-link.active {
-  background-color: var(--hotel-gold);
-  color: white;
-  border-color: var(--hotel-gold);
+  background-color: var(--hotel-gold) !important;
+  color: white !important;
+  border-color: var(--hotel-gold) !important;
 }
 
 /* --- RESPONSIVE TABLES --- */
-
-/* Krijon një scroll horizontal për tabelat në celular */
 .table-responsive {
   display: block;
   width: 100%;
@@ -41,20 +63,32 @@
   -webkit-overflow-scrolling: touch;
 }
 
-.table th {
-  background-color: var(--hotel-gold);
+/* Nëse dëshiron që titujt e tabelave të jenë ngjyrë ari si te dhomat,
+   liri këtë kod. Nëse dëshiron të mbeten të zi (table-dark),
+   mund ta fshish kët' bllok.
+*/
+.table thead.table-dark th {
+  background-color: var(--hotel-dark) !important;
   color: white;
-  white-space: nowrap; /* I mban titujt e kolonave fiks */
+  white-space: nowrap;
 }
 
-/* Rregullime për ekrane shumë të vegjël (Celularë) */
+/* Rregullim shtesë për Badges (Statuset e rezervimeve) */
+.badge {
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  text-transform: capitalize; /* E bën shkronjën e parë të madhe automatic */
+}
+
+/* --- RESPONSIVE (Celularë) --- */
 @media (max-width: 576px) {
   .tab-content {
-    padding: 10px; /* Më pak hapësirë anash në mobile */
+    padding: 10px;
   }
 
   h1 {
-    font-size: 1.5rem; /* Titulli më i vogël */
+    font-size: 1.5rem;
   }
 
   h3 {
@@ -62,12 +96,117 @@
   }
 
   .btn-gold {
-    width: 100%; /* Butoni "Add Room" zë të gjithë gjerësinë poshtë titullit */
+    width: 100%;
     margin-top: 10px;
   }
 
-  .d-flex.justify-content-between {
-    flex-direction: column; /* Vendos titullin dhe butonin njëri mbi tjetrin */
+  /* Kjo rregullon d-flex në Bootstrap që në mobile të dalin njëri nën tjetrin */
+  .d-flex.flex-column.flex-sm-row {
+    flex-direction: column !important;
     align-items: flex-start !important;
+  }
+}
+
+/* =======================================================
+   --- STILIZIMI I MODAL-IT TË RI TË FSHIRJES (PA BLUR) ---
+   ======================================================= */
+
+/* Sfondi i errësuar lehtë që mbulon ekranin */
+.custom-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4); /* Vetëm errësim i lehtë i ambientit, pa blur */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000; /* Siguron që del mbi menunë dhe header-in */
+}
+
+/* Kutia e mesazhit në qendër */
+.custom-modal-box {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 380px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  animation: fadeInModal 0.2s ease-out; /* Animacion i zbutur kur shfaqet kutia */
+}
+
+/* Ikona e paralajmërimit sipër titullit */
+.modal-icon-warning {
+  font-size: 3rem;
+  color: #dc3545; /* Ngjyrë e kuqe rreziku */
+  margin-bottom: 10px;
+  line-height: 1;
+}
+
+.custom-modal-box h4 {
+  margin-bottom: 12px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.custom-modal-box p {
+  color: #555555;
+  font-size: 1rem;
+  margin-bottom: 25px;
+}
+
+/* Grupimi i butonave Jo / Po */
+.custom-modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Butoni Jo, Anulo */
+.btn-light-cancel {
+  background-color: #f8f9fa;
+  color: #495057;
+  border: 1px solid #ced4da;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  min-width: 110px;
+}
+
+.btn-light-cancel:hover {
+  background-color: #e2e6ea;
+}
+
+/* Butoni Po, Fshije */
+.btn-danger-confirm {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  min-width: 110px;
+}
+
+.btn-danger-confirm:hover {
+  background-color: #bd2130;
+}
+
+/* Animacion pop-up i lehtë */
+@keyframes fadeInModal {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
   }
 }

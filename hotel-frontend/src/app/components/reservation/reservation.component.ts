@@ -6,8 +6,6 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-
-// Deklarojmë PayPal si globale
 declare var paypal: any;
 
 @Component({
@@ -146,13 +144,14 @@ export class ReservationComponent implements OnInit {
 
     if (container) {
       container.innerHTML = ''; 
+
       paypalSdk.Buttons({
         style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal' },
         createOrder: (data: any, actions: any) => {
           return actions.order.create({
             purchase_units: [{
               amount: { currency_code: 'EUR', value: this.totalPrice.toString() },
-              description: `Rezervim Hotel: ${this.room?.name || 'Dhoma'}`
+              description: `Rezervim Hotel: ${this.room?.name || 'Dhoma'}`,
             }]
           });
         },
@@ -204,7 +203,7 @@ export class ReservationComponent implements OnInit {
       total_price: this.totalPrice,
       phone: this.phone,
       payment_method: this.paymentMethod,
-      services: this.getSelectedServicesNames() 
+      services: this.getSelectedServicesNames()
     };
 
     this.http.post('http://localhost:8000/api/bookings/createBooking.php', payload)
@@ -221,34 +220,32 @@ export class ReservationComponent implements OnInit {
       });
   }
 
-  // --- PDF GENERATION ---
   generatePDF() {
     if (!this.room) return;
     const doc = new jsPDF();
-    
     doc.setFontSize(22);
-    doc.setTextColor(197, 160, 89); 
+    doc.setTextColor(197, 160, 89);
     doc.text('GRAND HORIZON - LUXURY HOTEL', 105, 20, { align: 'center' });
-    
+
     doc.setFontSize(10);
     doc.setTextColor(100);
     doc.text('Bulevardi Kryesor, Tiranë | www.grandhorizon.al', 105, 27, { align: 'center' });
     
     doc.setDrawColor(200);
     doc.line(20, 35, 190, 35);
-    
+
     doc.setFontSize(12);
     doc.setTextColor(0);
     doc.text(`Fatura: #GH-2026-${this.room.room_ID}`, 20, 45);
     doc.text(`Data: ${this.today}`, 20, 52);
-    
+
     doc.setFont("helvetica", "bold");
     doc.text('Detajet e Klientit:', 20, 65);
     doc.setFont("helvetica", "normal");
     doc.text(`Emri: ${this.user?.name}`, 20, 72);
     doc.text(`Email: ${this.user?.email}`, 20, 79);
     doc.text(`Tel: ${this.phone}`, 20, 86);
-    
+
     const head = [['Përshkrimi', 'Çmimi']];
     const bodyData: any[] = [
       [`Akomodimi: ${this.room.name || 'Dhoma'} (${this.totalNights} netë)`, `${this.totalNights * (this.room.price || this.room.room_Price)}€`],

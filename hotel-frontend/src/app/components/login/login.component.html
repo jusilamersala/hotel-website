@@ -1,7 +1,16 @@
 <div class="contact-container">
-  <h2>{{ isLogin ? 'Hyr' : 'Regjistrohu' }}</h2>
+  <h2>{{ isLogin ? "Hyr" : "Regjistrohu" }}</h2>
 
-  <div *ngIf="successMsg" style="color: green; font-weight: bold; padding: 10px; border: 1px solid green; margin-bottom: 10px;">
+  <div
+    *ngIf="successMsg"
+    style="
+      color: green;
+      font-weight: bold;
+      padding: 10px;
+      border: 1px solid green;
+      margin-bottom: 10px;
+    "
+  >
     {{ successMsg }}
   </div>
 
@@ -73,10 +82,19 @@
 
   <p>
     <a href="#" (click)="toggleForm($event)">
-      {{ isLogin ? 'Krijo Llogari' : 'Hyr' }}
+      {{ isLogin ? "Krijo Llogari" : "Hyr" }}
     </a>
     <a routerLink="/reset-password" class="forgot-link">
       Keni harruar fjalëkalimin?
     </a>
   </p>
+
+  <div class="modal-overlay" *ngIf="showAuthModal" (click)="closeModal()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="closeModal()">✕</button>
+
+      <h2>Regjistrimi u krye!</h2>
+      <p>Ju lutem kontrolloni email-in për të aktivizuar llogarinë.</p>
+    </div>
+  </div>
 </div>

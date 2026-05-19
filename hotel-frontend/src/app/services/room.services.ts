@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class RoomService {
-  private apiUrl = 'http://localhost:8000/api/rooms/';
+  private apiUrl = 'http://localhost:8000/api/room/';
 
   constructor(private http: HttpClient) {}
 
