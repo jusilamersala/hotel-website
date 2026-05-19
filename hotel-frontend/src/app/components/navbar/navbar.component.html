@@ -28,7 +28,7 @@
             routerLink="/"
             routerLinkActive="active"
             (click)="hotelToggler.click()"
-          >Kryefaqja</a
+            >Kryefaqja</a
           >
         </li>
         <li class="nav-item">
@@ -37,7 +37,7 @@
             routerLink="/about"
             routerLinkActive="active"
             (click)="hotelToggler.click()"
-          >Rreth Nesh</a
+            >Rreth Nesh</a
           >
         </li>
         <li class="nav-item">
@@ -46,7 +46,7 @@
             routerLink="/rooms"
             routerLinkActive="active"
             (click)="hotelToggler.click()"
-          >Dhomat</a
+            >Dhomat</a
           >
         </li>
         <li class="nav-item dropdown">
@@ -55,7 +55,7 @@
             href="#"
             role="button"
             data-bs-toggle="dropdown"
-          >Spa & Wellness</a
+            >Spa & Wellness</a
           >
           <ul class="dropdown-menu dropdown-menu-dark shadow-lg border-gold">
             <li *ngFor="let service of spaServices">
@@ -68,6 +68,7 @@
                 {{ service.service_Name }}
               </a>
             </li>
+
           </ul>
         </li>
         <li class="nav-item">
@@ -76,11 +77,10 @@
             routerLink="/contact"
             routerLinkActive="active"
             (click)="hotelToggler.click()"
-          >Kontakt</a
+            >Kontakt</a
           >
         </li>
 
-        <!-- I PA-LOGUAR: shfaq butonin Hyr -->
         <li class="nav-item ms-lg-3" *ngIf="!isLoggedIn">
           <a
             class="btn btn-gold rounded-pill px-4 fw-bold shadow-sm"
@@ -91,7 +91,6 @@
           </a>
         </li>
 
-        <!-- I LOGUAR: shfaq emrin + dropdown -->
         <li class="nav-item dropdown ms-lg-3" *ngIf="isLoggedIn">
           <a
             class="btn btn-gold rounded-pill px-4 fw-bold shadow-sm dropdown-toggle"
@@ -99,6 +98,7 @@
             role="button"
             data-bs-toggle="dropdown"
           >
+            <!-- Iniciali në rreth -->
             <span class="bi bi-person me-2"></span>{{ userName }}
           </a>
           <ul
@@ -107,7 +107,7 @@
             <li>
               <a
                 class="dropdown-item"
-                routerLink="/user-dashboard"
+                routerLink="/receptionist"
                 (click)="hotelToggler.click()"
               >
                 <i class="bi bi-person me-2"></i> Profili Im
