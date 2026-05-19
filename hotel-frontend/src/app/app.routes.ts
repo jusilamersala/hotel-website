@@ -9,6 +9,7 @@ import { AdminComponent } from './components/admin/admin.component';
 import { ReceptionistComponent } from './components/receptionist/receptionist.component';
 import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
 import { ReservationComponent } from './components/reservation/reservation.component';
+import  {ResetPasswordComponent} from './components/reset-password/reset-password.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -22,5 +23,6 @@ export const routes: Routes = [
   { path: 'receptionist', component: ReceptionistComponent },
   { path: 'user-dashboard', component: UserDashboardComponent },
   { path: 'reservation/:id', component: ReservationComponent },
+  { path: 'reset-password' ,component:ResetPasswordComponent},
   { path: '**', redirectTo: 'home' }
 ];
