@@ -42,18 +42,20 @@ CREATE TABLE IF NOT EXISTS `User` (
 ALTER TABLE User ADD COLUMN is_verified TINYINT(1) DEFAULT 0;
 ALTER TABLE User ADD COLUMN verification_token VARCHAR(255) NULL;
 
-CREATE TABLE IF NOT EXISTS `Booking` (
-    `booking_ID` INT PRIMARY KEY,
-    `user_ID` INT,
-    `room_ID` INT,
-    `booking_Date` DATE,
-    `status` ENUM('Pending', 'Confirmed', 'Cancelled'),
-    `check_In_Date` DATE,
-    `check_Out_Date` DATE,
-    `email_verified` BOOLEAN DEFAULT FALSE,
+DROP TABLE IF EXISTS `Booking`;
 
-    FOREIGN KEY (user_ID) REFERENCES User(User_ID),
-    FOREIGN KEY (room_ID) REFERENCES Room(Room_ID)
+CREATE TABLE `Booking` (
+    `booking_ID` INT AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(100) NOT NULL,
+    `surname` VARCHAR(100) NOT NULL,
+    `room_type` VARCHAR(100) NOT NULL,
+    `price` INT NOT NULL,
+    `check_In_Date` DATE NOT NULL,
+    `check_Out_Date` DATE NOT NULL,
+    `extra_service` VARCHAR(100) DEFAULT NULL,
+    `service_price` INT DEFAULT 0,
+    `status` VARCHAR(50) DEFAULT 'Confirmed',
+    `booking_Date` DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 ALTER TABLE Booking
