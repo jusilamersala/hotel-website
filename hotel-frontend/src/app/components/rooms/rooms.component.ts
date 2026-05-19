@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Router, ActivatedRoute } from '@angular/router'; // Shto ActivatedRoute
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Room } from './room.model';
 
@@ -28,38 +28,56 @@ export class RoomsComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       if (params['checkin'] && params['checkout']) {
-        // Nëse ka parametra kërkimi, thërrasim API-n e search
         this.performSearch(
           params['checkin'],
           params['checkout'],
           params['capacity'],
         );
       } else {
-        // Përndryshe ngarkojmë të gjitha dhomat
         this.fetchRooms();
       }
     });
   }
 
   fetchRooms() {
-    this.http.get<Room[]>(this.apiUrl).subscribe({
-      next: (data: Room[]) => {
-        this.rooms = data;
+    this.http.get<any>(this.apiUrl).subscribe({
+      next: (res: any) => {
+        if (res && res.status === 'success') {
+          this.rooms = res.data;
+          console.log('Dhomat publike u ngarkuan me sukses!');
+        } else {
+          this.rooms = [];
+        }
       },
       error: (err: any) => {
         console.error('Gabim gjatë marrjes së dhomave:', err);
+        this.rooms = [];
       },
     });
   }
+
   performSearch(checkin: string, checkout: string, capacity: number) {
     const url = `${this.searchRoomsUrl}?checkin=${checkin}&checkout=${checkout}&capacity=${capacity}`;
-    this.http.get<Room[]>(url).subscribe({
-      next: (data) => {
-        this.rooms = data;
+
+    // U ndryshua në <any> edhe këtu për të qenë të sigurt me formatin e kërkimit
+    this.http.get<any>(url).subscribe({
+      next: (res: any) => {
+        if (res && res.status === 'success') {
+          this.rooms = res.data; // Kapa dhomat e gjetura nga kërkimi
+        } else if (Array.isArray(res)) {
+          // Në rast se skedari searchRoom.php kthen akoma formatin e vjetër direkt []
+          this.rooms = res;
+        } else {
+          this.rooms = [];
+        }
       },
-      error: (err) => console.error('Gabim gjatë kërkimit:', err),
+      error: (err) => {
+        console.error('Gabim gjatë kërkimit:', err);
+        this.rooms = [];
+      },
     });
   }
+
   // Funksioni që rregullon ndryshimin e kategorive nga butonat e HTML-së
   onRoomClick(room: any) {
     if (this.authService.isLoggedIn()) {

@@ -15,5 +15,8 @@ if (mysqli_num_rows($result) > 0) {
     }
 }
 
-echo json_encode($rooms);
+echo json_encode([
+    "status" => "success",
+    "data" => $rooms
+]);
 ?>

@@ -15,6 +15,10 @@ export class BookingService {
     return this.http.get<any>(`${this.baseUrl}/getBookings.php`);
   }
 
+  getBookingsByUser(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/getBookings.php?user_id=${userId}`);
+  }
+
   // 2. Shto një rezervim të ri
   addBooking(bookingData: any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/addBooking.php`, bookingData);
