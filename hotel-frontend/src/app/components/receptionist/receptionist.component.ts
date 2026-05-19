@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
 import { HttpClient } from '@angular/common/http'; 
-import { BookingService } from '../../services/booking.service';
 
 @Component({
   selector: 'app-receptionist',
@@ -12,80 +11,15 @@ import { BookingService } from '../../services/booking.service';
   styleUrls: ['./receptionist.component.css']
 })
 export class ReceptionistComponent implements OnInit {
-  bookings: any[] = [];
 
   // Koleksioni për menaxhimin e rreshtave të tabelës Walk-In
-  walkIns: any[] = [
-    {
-      name: '',
-      surname: '',
-      room_type: '',
-      price: null,
-      extra_service: '',
-      service_price: 0,
-      check_In_Date: '',
-      check_Out_Date: '',
-      status: 'Confirmed'
-    }
-  ];
+  walkIns: any[] = [];
 
-  // Modeli për rezervimin e dhomës nga formulari i vjetër
-  newBooking = {
-    name: '',
-    surname: '',
-    room_name: '',
-    price: null, 
-    check_In_Date: '',
-    check_Out_Date: '',
-    status: 'Confirmed'
-  };
-
-  // Modeli për shërbimet ekstra
-  newServiceBooking = {
-    booking_ID: '', 
-    service_type: '', 
-    price: null
-  };
-
-  constructor(
-    private bookingService: BookingService,
-    private http: HttpClient 
-  ) {}
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.loadBookings();
-  }
-
-  // PËRDITËSUAR: Ngarkon të gjitha rezervimet aktive duke mapuar kolonat e sakta të SQL-së së re
-  loadBookings() {
-    this.bookingService.getBookings().subscribe((data: any) => {
-      if (data.status === 'success') {
-        this.bookings = data.data.map((b: any) => ({
-          booking_ID: b.booking_ID,
-          name: b.name,
-          surname: b.surname,
-          room_name: b.room_name,              // Mapohet nga r.name AS room_name
-          price: Number(b.total_price),        // Mapohet nga b.total_price
-          check_In_Date: b.check_In_Date,
-          check_Out_Date: b.check_Out_Date,
-          status: b.status,
-          extra_service: b.extra_service || '', 
-          service_price: b.service_price ? Number(b.service_price) : 0
-        }));
-        console.log('Rezervimet aktive u ngarkuan:', this.bookings);
-      }
-    });
-  }
-
-  // Krijimi i një rezervimi nga formulari i parë
-  createNewBooking() {
-    this.bookingService.addBooking(this.newBooking).subscribe({
-      next: (response: any) => {
-        this.loadBookings();
-        this.newBooking = { name: '', surname: '', room_name: '', price: null, check_In_Date: '', check_Out_Date: '', status: 'Confirmed' };
-      },
-      error: (err: any) => { console.error('Gabim:', err); }
-    });
+    // Çelim rreshtin e parë bosh sapo hapet faqja
+    this.addEmptyWalkInRow();
   }
 
   // Shto një rresht të ri bosh te tabela Walk-In në HTML
@@ -103,15 +37,20 @@ export class ReceptionistComponent implements OnInit {
     });
   }
 
-  // PËRDITËSUAR: Ruajtja e klientit Walk-In pa fushat problematike
+  // Ruajtja e klientit Walk-In në Databazë
   saveWalkIn(walkInRow: any) {
     if (!walkInRow.room_type || !walkInRow.price || !walkInRow.check_In_Date || !walkInRow.check_Out_Date) {
       alert('Ju lutem plotësoni të paktën Dhomën, Çmimin dhe Datat e qëndrimit!');
       return;
     }
 
-    // Ndërtojmë payload-in e pastër që kërkon 'createWalkIn.php' i ri
+    // Ndërtojmë payload-in që kërkon backend-i yt (shto emrin/mbiemrin nëse backend i pranon)
     const bookingPayload = {
+      name: walkInRow.name,
+      surname: walkInRow.surname,
+      room_type: walkInRow.room_type,
+      extra_service: walkInRow.extra_service,
+      service_price: walkInRow.service_price ? Number(walkInRow.service_price) : 0,
       check_In_Date: walkInRow.check_In_Date,
       check_Out_Date: walkInRow.check_Out_Date,
       price: Number(walkInRow.price),
@@ -125,10 +64,11 @@ export class ReceptionistComponent implements OnInit {
     this.http.post(url, bookingPayload).subscribe({
       next: (response: any) => {
         alert('Klienti Walk-In u regjistrua me sukses në databazë!');
-        this.loadBookings(); // Rifreskon listën kryesore automatikisht
         
-        // Largon rreshtin e plotësuar nga tabela e përkohshme Walk-In
+        // Largon rreshtin e plotësuar nga tabela e përkohshme Walk-In pas ruajtjes së suksesshme
         this.walkIns = this.walkIns.filter(w => w !== walkInRow);
+        
+        // Nëse nuk ka më rreshta, shto automatikisht një bosh që të mos mbetet tabela zbrazët
         if (this.walkIns.length === 0) {
           this.addEmptyWalkInRow();
         }
@@ -142,41 +82,5 @@ export class ReceptionistComponent implements OnInit {
         }
       }
     });
-  }
-
-  // Shto shërbimin ekstra direkt te rezervimi ekzistues
-  addServiceToBooking() {
-    const bookingIndex = this.bookings.findIndex(b => b.booking_ID == this.newServiceBooking.booking_ID);
-    
-    if (bookingIndex !== -1) {
-      this.bookings[bookingIndex].service_price = Number(this.newServiceBooking.price);
-      
-      const currentServices = this.bookings[bookingIndex].extra_service;
-      this.bookings[bookingIndex].extra_service = currentServices 
-        ? currentServices + ', ' + this.newServiceBooking.service_type 
-        : this.newServiceBooking.service_type;
-
-      const numericID = Number(this.newServiceBooking.booking_ID);
-
-      this.bookingService.updateBooking(numericID, this.bookings[bookingIndex]).subscribe(() => {
-        this.loadBookings();
-        alert(`Shërbimi u shtua dhe u ruajt në DB për rezervimin #${numericID}!`);
-      });
-
-      this.newServiceBooking = { booking_ID: '', service_type: '', price: null };
-    }
-  }
-
-  // Përditësimi i statusit të rezervimit (Pending, Confirmed, Cancelled)
-  updateBookingStatus(id: number, event: Event) {
-    const status = (event.target as HTMLSelectElement).value;
-    this.bookingService.updateBooking(id, { status }).subscribe(() => { this.loadBookings(); });
-  }
-
-  // Fshirja e një rezervimi
-  deleteBooking(id: number) {
-    if (confirm('A jeni i sigurt që dëshironi ta fshini këtë rezervim?')) {
-      this.bookingService.deleteBooking(id).subscribe(() => { this.loadBookings(); });
-    }
   }
 }
