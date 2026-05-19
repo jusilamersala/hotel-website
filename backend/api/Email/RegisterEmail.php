@@ -11,7 +11,6 @@ class Mailer {
         $mail = new PHPMailer(true);
 
         try {
-            // --- KONFIGURIMI I SERVERIT ---
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
@@ -37,7 +36,6 @@ class Mailer {
             $mail->isHTML(true);
             $mail->Subject = 'Konfirmimi i Regjistrimit - Grand Horizon';
 
-            // URL-ja që do të klikojë përdoruesi.
             $confirmLink = "http://localhost:8000/api/users/confirmEmail.php?token=" . $token;
 
             $mail->Body = "

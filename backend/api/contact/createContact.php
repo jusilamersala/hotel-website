@@ -14,16 +14,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $data = json_decode(file_get_contents("php://input"));
 
-    // Përdorim variablat e sakta sipas Angularit
     $full_name = $data->full_name ?? null;
     $email = $data->email ?? null;
     $message = $data->message ?? null;
 
-    // 1. Kontrolli për emrin
     if (empty($full_name)) {
         http_response_code(400);
         echo json_encode(["status" => "error", "message" => "Name is required"]);
-        exit; // DUHET exit pas çdo echo që të mos vazhdojë kodin
+        exit;
     }
 
     if (!preg_match("/^[a-zA-Z-' ]*$/", $full_name)) { // Ndrequr preg_match (duhet patterni i pari)
@@ -32,7 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // 2. Kontrolli për emailin
     if (empty($email)) {
         http_response_code(400);
         echo json_encode(["status" => "error", "message" => "Email is required"]);
@@ -45,7 +42,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // 3. Kontrolli për mesazhin
     if (empty($message)) {
         http_response_code(400);
         echo json_encode(["status" => "error", "message" => "Message is required"]);

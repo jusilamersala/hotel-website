@@ -1,23 +1,17 @@
 <?php
-// Header-at për sigurinë dhe aksesin nga Angular
 header("Access-Control-Allow-Origin: http://localhost:4200");
 header("Access-Control-Allow-Methods: GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json; charset=UTF-8");
 
-// Trajtimi i kërkesës OPTIONS (për CORS)
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     http_response_code(200);
     exit;
 }
 
-// Lidhja me databazën
 include_once '../../config/database.php';
 
-/**
- * SQL Query: Përdorim JOIN për të marrë emrat e klientëve dhe dhomave
- * sepse tabela Invoice ka vetëm ID-të dhe shumat.
- */
+
 $sql = "SELECT 
             i.invoice_ID, 
             i.amount as price, 

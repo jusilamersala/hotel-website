@@ -1,23 +1,20 @@
-/* --- RREGULLIMET GLOBALE (Zgjidhja për Scroll Horizontal) --- */
 html,
 body {
   max-width: 100%;
-  overflow-x: hidden; /* Ky rregull ndalon lëkundjen anash */
+  overflow-x: hidden;
   margin: 0;
   padding: 0;
 }
 
 * {
-  box-sizing: border-box; /* Siguron që padding nuk shton gjerësi te elementet */
+  box-sizing: border-box;
 }
 
-/* Fix për Bootstrap Row në Mobile */
 .row {
   margin-right: 0 !important;
   margin-left: 0 !important;
 }
 
-/* --- HERO SECTION --- */
 .hero-section {
   min-height: 80vh;
   width: 100%;
@@ -36,9 +33,8 @@ body {
   letter-spacing: 3px;
 }
 
-/* --- SEARCH BAR --- */
 .search-bar {
-  width: 92%; /* Pak më e vogël se 100% që të ketë frymëmarrje anash */
+  width: 92%;
   max-width: 1000px;
   margin: 0 auto;
   border-bottom: 5px solid #c5a059;
@@ -47,7 +43,6 @@ body {
   border-radius: 4px;
 }
 
-/* --- FORMAT DHE BUTONAT --- */
 .form-control:focus,
 .form-select:focus {
   box-shadow: none;
@@ -94,7 +89,7 @@ body {
   border: 1px solid #eee;
   margin-bottom: 25px;
   background: #fff;
-  overflow: hidden; /* Ky rregull pret çdo gjë që del jashtë kutisë */
+  overflow: hidden;
   width: 100%;
 }
 
@@ -106,16 +101,13 @@ body {
   display: block;
 }
 
-/* Korrigjimi për ikonat (2 Persona, 45m2) që pamë në foto */
 .room-card .d-flex {
-  flex-wrap: wrap; /* Nëse nuk nxënë, i zbret poshtë në vend që të dalin anash */
+  flex-wrap: wrap;
   justify-content: center !important;
   gap: 10px;
 }
 
-/* --- RESPONSIVE DESIGN --- */
 
-/* Desktop (Mbi 992px) */
 @media (min-width: 992px) {
   .hero-section {
     background-attachment: fixed;
@@ -133,14 +125,12 @@ body {
   }
 }
 
-/* Mobile & Tablet (Nën 991px) */
 @media (max-width: 991px) {
   .search-bar {
     border-bottom: none;
     border-left: 5px solid #c5a059;
   }
 
-  /* Hiqen efektet hover që "shkundin" ekranin në touch */
   .service-card:hover,
   .room-card:hover {
     transform: none !important;
@@ -148,7 +138,6 @@ body {
   }
 }
 
-/* Telefona (Nën 768px) */
 @media (max-width: 767px) {
   .hero-title {
     font-size: 26px !important;

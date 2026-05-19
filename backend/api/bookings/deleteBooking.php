@@ -26,7 +26,6 @@ mysqli_stmt_bind_param($stmt_invoice, "i", $id);
 mysqli_stmt_execute($stmt_invoice);
 mysqli_stmt_close($stmt_invoice);
 
-// 1. Merr room_ID para se të fshijë — për të kthyer availability
 $getRoom = "SELECT room_ID FROM Booking WHERE booking_ID = ?";
 $stmt0   = mysqli_prepare($conn, $getRoom);
 mysqli_stmt_bind_param($stmt0, "i", $id);
@@ -49,7 +48,6 @@ mysqli_stmt_bind_param($stmt, "i", $id);
 
 if (mysqli_stmt_execute($stmt)) {
 
-    // 3. Kthe dhomën në Available
     $updateRoom = "UPDATE Room SET availability = 'Available' WHERE room_ID = ?";
     $stmt2      = mysqli_prepare($conn, $updateRoom);
     mysqli_stmt_bind_param($stmt2, "i", $room_ID);

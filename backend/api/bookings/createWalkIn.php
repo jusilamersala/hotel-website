@@ -28,7 +28,6 @@ if (!$check_In_Date || !$check_Out_Date || !$price) {
 }
 
 try {
-    // 1. Gjejmë automatikisht ID-në e një përdoruesi ekzistues
     $userQuery = "SELECT user_ID FROM User LIMIT 1";
     $userResult = mysqli_query($conn, $userQuery);
     $userRow = mysqli_fetch_assoc($userResult);
@@ -38,7 +37,6 @@ try {
     }
     $user_ID = (int)$userRow['user_ID'];
 
-    // 2. Gjejmë automatikisht ID-në e një dhome ekzistuese
     $roomQuery = "SELECT room_ID FROM Room LIMIT 1";
     $roomResult = mysqli_query($conn, $roomQuery);
     $roomRow = mysqli_fetch_assoc($roomResult);
@@ -49,7 +47,6 @@ try {
     $room_ID = (int)$roomRow['room_ID'];
 
 
-    // 3. Hoqëm fushat problematike të shërbimeve, duke lënë vetëm kolonat bazë që ekzistojnë 100%
     $sql = "INSERT INTO Booking 
             (user_ID, room_ID, check_In_Date, check_Out_Date, total_price, status) 
             VALUES (?, ?, ?, ?, ?, ?)";
@@ -60,8 +57,7 @@ try {
         throw new Exception("Gabim në SQL: " . mysqli_error($conn));
     }
     
-    // i = int, s = string
-    // user_ID(i), room_ID(i), check_In_Date(s), check_Out_Date(s), total_price(i), status(s)
+
     mysqli_stmt_bind_param($stmt, "iissis", 
         $user_ID, 
         $room_ID, 

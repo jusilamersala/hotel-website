@@ -3,7 +3,6 @@ header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: http://localhost:4200");
 header("Access-Control-Allow-Methods: GET");
 
-// Fikim shfaqjen e gabimeve si HTML që të mos bllokojmë Angularin, i kapim me try-catch
 ini_set('display_errors', 0);
 error_reporting(E_ALL);
 
@@ -13,7 +12,6 @@ $id = $_GET['id'] ?? null;
 
 try {
     if (!empty($id)) {
-        // 1. Marrja e një rezervimi specifik
         $sql = "SELECT 
                     b.booking_ID,
                     b.user_ID,
@@ -43,7 +41,6 @@ try {
         if ($stmt) mysqli_stmt_close($stmt);
 
     } else {
-        // 2. Marrja e të gjitha rezervimeve aktive (Heqëm kolonat e dyshimta si total_nights, phone, created_at)
         $sql = "SELECT 
                     b.booking_ID,
                     b.user_ID,
@@ -71,7 +68,6 @@ try {
         echo json_encode(["status" => "success", "data" => $bookings]);
     }
 } catch (Exception $e) {
-    // Nëse ndodh gabim, kthejmë JSON të saktë që Angular ta printojë në Console e të mos dështojë me "<br />"
     http_response_code(500);
     echo json_encode([
         "status" => "error",

@@ -76,14 +76,11 @@ mysqli_stmt_bind_param($stmt, "iissdis",
 
 if (mysqli_stmt_execute($stmt)) {
 
-    // 5. Merr room_ID të ri
     $new_room_ID = mysqli_insert_id($conn);
 
-    // 6. Gjenero emrin automatik: "Single 201"
     $room_number = ($new_room_ID < 10) ? "0" . $new_room_ID : $new_room_ID;
     $name        = $type_data['type'] . " " . $floor . $room_number;
 
-    // 7. UPDATE emrin
     $update = "UPDATE Room SET name = ? WHERE room_ID = ?";
     $stmt2  = mysqli_prepare($conn, $update);
     mysqli_stmt_bind_param($stmt2, "si", $name, $new_room_ID);

@@ -20,7 +20,6 @@ if (empty($id)) {
     exit;
 }
 
-// Merr fushat që duhen përditësuar
 $status         = $data['status']         ?? null;
 $check_in       = $data['check_In_Date']  ?? null;
 $check_out      = $data['check_Out_Date'] ?? null;
@@ -29,14 +28,12 @@ $total_price    = $data['total_price']    ?? null;
 $phone          = $data['phone']          ?? null;
 $payment_method = $data['payment_method'] ?? null;
 
-// Duhet të ketë të paktën një fushë
 if (!$status && !$check_in && !$check_out && !$phone && !$payment_method) {
     http_response_code(400);
     echo json_encode(["status" => "error", "message" => "Nuk ka asnjë fushë për të përditësuar."]);
     exit;
 }
 
-// Ndërto query dinamike bazuar në fushat e dërguara
 $fields = [];
 $types  = "";
 $values = [];
@@ -45,9 +42,6 @@ if ($status) {
     $fields[] = "status = ?";
     $types   .= "s";
     $values[] = $status;
-
-    // Nëse status → Confirmed, ndrysho Room në Occupied
-    // Nëse status → Cancelled, kthe Room në Available
 }
 
 if ($check_in) {
@@ -86,7 +80,6 @@ if ($payment_method) {
     $values[] = $payment_method;
 }
 
-// Shto ID në fund
 $types   .= "i";
 $values[] = $id;
 
@@ -96,7 +89,6 @@ mysqli_stmt_bind_param($stmt, $types, ...$values);
 
 if (mysqli_stmt_execute($stmt)) {
 
-    // Ndrysho availability të dhomës bazuar në status
     if ($status) {
         $availability = match($status) {
             'Confirmed'  => 'Occupied',
@@ -105,7 +97,6 @@ if (mysqli_stmt_execute($stmt)) {
         };
 
         if ($availability) {
-            // Merr room_ID
             $getRoom = "SELECT room_ID FROM Booking WHERE booking_ID = ?";
             $stmt2   = mysqli_prepare($conn, $getRoom);
             mysqli_stmt_bind_param($stmt2, "i", $id);

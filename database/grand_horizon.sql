@@ -234,7 +234,7 @@ VALUES
 VALUES (
     'Admin', 
     'Admin', 
-    '123456', -- Ky është hash për 'password'
+    '123456',
     'admin@gmail.com', 
     'Admin', 
     1
