@@ -1,4 +1,3 @@
--- Sigurohu që databaza ekziston
 CREATE DATABASE IF NOT EXISTS `grand_horizon`;
 USE `grand_horizon`;
 
@@ -93,8 +92,7 @@ CREATE TABLE IF NOT EXISTS `Services` (
     `service_Price` FLOAT
 );
 
--- 1. Ndryshojmë service_Type në service_Name dhe e bëjmë NOT NULL
-ALTER TABLE Services 
+ALTER TABLE Services
 CHANGE COLUMN service_Type service_Name VARCHAR(100) NOT NULL;
 
 ALTER TABLE Services
@@ -215,10 +213,8 @@ INSERT INTO Room (room_type_ID, name, floor, description, image_url, capacity, p
 
 
 
--- Fshijmë të dhënat e vjetra që të mos kemi përzierje
 TRUNCATE TABLE Services;
 
--- Shtojmë shërbimet e Spa & Wellness
 INSERT INTO Services (service_Name, service_Description, service_Price, is_Included)
 VALUES 
 ('Pishina & Sauna', 
@@ -233,3 +229,33 @@ VALUES
 ('Trajtime Fytyre & Wellness', 
  'Kujdesuni për lëkurën tuaj me trajtimet tona ekskluzive të fytyrës. Duke përdorur produkte organike të cilësisë së lartë, ky shërbim përfshin pastrim të thellë, hidratim dhe masazh facial që do t ju japë një ndjesi freskie dhe shkëlqim natyral.', 
  35.00, 0);
+
+ INSERT INTO `User` (name, surname, password, email, role, is_verified) 
+VALUES (
+    'Admin', 
+    'Admin', 
+    '123456', -- Ky është hash për 'password'
+    'admin@gmail.com', 
+    'Admin', 
+    1
+);
+
+UPDATE `User` 
+SET password = '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' 
+WHERE role = 'Admin';
+
+INSERT INTO `User`(name, surname, password, email, role, is_verified) 
+VALUES (
+    'Admin', 
+    'Test', 
+    '$2y$12$VzKB/635UI0mi4.gU5vBbeeMi7cbEoziP/KmN1hgkNH2H.JM4h.S6', 
+    'admin@test.com', 
+    'Admin', 
+    1
+);
+
+UPDATE `User`
+SET 
+ role= 'Admin'
+WHERE `user_ID` = 16;
+

@@ -1,42 +1,25 @@
 <section class="rooms-header d-flex align-items-center text-center text-white">
   <div class="container">
-    <h1 class="display-4 fw-bold animate__animated animate__fadeIn">Dhomat & Suitat tona</h1>
-    <p class="lead opacity-75">Zgjidhni komoditetin që ju përshtatet më së miri</p>
-  </div>
-</section>
-
-
-<!-- SEKSIONI I FILTRAVE -->
-<section class="py-4 bg-white border-bottom shadow-sm">
-  <div class="container text-center">
-    <div class="btn-group flex-wrap gap-2" role="group" aria-label="Room Filters">
-      <button type="button" class="btn rounded-pill px-4 fw-bold"
-              [ngClass]="selectedCategory === 'all' ? 'btn-gold' : 'btn-outline-secondary'"
-              (click)="setFilter('all')">Të gjitha</button>
-              
-      <button type="button" class="btn rounded-pill px-4 fw-bold"
-              [ngClass]="selectedCategory === 'deluxe' ? 'btn-gold' : 'btn-outline-secondary'"
-              (click)="setFilter('deluxe')">Deluxe</button>
-              
-      <button type="button" class="btn rounded-pill px-4 fw-bold"
-              [ngClass]="selectedCategory === 'suite' ? 'btn-gold' : 'btn-outline-secondary'"
-              (click)="setFilter('suite')">Suite</button>
-              
-      <button type="button" class="btn rounded-pill px-4 fw-bold"
-              [ngClass]="selectedCategory === 'family' ? 'btn-gold' : 'btn-outline-secondary'"
-              (click)="setFilter('family')">Family</button>
-    </div>
+    <h1 class="display-4 fw-bold animate__animated animate__fadeIn">
+      Dhomat & Suitat tona
+    </h1>
+    <p class="lead opacity-75">
+      Zgjidhni komoditetin që ju përshtatet më së miri
+    </p>
   </div>
 </section>
 
 <section class="py-5 bg-light">
   <div class="container py-4">
     <div class="row g-4">
-
       <div class="col-lg-4 col-md-6" *ngFor="let room of rooms">
         <div class="card h-100 border-0 shadow-sm room-card">
           <div class="position-relative overflow-hidden">
-            <img [src]="room.image_url" class="card-img-top" [alt]="room.name">
+            <img
+              [src]="room.image_url"
+              class="card-img-top"
+              [alt]="room.name"
+            />
             <div class="price-tag">{{ room.price }}€ / Natë</div>
           </div>
 
@@ -44,14 +27,21 @@
             <div class="d-flex justify-content-between align-items-center mb-2">
               <h5 class="fw-bold mb-0">{{ room.name }}</h5>
               <div class="stars text-gold">
-                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i
+                ><i class="bi bi-star-fill"></i>
               </div>
             </div>
             <p class="text-muted small">{{ room.description }}</p>
 
-            <div class="room-features d-flex gap-3 mb-4 py-3 border-top border-bottom">
-              <span title="WiFi"><i class="bi bi-wifi text-gold"></i> Wifi</span>
-              <span title="TV"><i class="bi bi-tv text-gold"></i> Smart TV</span>
+            <div
+              class="room-features d-flex gap-3 mb-4 py-3 border-top border-bottom"
+            >
+              <span title="WiFi"
+                ><i class="bi bi-wifi text-gold"></i> Wifi</span
+              >
+              <span title="TV"
+                ><i class="bi bi-tv text-gold"></i> Smart TV</span
+              >
               <span title="AC"><i class="bi bi-snow text-gold"></i> AC</span>
             </div>
 
@@ -62,20 +52,20 @@
 
               <button
                 class="btn btn-gold px-4 rounded-pill fw-bold"
-                [disabled]="room.availability !== 'Available'"
-                (click)="room.availability === 'Available' && onRoomClick(room)">
-                {{ room.availability === 'Available' ? 'Rezervo' : 'E Zënë' }}
+                (click)="onRoomClick(room)"
+              >
+                {{ "Rezervo" }}
               </button>
-
             </div>
           </div>
         </div>
       </div>
 
       <div class="col-12 text-center" *ngIf="rooms.length === 0">
-        <p class="text-muted">Po ngarkohen dhomat ose nuk u gjet asnjë dhomë...</p>
+        <p class="text-muted">
+          Po ngarkohen dhomat ose nuk u gjet asnjë dhomë...
+        </p>
       </div>
-
     </div>
   </div>
 </section>
@@ -83,7 +73,6 @@
 <!-- ↓ SHTO MODALIN KËTU — jashtë section-it -->
 <div class="modal-overlay" *ngIf="showAuthModal" (click)="closeModal()">
   <div class="modal-box" (click)="$event.stopPropagation()">
-
     <button class="close-btn" (click)="closeModal()">✕</button>
 
     <h2>Llogari e Nevojshme</h2>
@@ -93,6 +82,5 @@
       <button class="btn-login" (click)="goToLogin()">Hyr</button>
       <button class="btn-signup" (click)="goToSignup()">Regjistrohu</button>
     </div>
-
   </div>
 </div>

@@ -40,6 +40,7 @@ if ($email && $password) {
                 "user" => [
                     "id" => $user['user_ID'],
                     "name" => $user['name'],
+                    "email"=>$user['email'],
                     "role" => $user['role']
                 ]
             ]);
@@ -55,4 +56,5 @@ if ($email && $password) {
     http_response_code(400);
     echo json_encode(["status" => "error", "message" => "Ju lutem plotësoni email-in dhe fjalëkalimin."]);
 }
+
 ?>
