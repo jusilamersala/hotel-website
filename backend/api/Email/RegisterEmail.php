@@ -20,15 +20,6 @@ class Mailer {
             $mail->Port       = 587;
             $mail->CharSet    = 'UTF-8';
 
-            // --- ZGJIDHJA PËR SSL NË LOCALHOST
-            // Kjo lejon dërgimin edhe nëse PHP nuk ka certifikata të vlefshme në Windows
-            /*$mail->SMTPOptions = array(
-                'ssl' => array(
-                    'verify_peer' => false,
-                    'verify_peer_name' => false,
-                    'allow_self_signed' => true
-                )
-            );*/
 
             $mail->setFrom('grandhorizonh@gmail.com', 'Grand Horizon Hotel');
             $mail->addAddress($toMail);

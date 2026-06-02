@@ -25,7 +25,6 @@ $sql = "SELECT * FROM Room r
 
 try {
     $stmt = $conn->prepare($sql);
-    // Bind: capacity, checkout, checkin
     $stmt->bind_param("iss", $capacity, $checkout, $checkin);
     $stmt->execute();
     $result = $stmt->get_result();
